@@ -32,6 +32,13 @@ class Database {
         // Инициализируем базу данных при первом подключении
         $this->initDatabase();
     }
+    
+    /**
+     * Экранирование строки для безопасного использования в SQL запросах
+     */
+    public function escapeString($string) {
+        return pg_escape_string($this->connection, $string);
+    }
 
     /**
      * Получить экземпляр класса (singleton)
@@ -55,7 +62,7 @@ class Database {
             first_name VARCHAR(100) NOT NULL,
             last_name VARCHAR(100) NOT NULL,
             phone VARCHAR(20),
-            role VARCHAR(20) NOT NULL DEFAULT 'client',
+            role VARCHAR(50) NOT NULL DEFAULT 'client',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )";

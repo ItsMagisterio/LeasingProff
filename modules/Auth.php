@@ -13,7 +13,7 @@ class Auth {
      * Авторизация пользователя
      */
     public function login($email, $password) {
-        $email = pg_escape_string($email);
+        $email = $this->db->escapeString($email);
         $result = $this->db->query("SELECT * FROM users WHERE email = '$email'");
         
         if (pg_num_rows($result) > 0) {
@@ -38,7 +38,7 @@ class Auth {
      */
     public function register($userData) {
         // Проверяем, не занят ли email
-        $email = pg_escape_string($userData['email']);
+        $email = $this->db->escapeString($userData['email']);
         $result = $this->db->query("SELECT id FROM users WHERE email = '$email'");
         
         if (pg_num_rows($result) > 0) {
@@ -52,9 +52,9 @@ class Auth {
         $password = password_hash($userData['password'], PASSWORD_DEFAULT);
         
         // Подготавливаем данные
-        $firstName = pg_escape_string($userData['first_name']);
-        $lastName = pg_escape_string($userData['last_name']);
-        $phone = pg_escape_string($userData['phone']);
+        $firstName = $this->db->escapeString($userData['first_name']);
+        $lastName = $this->db->escapeString($userData['last_name']);
+        $phone = $this->db->escapeString($userData['phone']);
         $role = 'client'; // По умолчанию все новые пользователи - клиенты
         
         // Добавляем пользователя

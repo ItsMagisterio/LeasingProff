@@ -18,12 +18,12 @@ class Vehicles {
         // Применяем фильтры
         if (!empty($filters)) {
             if (isset($filters['make']) && $filters['make']) {
-                $make = pg_escape_string($filters['make']);
+                $make = $this->db->escapeString($filters['make']);
                 $sql .= " AND make = '$make'";
             }
             
             if (isset($filters['model']) && $filters['model']) {
-                $model = pg_escape_string($filters['model']);
+                $model = $this->db->escapeString($filters['model']);
                 $sql .= " AND model = '$model'";
             }
             
@@ -38,7 +38,7 @@ class Vehicles {
             }
             
             if (isset($filters['status']) && $filters['status']) {
-                $status = pg_escape_string($filters['status']);
+                $status = $this->db->escapeString($filters['status']);
                 $sql .= " AND status = '$status'";
             }
         }
@@ -76,20 +76,20 @@ class Vehicles {
      * Добавить новый автомобиль
      */
     public function addVehicle($vehicleData) {
-        $make = pg_escape_string($vehicleData['make']);
-        $model = pg_escape_string($vehicleData['model']);
+        $make = $this->db->escapeString($vehicleData['make']);
+        $model = $this->db->escapeString($vehicleData['model']);
         $year = (int) $vehicleData['year'];
-        $engine = pg_escape_string($vehicleData['engine']);
+        $engine = $this->db->escapeString($vehicleData['engine']);
         $power = (int) $vehicleData['power'];
-        $driveType = pg_escape_string($vehicleData['drive_type']);
-        $transmission = pg_escape_string($vehicleData['transmission']);
-        $color = pg_escape_string($vehicleData['color']);
-        $interior = pg_escape_string($vehicleData['interior']);
-        $features = pg_escape_string($vehicleData['features']);
-        $imageUrl = pg_escape_string($vehicleData['image_url']);
+        $driveType = $this->db->escapeString($vehicleData['drive_type']);
+        $transmission = $this->db->escapeString($vehicleData['transmission']);
+        $color = $this->db->escapeString($vehicleData['color']);
+        $interior = $this->db->escapeString($vehicleData['interior']);
+        $features = $this->db->escapeString($vehicleData['features']);
+        $imageUrl = $this->db->escapeString($vehicleData['image_url']);
         $price = (float) $vehicleData['price'];
         $monthlyPayment = (float) $vehicleData['monthly_payment'];
-        $status = pg_escape_string($vehicleData['status'] ?? 'available');
+        $status = $this->db->escapeString($vehicleData['status'] ?? 'available');
         
         $sql = "INSERT INTO vehicles 
                 (make, model, year, engine, power, drive_type, transmission, color, interior, features, 
@@ -132,12 +132,12 @@ class Vehicles {
         $updates = [];
         
         if (isset($vehicleData['make'])) {
-            $make = pg_escape_string($vehicleData['make']);
+            $make = $this->db->escapeString($vehicleData['make']);
             $updates[] = "make = '$make'";
         }
         
         if (isset($vehicleData['model'])) {
-            $model = pg_escape_string($vehicleData['model']);
+            $model = $this->db->escapeString($vehicleData['model']);
             $updates[] = "model = '$model'";
         }
         
@@ -147,7 +147,7 @@ class Vehicles {
         }
         
         if (isset($vehicleData['engine'])) {
-            $engine = pg_escape_string($vehicleData['engine']);
+            $engine = $this->db->escapeString($vehicleData['engine']);
             $updates[] = "engine = '$engine'";
         }
         
@@ -157,32 +157,32 @@ class Vehicles {
         }
         
         if (isset($vehicleData['drive_type'])) {
-            $driveType = pg_escape_string($vehicleData['drive_type']);
+            $driveType = $this->db->escapeString($vehicleData['drive_type']);
             $updates[] = "drive_type = '$driveType'";
         }
         
         if (isset($vehicleData['transmission'])) {
-            $transmission = pg_escape_string($vehicleData['transmission']);
+            $transmission = $this->db->escapeString($vehicleData['transmission']);
             $updates[] = "transmission = '$transmission'";
         }
         
         if (isset($vehicleData['color'])) {
-            $color = pg_escape_string($vehicleData['color']);
+            $color = $this->db->escapeString($vehicleData['color']);
             $updates[] = "color = '$color'";
         }
         
         if (isset($vehicleData['interior'])) {
-            $interior = pg_escape_string($vehicleData['interior']);
+            $interior = $this->db->escapeString($vehicleData['interior']);
             $updates[] = "interior = '$interior'";
         }
         
         if (isset($vehicleData['features'])) {
-            $features = pg_escape_string($vehicleData['features']);
+            $features = $this->db->escapeString($vehicleData['features']);
             $updates[] = "features = '$features'";
         }
         
         if (isset($vehicleData['image_url'])) {
-            $imageUrl = pg_escape_string($vehicleData['image_url']);
+            $imageUrl = $this->db->escapeString($vehicleData['image_url']);
             $updates[] = "image_url = '$imageUrl'";
         }
         
@@ -197,7 +197,7 @@ class Vehicles {
         }
         
         if (isset($vehicleData['status'])) {
-            $status = pg_escape_string($vehicleData['status']);
+            $status = $this->db->escapeString($vehicleData['status']);
             $updates[] = "status = '$status'";
         }
         
@@ -268,7 +268,7 @@ class Vehicles {
      * Получить список моделей для марки
      */
     public function getModelsByMake($make) {
-        $make = pg_escape_string($make);
+        $make = $this->db->escapeString($make);
         $result = $this->db->query("SELECT DISTINCT model FROM vehicles WHERE make = '$make' ORDER BY model");
         $models = [];
         
@@ -288,12 +288,12 @@ class Vehicles {
         // Применяем фильтры
         if (!empty($filters)) {
             if (isset($filters['make']) && $filters['make']) {
-                $make = pg_escape_string($filters['make']);
+                $make = $this->db->escapeString($filters['make']);
                 $sql .= " AND make = '$make'";
             }
             
             if (isset($filters['model']) && $filters['model']) {
-                $model = pg_escape_string($filters['model']);
+                $model = $this->db->escapeString($filters['model']);
                 $sql .= " AND model = '$model'";
             }
             
@@ -308,7 +308,7 @@ class Vehicles {
             }
             
             if (isset($filters['status']) && $filters['status']) {
-                $status = pg_escape_string($filters['status']);
+                $status = $this->db->escapeString($filters['status']);
                 $sql .= " AND status = '$status'";
             }
         }
