@@ -95,7 +95,7 @@ $applicationsStats = $applications->getApplicationsCountByStatus($currentUser['i
                             <thead>
                                 <tr>
                                     <th>№</th>
-                                    <th>Автомобиль</th>
+                                    <th>Объект лизинга</th>
                                     <th>Дата заявки</th>
                                     <th>Статус</th>
                                     <th>Действия</th>
@@ -135,7 +135,13 @@ $applicationsStats = $applications->getApplicationsCountByStatus($currentUser['i
                                 ?>
                                 <tr>
                                     <td><?= htmlspecialchars($application['id']) ?></td>
-                                    <td><?= htmlspecialchars($application['vehicle_make'] . ' ' . $application['vehicle_model']) ?></td>
+                                    <td>
+                                        <?php if ($application['type'] === 'real_estate' && !empty($application['real_estate_title'])): ?>
+                                            <?= htmlspecialchars($application['real_estate_title']) ?>
+                                        <?php else: ?>
+                                            <?= htmlspecialchars($application['vehicle_make'] . ' ' . $application['vehicle_model']) ?>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?= date('d.m.Y', strtotime($application['created_at'])) ?></td>
                                     <td><span class="badge <?= $statusClass ?>"><?= htmlspecialchars($statusText) ?></span></td>
                                     <td><a href="#" class="btn btn-sm btn-primary">Подробнее</a></td>
@@ -284,9 +290,18 @@ $applicationsStats = $applications->getApplicationsCountByStatus($currentUser['i
             
             <div class="dashboard-card">
                 <h5>Подать новую заявку</h5>
-                <p>Выберите автомобиль из нашего каталога и подайте новую заявку на лизинг.</p>
-                <div class="d-grid">
-                    <a href="index.php?page=marketplace" class="btn btn-primary">Перейти в каталог</a>
+                <p>Выберите объект из нашего каталога и подайте новую заявку на лизинг.</p>
+                <div class="row">
+                    <div class="col-md-6 mb-2 mb-md-0">
+                        <div class="d-grid">
+                            <a href="index.php?page=marketplace" class="btn btn-primary">Каталог автомобилей</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-grid">
+                            <a href="index.php?page=real-estate" class="btn btn-outline-primary">Каталог недвижимости</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

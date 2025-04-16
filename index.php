@@ -7,6 +7,7 @@ $auth = new Auth();
 $vehicles = new Vehicles();
 $applications = new Applications();
 $users = new Users();
+$realEstate = new RealEstate();
 
 // Определяем текущую страницу из GET-параметра
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
@@ -78,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
         
-        // Подача заявки на лизинг
+        // Подача заявки на лизинг автомобиля
         elseif ($action === 'submit_application') {
             // Проверяем авторизацию
             if (!$auth->isLoggedIn()) {
@@ -92,7 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'initial_payment' => (float) $_POST['initial_payment'],
                 'term_months' => (int) $_POST['term_months'],
                 'monthly_payment' => (float) $_POST['monthly_payment'],
-                'comments' => $_POST['comments'] ?? ''
+                'comments' => $_POST['comments'] ?? '',
+                'type' => 'vehicle'
             ];
             
             $result = $applications->createApplication($applicationData);
@@ -103,6 +105,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $error = $result['message'];
                 $page = 'vehicle';
+            }
+        }
+        
+        // Подача заявки на лизинг недвижимости
+        elseif ($action === 'submit_real_estate_application') {
+            // Проверяем авторизацию
+            if (!$auth->isLoggedIn()) {
+                header('Location: index.php?page=login');
+                exit;
+            }
+            
+            $applicationData = [
+                'user_id' => $auth->getUserId(),
+                'real_estate_id' => (int) $_POST['real_estate_id'],
+                'initial_payment' => (float) $_POST['initial_payment'],
+                'term_months' => (int) $_POST['term_months'],
+                'monthly_payment' => (float) $_POST['monthly_payment'],
+                'comments' => $_POST['comments'] ?? '',
+                'type' => 'real_estate'
+            ];
+            
+            $result = $applications->createApplication($applicationData);
+            
+            if ($result['success']) {
+                $success = 'Заявка на недвижимость успешно отправлена';
+                $page = 'dashboard-client';
+            } else {
+                $error = $result['message'];
+                $page = 'real-estate-item';
             }
         }
         
@@ -400,6 +431,9 @@ function outputNavigation() {
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?page=marketplace">Автомобили</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?page=real-estate">Недвижимость</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#about">О нас</a>
@@ -872,6 +906,12 @@ switch ($page) {
         break;
     case 'vehicle':
         include 'pages/vehicle.php';
+        break;
+    case 'real-estate':
+        include 'pages/real-estate.php';
+        break;
+    case 'real-estate-item':
+        include 'pages/real-estate-item.php';
         break;
     default:
         includeHomePage();

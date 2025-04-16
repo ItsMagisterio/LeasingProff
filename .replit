@@ -3,6 +3,13 @@ modules = ["php", "php-8.1", "postgresql-16"]
 [nix]
 channel = "stable-24_05"
 
+[deployment]
+run = ["sh", "-c", "php -S 0.0.0.0:5000"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
 [workflows]
 runButton = "Project"
 
@@ -13,10 +20,10 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Car Leasing App"
+args = "PHP Server"
 
 [[workflows.workflow]]
-name = "Car Leasing App"
+name = "PHP Server"
 author = "agent"
 
 [workflows.workflow.metadata]
@@ -27,12 +34,5 @@ task = "packager.installForAll"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "php -S 0.0.0.0:5000 index.php"
+args = "php -S 0.0.0.0:5000"
 waitForPort = 5000
-
-[deployment]
-run = ["sh", "-c", "php -S 0.0.0.0:5000"]
-
-[[ports]]
-localPort = 5000
-externalPort = 80

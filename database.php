@@ -90,12 +90,36 @@ class Database {
         )";
         $this->query($query);
 
+        // Создаем таблицу недвижимости
+        $query = "CREATE TABLE IF NOT EXISTS real_estate (
+            id SERIAL PRIMARY KEY,
+            title VARCHAR(255) NOT NULL,
+            type VARCHAR(100) NOT NULL, -- квартира, дом, коммерческая недвижимость и т.д.
+            address TEXT NOT NULL,
+            area NUMERIC(10, 2) NOT NULL, -- площадь в кв.м.
+            rooms INTEGER, -- количество комнат (для жилой недвижимости)
+            floor INTEGER, -- этаж (для квартир)
+            total_floors INTEGER, -- всего этажей в здании
+            build_year INTEGER, -- год постройки
+            description TEXT,
+            features TEXT, -- особенности (парковка, охрана и т.д.)
+            image_url TEXT,
+            price NUMERIC(12, 2) NOT NULL,
+            monthly_payment NUMERIC(12, 2) NOT NULL,
+            status VARCHAR(20) DEFAULT 'available',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )";
+        $this->query($query);
+        
         // Создаем таблицу заявок
         $query = "CREATE TABLE IF NOT EXISTS applications (
             id SERIAL PRIMARY KEY,
             user_id INTEGER REFERENCES users(id),
-            vehicle_id INTEGER REFERENCES vehicles(id),
+            vehicle_id INTEGER REFERENCES vehicles(id) NULL,
+            real_estate_id INTEGER REFERENCES real_estate(id) NULL,
             manager_id INTEGER REFERENCES users(id) NULL,
+            type VARCHAR(20) NOT NULL DEFAULT 'vehicle', -- тип заявки: vehicle или real_estate
             status VARCHAR(50) DEFAULT 'new',
             initial_payment NUMERIC(12, 2) NOT NULL,
             term_months INTEGER NOT NULL,
@@ -252,18 +276,126 @@ class Database {
                 )");
             }
 
-            // Добавляем тестовые заявки
-            $this->query("INSERT INTO applications (user_id, vehicle_id, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
-                VALUES (4, 1, 2, 'approved', 1500000, 36, 85000, 'Одобрено без замечаний')");
+            // Добавляем объекты недвижимости
+            $realEstateObjects = [
+                [
+                    'title' => 'Современная квартира в центре',
+                    'type' => 'apartment',
+                    'address' => 'Москва, ул. Тверская, 15',
+                    'area' => 85.7,
+                    'rooms' => 3,
+                    'floor' => 7,
+                    'total_floors' => 12,
+                    'build_year' => 2019,
+                    'description' => 'Просторная квартира с современным ремонтом в центре города. Отличный вид из окон, удобная планировка, встроенная кухня.',
+                    'features' => 'подземный паркинг,охрана,видеонаблюдение,лифт,консьерж',
+                    'image_url' => 'https://images.unsplash.com/photo-1622015663319-fa394f0e1b81?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+                    'price' => 25000000,
+                    'monthly_payment' => 120000
+                ],
+                [
+                    'title' => 'Коттедж в загородном поселке',
+                    'type' => 'house',
+                    'address' => 'Московская область, пос. Лесной, ул. Сосновая, 8',
+                    'area' => 185.0,
+                    'rooms' => 5,
+                    'floor' => 2,
+                    'total_floors' => 2,
+                    'build_year' => 2021,
+                    'description' => 'Двухэтажный коттедж в закрытом коттеджном поселке. Участок 12 соток, гараж на 2 машины, баня.',
+                    'features' => 'участок 12 соток,гараж,баня,камин,теплые полы,газовое отопление',
+                    'image_url' => 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+                    'price' => 18500000,
+                    'monthly_payment' => 95000
+                ],
+                [
+                    'title' => 'Офисное помещение в бизнес-центре',
+                    'type' => 'commercial',
+                    'address' => 'Москва, Пресненская наб., 12, Башня "Федерация"',
+                    'area' => 120.5,
+                    'rooms' => 3,
+                    'floor' => 35,
+                    'total_floors' => 95,
+                    'build_year' => 2017,
+                    'description' => 'Престижный офис в Москва-Сити с панорамными окнами. Готов к въезду, современная отделка, системы кондиционирования и вентиляции.',
+                    'features' => 'отдельный вход,система контроля доступа,конференц-зал,парковка,высокоскоростной интернет',
+                    'image_url' => 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+                    'price' => 42000000,
+                    'monthly_payment' => 180000
+                ],
+                [
+                    'title' => 'Студия в новостройке',
+                    'type' => 'apartment',
+                    'address' => 'Санкт-Петербург, ул. Невская, 25',
+                    'area' => 32.8,
+                    'rooms' => 1,
+                    'floor' => 9,
+                    'total_floors' => 22,
+                    'build_year' => 2022,
+                    'description' => 'Компактная студия с качественной отделкой в новом жилом комплексе. Отличная инфраструктура, рядом метро и парк.',
+                    'features' => 'охраняемая территория,детская площадка,фитнес-центр,парковка,видеонаблюдение',
+                    'image_url' => 'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+                    'price' => 6800000,
+                    'monthly_payment' => 38000
+                ],
+                [
+                    'title' => 'Торговое помещение в ТЦ',
+                    'type' => 'commercial',
+                    'address' => 'Москва, Кутузовский пр-т, 57, ТЦ "Времена года"',
+                    'area' => 78.3,
+                    'rooms' => 1,
+                    'floor' => 2,
+                    'total_floors' => 4,
+                    'build_year' => 2015,
+                    'description' => 'Торговое помещение в престижном торговом центре. Большая проходимость, витринные окна, качественная отделка.',
+                    'features' => 'центральное кондиционирование,охрана,система пожаротушения,погрузочная зона,реклама на фасаде',
+                    'image_url' => 'https://images.unsplash.com/photo-1604719312566-8912e9667d9f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+                    'price' => 32000000,
+                    'monthly_payment' => 150000
+                ]
+            ];
             
-            $this->query("INSERT INTO applications (user_id, vehicle_id, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
-                VALUES (4, 2, 2, 'in_progress', 1000000, 24, 70000, 'На рассмотрении')");
+            foreach ($realEstateObjects as $realEstate) {
+                $this->query("INSERT INTO real_estate (title, type, address, area, rooms, floor, total_floors, build_year, description, features, image_url, price, monthly_payment) 
+                VALUES (
+                    '{$this->escapeString($realEstate['title'])}', 
+                    '{$this->escapeString($realEstate['type'])}', 
+                    '{$this->escapeString($realEstate['address'])}', 
+                    {$realEstate['area']}, 
+                    {$realEstate['rooms']}, 
+                    {$realEstate['floor']}, 
+                    {$realEstate['total_floors']}, 
+                    {$realEstate['build_year']}, 
+                    '{$this->escapeString($realEstate['description'])}', 
+                    '{$this->escapeString($realEstate['features'])}', 
+                    '{$this->escapeString($realEstate['image_url'])}', 
+                    {$realEstate['price']}, 
+                    {$realEstate['monthly_payment']}
+                )");
+            }
+
+            // Добавляем тестовые заявки на автомобили
+            $this->query("INSERT INTO applications (user_id, vehicle_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
+                VALUES (4, 1, 'vehicle', 2, 'approved', 1500000, 36, 85000, 'Одобрено без замечаний')");
             
-            $this->query("INSERT INTO applications (user_id, vehicle_id, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
-                VALUES (5, 3, 3, 'rejected', 800000, 36, 79000, 'Недостаточный доход')");
+            $this->query("INSERT INTO applications (user_id, vehicle_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
+                VALUES (4, 2, 'vehicle', 2, 'in_progress', 1000000, 24, 70000, 'На рассмотрении')");
             
-            $this->query("INSERT INTO applications (user_id, vehicle_id, status, initial_payment, term_months, monthly_payment) 
-                VALUES (5, 4, 'new', 600000, 24, 45000)");
+            $this->query("INSERT INTO applications (user_id, vehicle_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
+                VALUES (5, 3, 'vehicle', 3, 'rejected', 800000, 36, 79000, 'Недостаточный доход')");
+            
+            $this->query("INSERT INTO applications (user_id, vehicle_id, type, status, initial_payment, term_months, monthly_payment) 
+                VALUES (5, 4, 'vehicle', 'new', 600000, 24, 45000)");
+                
+            // Добавляем тестовые заявки на недвижимость
+            $this->query("INSERT INTO applications (user_id, real_estate_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
+                VALUES (4, 1, 'real_estate', 2, 'approved', 5000000, 60, 120000, 'Одобрено с комментарием: отличная кредитная история')");
+                
+            $this->query("INSERT INTO applications (user_id, real_estate_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
+                VALUES (5, 2, 'real_estate', 3, 'in_progress', 4000000, 120, 95000, 'Требуются дополнительные документы')");
+                
+            $this->query("INSERT INTO applications (user_id, real_estate_id, type, status, initial_payment, term_months, monthly_payment) 
+                VALUES (5, 3, 'real_estate', 'new', 8000000, 84, 180000)");
         }
     }
 

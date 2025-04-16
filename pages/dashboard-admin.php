@@ -141,7 +141,7 @@ $unassignedApplications = $applications->getUnassignedApplications();
                                 <tr>
                                     <th>№</th>
                                     <th>Клиент</th>
-                                    <th>Автомобиль</th>
+                                    <th>Объект лизинга</th>
                                     <th>Дата заявки</th>
                                     <th>Действия</th>
                                 </tr>
@@ -151,7 +151,15 @@ $unassignedApplications = $applications->getUnassignedApplications();
                                 <tr>
                                     <td>A-<?= $application['id'] ?></td>
                                     <td><?= htmlspecialchars($application['client_first_name'] . ' ' . $application['client_last_name']) ?></td>
-                                    <td><?= htmlspecialchars($application['vehicle_make'] . ' ' . $application['vehicle_model']) ?></td>
+                                    <td>
+                                        <?php if ($application['type'] === 'real_estate' && !empty($application['real_estate_title'])): ?>
+                                            <?= htmlspecialchars($application['real_estate_title']) ?> 
+                                            <span class="badge bg-info">Недвижимость</span>
+                                        <?php else: ?>
+                                            <?= htmlspecialchars($application['vehicle_make'] . ' ' . $application['vehicle_model']) ?>
+                                            <span class="badge bg-secondary">Авто</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?= date('d.m.Y', strtotime($application['created_at'])) ?></td>
                                     <td>
                                         <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#assignModal<?= $application['id'] ?>">
@@ -204,7 +212,17 @@ $unassignedApplications = $applications->getUnassignedApplications();
         
         <div class="col-md-4">
             <div class="dashboard-card">
-                <h5>Статистика по автомобилям</h5>
+                <h5>Статистика объектов лизинга</h5>
+                <ul class="nav nav-tabs mb-3" id="leasingStats" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="vehicles-tab" data-bs-toggle="tab" data-bs-target="#vehicles" type="button" role="tab" aria-controls="vehicles" aria-selected="true">Автомобили</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="real-estate-tab" data-bs-toggle="tab" data-bs-target="#real-estate" type="button" role="tab" aria-controls="real-estate" aria-selected="false">Недвижимость</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="leasingStatsContent">
+                    <div class="tab-pane fade show active" id="vehicles" role="tabpanel" aria-labelledby="vehicles-tab">
                 <?php
                 // Получаем популярные марки
                 $vehicleMakes = $vehicles->getVehicleMakes();
@@ -253,6 +271,53 @@ $unassignedApplications = $applications->getUnassignedApplications();
                         </div>
                         <?php $colorIndex = ($colorIndex + 1) % count($progressColors); ?>
                     <?php endforeach; ?>
+                    </div>
+                    <div class="tab-pane fade" id="real-estate" role="tabpanel" aria-labelledby="real-estate-tab">
+                        <?php
+                        // Получаем статистику по недвижимости
+                        $realEstateTypes = ['apartment' => 'Квартиры', 'house' => 'Дома', 'commercial' => 'Коммерческая', 'land' => 'Земельные участки'];
+                        $realEstateStats = [];
+                        
+                        // Инициализируем массив со статистикой
+                        foreach ($realEstateTypes as $type => $typeName) {
+                            $realEstateStats[$type] = 0;
+                        }
+                        
+                        // Считаем количество объектов недвижимости по типам
+                        $allRealEstateObjects = isset($realEstate) ? $realEstate->getAllRealEstate() : [];
+                        $totalRealEstate = count($allRealEstateObjects);
+                        
+                        foreach ($allRealEstateObjects as $reObject) {
+                            if (isset($realEstateStats[$reObject['type']])) {
+                                $realEstateStats[$reObject['type']]++;
+                            }
+                        }
+                        
+                        // Вычисляем проценты
+                        $typePercentages = [];
+                        foreach ($realEstateStats as $type => $count) {
+                            $typePercentages[$type] = $totalRealEstate > 0 ? round(($count / $totalRealEstate) * 100) : 0;
+                        }
+                        
+                        // Назначаем классы Bootstrap для прогресс-баров
+                        $reProgressColors = ['bg-info', 'bg-success', 'bg-warning', 'bg-danger'];
+                        ?>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Статистика по типам недвижимости</label>
+                            <?php $colorIndex = 0; ?>
+                            <?php foreach ($typePercentages as $type => $percentage): ?>
+                                <div class="progress mb-2" style="height: 20px;">
+                                    <div class="progress-bar <?= $reProgressColors[$colorIndex] ?>" role="progressbar" 
+                                         style="width: <?= $percentage ?>%;" 
+                                         aria-valuenow="<?= $percentage ?>" aria-valuemin="0" aria-valuemax="100">
+                                        <?= htmlspecialchars($realEstateTypes[$type]) ?> (<?= $percentage ?>%)
+                                    </div>
+                                </div>
+                                <?php $colorIndex = ($colorIndex + 1) % count($reProgressColors); ?>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -341,6 +406,9 @@ $unassignedApplications = $applications->getUnassignedApplications();
                         <i class="fas fa-car me-2"></i> Добавить автомобиль
                     </button>
                     <button class="btn btn-info text-white">
+                        <i class="fas fa-building me-2"></i> Добавить недвижимость
+                    </button>
+                    <button class="btn btn-secondary">
                         <i class="fas fa-file-export me-2"></i> Экспорт отчета
                     </button>
                     <button class="btn btn-warning text-dark">

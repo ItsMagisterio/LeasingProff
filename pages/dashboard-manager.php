@@ -131,7 +131,7 @@ $applicationsStats = $applications->getApplicationsCountByStatus();
                                 <tr>
                                     <th>№</th>
                                     <th>Клиент</th>
-                                    <th>Автомобиль</th>
+                                    <th>Объект лизинга</th>
                                     <th>Дата заявки</th>
                                     <th>Статус</th>
                                     <th>Действия</th>
@@ -177,7 +177,13 @@ $applicationsStats = $applications->getApplicationsCountByStatus();
                                 <tr>
                                     <td>A-<?= htmlspecialchars($application['id']) ?></td>
                                     <td><?= htmlspecialchars($application['client_first_name'] . ' ' . $application['client_last_name']) ?></td>
-                                    <td><?= htmlspecialchars($application['vehicle_make'] . ' ' . $application['vehicle_model']) ?></td>
+                                    <td>
+                                        <?php if ($application['type'] === 'real_estate' && !empty($application['real_estate_title'])): ?>
+                                            <?= htmlspecialchars($application['real_estate_title']) ?>
+                                        <?php else: ?>
+                                            <?= htmlspecialchars($application['vehicle_make'] . ' ' . $application['vehicle_model']) ?>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?= date('d.m.Y', strtotime($application['created_at'])) ?></td>
                                     <td><span class="badge <?= $statusClass ?>"><?= htmlspecialchars($statusText) ?></span></td>
                                     <td>
@@ -202,7 +208,23 @@ $applicationsStats = $applications->getApplicationsCountByStatus();
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <h6>Информация о заявке</h6>
-                                                                <p><strong>Автомобиль:</strong> <?= htmlspecialchars($application['vehicle_make'] . ' ' . $application['vehicle_model'] . ' ' . $application['vehicle_year']) ?></p>
+                                                                <?php if ($application['type'] === 'real_estate' && !empty($application['real_estate_title'])): ?>
+                                                                    <p><strong>Тип заявки:</strong> Недвижимость</p>
+                                                                    <p><strong>Объект:</strong> <?= htmlspecialchars($application['real_estate_title']) ?></p>
+                                                                    <p><strong>Тип недвижимости:</strong> <?= htmlspecialchars($application['real_estate_type']) ?></p>
+                                                                    <?php if (!empty($application['real_estate_address'])): ?>
+                                                                    <p><strong>Адрес:</strong> <?= htmlspecialchars($application['real_estate_address']) ?></p>
+                                                                    <?php endif; ?>
+                                                                    <?php if (!empty($application['real_estate_area'])): ?>
+                                                                    <p><strong>Площадь:</strong> <?= number_format($application['real_estate_area'], 1, ',', ' ') ?> м²</p>
+                                                                    <?php endif; ?>
+                                                                <?php else: ?>
+                                                                    <p><strong>Тип заявки:</strong> Автомобиль</p>
+                                                                    <p><strong>Модель:</strong> <?= htmlspecialchars($application['vehicle_make'] . ' ' . $application['vehicle_model'] . ' ' . $application['vehicle_year']) ?></p>
+                                                                    <?php if (!empty($application['vehicle_color'])): ?>
+                                                                    <p><strong>Цвет:</strong> <?= htmlspecialchars($application['vehicle_color']) ?></p>
+                                                                    <?php endif; ?>
+                                                                <?php endif; ?>
                                                                 <p><strong>Ежемесячный платеж:</strong> <?= number_format($application['monthly_payment'], 0, ',', ' ') ?> ₽</p>
                                                                 <p><strong>Первоначальный взнос:</strong> <?= number_format($application['initial_payment'], 0, ',', ' ') ?> ₽</p>
                                                                 <p><strong>Срок лизинга:</strong> <?= $application['term_months'] ?> мес.</p>
@@ -305,7 +327,11 @@ $applicationsStats = $applications->getApplicationsCountByStatus();
                                     <strong><?= htmlspecialchars($actionText) ?></strong>
                                     <p class="mb-0 text-muted">
                                         <?= htmlspecialchars($application['client_first_name'] . ' ' . $application['client_last_name']) ?>, 
-                                        <?= htmlspecialchars($application['vehicle_make'] . ' ' . $application['vehicle_model']) ?>
+                                        <?php if ($application['type'] === 'real_estate' && !empty($application['real_estate_title'])): ?>
+                                            <?= htmlspecialchars($application['real_estate_title']) ?>
+                                        <?php else: ?>
+                                            <?= htmlspecialchars($application['vehicle_make'] . ' ' . $application['vehicle_model']) ?>
+                                        <?php endif; ?>
                                     </p>
                                 </div>
                                 <small class="text-muted">
