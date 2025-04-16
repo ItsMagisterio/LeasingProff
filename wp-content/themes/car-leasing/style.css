@@ -1,0 +1,15 @@
+/*
+Theme Name: Car Leasing
+Theme URI: https://2leasing.ru/
+Author: Car Leasing Team
+Author URI: https://2leasing.ru/
+Description: A custom WordPress theme for a car leasing company inspired by 2leasing.ru
+Version: 1.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: car-leasing
+Tags: leasing, car, vehicles, marketplace
+*/
+
+/* Import main styles */
+@import url('css/main.css');
