@@ -1,4 +1,4 @@
-modules = ["php", "php-8.1"]
+modules = ["php", "php-8.1", "postgresql-16"]
 
 [nix]
 channel = "stable-24_05"
@@ -13,10 +13,10 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Demo Site"
+args = "Car Leasing App"
 
 [[workflows.workflow]]
-name = "Demo Site"
+name = "Car Leasing App"
 author = "agent"
 
 [workflows.workflow.metadata]
@@ -27,7 +27,7 @@ task = "packager.installForAll"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "php -S 0.0.0.0:5000 demo.php"
+args = "php -S 0.0.0.0:5000 index.php"
 waitForPort = 5000
 
 [deployment]
