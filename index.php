@@ -665,11 +665,65 @@ function includeHomePage() {
     
     echo '<section class="hero-section">
         <div class="container">
-            <h1>Универсальный лизинг 2Leasing</h1>
-            <p class="lead mb-4">Лизинг недвижимости и транспорта на выгодных условиях</p>
-            <div class="mt-5">
-                <a href="index.php?page=register" class="btn btn-primary btn-lg me-2 rounded-pill">Начать сейчас</a>
-                <a href="#calculator" class="btn btn-outline-light btn-lg rounded-pill">Рассчитать лизинг</a>
+            <div class="row align-items-center">
+                <div class="col-lg-7 fade-in">
+                    <h1 class="display-4 fw-bold mb-4">Универсальный<br><span class="text-primary">лизинг</span> для всех</h1>
+                    <p class="lead mb-4">Лизинг недвижимости и транспорта на выгодных условиях с индивидуальным подходом для физических и юридических лиц</p>
+                    <div class="hero-cta mt-5 d-flex flex-wrap gap-3">
+                        <a href="index.php?page=register" class="btn btn-primary btn-lg rounded-pill px-4 py-3 shadow-lg">
+                            <i class="fas fa-rocket me-2"></i> Начать сейчас
+                        </a>
+                        <a href="#calculator" class="btn btn-outline-light btn-lg rounded-pill px-4 py-3">
+                            <i class="fas fa-calculator me-2"></i> Рассчитать лизинг
+                        </a>
+                    </div>
+                    <div class="mt-5 d-flex gap-4">
+                        <div class="text-center">
+                            <h3 class="text-white fw-bold mb-0">10+</h3>
+                            <p class="text-white-50 small mb-0">лет опыта</p>
+                        </div>
+                        <div class="text-center">
+                            <h3 class="text-white fw-bold mb-0">5000+</h3>
+                            <p class="text-white-50 small mb-0">клиентов</p>
+                        </div>
+                        <div class="text-center">
+                            <h3 class="text-white fw-bold mb-0">1000+</h3>
+                            <p class="text-white-50 small mb-0">объектов</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 d-none d-lg-block">
+                    <div class="hero-image position-relative mt-5">
+                        <div class="card shadow-lg rounded-3 border-0 p-4 bg-white position-absolute" style="top: 0; right: 0;">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary rounded-circle text-white d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                    <i class="fas fa-car"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <h5 class="mb-0">Автомобили</h5>
+                                    <p class="text-muted small mb-0">от 20 000 ₽/мес</p>
+                                </div>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="card shadow-lg rounded-3 border-0 p-4 bg-white position-absolute" style="bottom: 0; left: 0;">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-accent rounded-circle text-white d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <h5 class="mb-0">Недвижимость</h5>
+                                    <p class="text-muted small mb-0">от 50 000 ₽/мес</p>
+                                </div>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
