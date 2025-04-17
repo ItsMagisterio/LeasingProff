@@ -231,15 +231,24 @@ function outputHeader($title = 'Лизинг недвижимости и тра�
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>' . htmlspecialchars($title) . ' | 2Leasing</title>
+        <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="css/custom.css">
+        <!-- JavaScript -->
         <script src="js/leasing-calculator.js" defer></script>
         <style>
-            /* Основные стили */
+            /* Базовые стили прямо в HTML для быстрой загрузки */
             :root {
-                --primary-color: #0056b3;
-                --secondary-color: #004494;
-                --accent-color: #ff9800;
+                --primary-color: #0d6efd;
+                --secondary-color: #0056b3;
+                --accent-color: #fd7e14;
                 --light-color: #f8f9fa;
                 --dark-color: #343a40;
             }
@@ -247,16 +256,19 @@ function outputHeader($title = 'Лизинг недвижимости и тра�
             body {
                 font-family: "Roboto", sans-serif;
                 color: #333;
+                overflow-x: hidden;
             }
             
             .navbar {
-                background-color: var(--primary-color);
+                background-color: white;
                 padding: 1rem 0;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             }
             
             .navbar-brand {
                 font-weight: 700;
                 font-size: 1.5rem;
+                color: var(--primary-color);
             }
             
             .hero-section {
@@ -419,9 +431,11 @@ function outputHeader($title = 'Лизинг недвижимости и тра�
 function outputNavigation() {
     global $auth;
     
-    echo '<nav class="navbar navbar-expand-lg navbar-dark">
+    echo '<nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="index.php">2Leasing</a>
+            <a class="navbar-brand" href="index.php">
+                <span class="text-primary">2</span>Leasing
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -430,11 +444,34 @@ function outputNavigation() {
                     <li class="nav-item">
                         <a class="nav-link" href="index.php">Главная</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?page=marketplace">Автомобили</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="transportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Транспорт
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="transportDropdown">
+                            <li><a class="dropdown-item" href="index.php?page=marketplace">Все автомобили</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="index.php?page=marketplace&type=sedan">Седаны</a></li>
+                            <li><a class="dropdown-item" href="index.php?page=marketplace&type=suv">Внедорожники</a></li>
+                            <li><a class="dropdown-item" href="index.php?page=marketplace&type=business">Бизнес-класс</a></li>
+                            <li><a class="dropdown-item" href="index.php?page=marketplace&type=commercial">Коммерческий транспорт</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="realEstateDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Недвижимость
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="realEstateDropdown">
+                            <li><a class="dropdown-item" href="index.php?page=real-estate">Все объекты</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="index.php?page=real-estate&type=apartment">Квартиры</a></li>
+                            <li><a class="dropdown-item" href="index.php?page=real-estate&type=house">Дома</a></li>
+                            <li><a class="dropdown-item" href="index.php?page=real-estate&type=commercial">Коммерческая недвижимость</a></li>
+                            <li><a class="dropdown-item" href="index.php?page=real-estate&type=land">Земельные участки</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php?page=real-estate">Недвижимость</a>
+                        <a class="nav-link" href="#calculator">Калькулятор</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#about">О нас</a>
@@ -461,17 +498,28 @@ function outputNavigation() {
     }
                     
     echo '</ul>
-                <div class="d-flex">';
+                <div class="d-flex align-items-center">';
     
     if ($auth->isLoggedIn()) {
-        echo '<span class="text-white me-3 d-none d-md-inline">Привет, ' . htmlspecialchars($auth->getUserName()) . '</span>
-              <form method="post">
-                <input type="hidden" name="action" value="logout">
-                <button type="submit" class="btn btn-outline-light">Выход</button>
-              </form>';
+        echo '<div class="dropdown">
+                <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user-circle me-1"></i> ' . htmlspecialchars($auth->getUserName()) . '
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                    <li><a class="dropdown-item" href="index.php?page=profile"><i class="fas fa-user me-2"></i>Профиль</a></li>
+                    <li><a class="dropdown-item" href="index.php?page=applications"><i class="fas fa-clipboard-list me-2"></i>Мои заявки</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form method="post" class="d-inline">
+                            <input type="hidden" name="action" value="logout">
+                            <button type="submit" class="dropdown-item text-danger"><i class="fas fa-sign-out-alt me-2"></i>Выход</button>
+                        </form>
+                    </li>
+                </ul>
+              </div>';
     } else {
-        echo '<a href="index.php?page=login" class="btn btn-outline-light me-2">Вход</a>
-              <a href="index.php?page=register" class="btn btn-light">Регистрация</a>';
+        echo '<a href="index.php?page=login" class="btn btn-outline-primary me-2"><i class="fas fa-sign-in-alt me-1"></i> Вход</a>
+              <a href="index.php?page=register" class="btn btn-primary"><i class="fas fa-user-plus me-1"></i> Регистрация</a>';
     }
     
     echo '</div>
@@ -482,63 +530,130 @@ function outputNavigation() {
 
 // Подвал
 function outputFooter() {
-    echo '<footer class="footer">
+    echo '<footer class="footer mt-auto py-5">
         <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <h5>2Leasing</h5>
-                    <p>Лизинг недвижимости и транспорта на выгодных условиях для физических и юридических лиц</p>
-                    <div class="social-icons">
-                        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-white me-2"><i class="fab fa-vk"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-telegram"></i></a>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="mb-4">
+                        <a href="index.php" class="text-decoration-none">
+                            <h4 class="text-white"><span class="text-primary">2</span>Leasing</h4>
+                        </a>
+                    </div>
+                    <p class="text-white-50 mb-4">Комплексные решения для лизинга недвижимости и транспорта на выгодных условиях для физических и юридических лиц по всей России.</p>
+                    <div class="d-flex gap-3 mb-3">
+                        <a href="#" class="social-icon" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-icon" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon" title="ВКонтакте">
+                            <i class="fab fa-vk"></i>
+                        </a>
+                        <a href="#" class="social-icon" title="Telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="#" class="social-icon" title="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
                     </div>
                 </div>
-                <div class="col-md-3 mb-4 mb-md-0">
-                    <h5>Компания</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white text-decoration-none">О нас</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Команда</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Карьера</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Блог</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Контакты</a></li>
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="text-white mb-4">Компания</h5>
+                    <ul class="footer-links">
+                        <li><a href="#about">О нас</a></li>
+                        <li><a href="#">Команда</a></li>
+                        <li><a href="#">Вакансии</a></li>
+                        <li><a href="#">Блог</a></li>
+                        <li><a href="#contact">Контакты</a></li>
                     </ul>
                 </div>
-                <div class="col-md-3 mb-4 mb-md-0">
-                    <h5>Услуги</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white text-decoration-none">Лизинг недвижимости</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Лизинг транспорта</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Лизинг для физлиц</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Лизинг для юрлиц</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Автопарк под ключ</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Страхование</a></li>
+                <div class="col-lg-3 col-md-6 col-6">
+                    <h5 class="text-white mb-4">Услуги</h5>
+                    <ul class="footer-links">
+                        <li><a href="index.php?page=real-estate">Лизинг недвижимости</a></li>
+                        <li><a href="index.php?page=marketplace">Лизинг транспорта</a></li>
+                        <li><a href="#">Лизинг для физлиц</a></li>
+                        <li><a href="#">Лизинг для юрлиц</a></li>
+                        <li><a href="#">Автопарк под ключ</a></li>
+                        <li><a href="#">Страхование</a></li>
                     </ul>
                 </div>
-                <div class="col-md-2">
-                    <h5>Документы</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white text-decoration-none">Договор лизинга</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Политика конфиденциальности</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Условия использования</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Лицензии</a></li>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Контакты</h5>
+                    <ul class="footer-links">
+                        <li>
+                            <div class="d-flex">
+                                <i class="fas fa-map-marker-alt me-3 mt-1 text-primary"></i>
+                                <span>г. Москва, ул. Тверская, д. 10, офис 305</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex">
+                                <i class="fas fa-phone-alt me-3 mt-1 text-primary"></i>
+                                <span>+7 (495) 123-45-67</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex">
+                                <i class="fas fa-envelope me-3 mt-1 text-primary"></i>
+                                <span>info@2leasing.ru</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex">
+                                <i class="fas fa-clock me-3 mt-1 text-primary"></i>
+                                <span>Пн-Пт: 9:00 - 20:00<br>Сб: 10:00 - 18:00</span>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
-            <hr class="mt-4 mb-4 bg-light">
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="mb-0">&copy; ' . date('Y') . ' 2Leasing. Все права защищены.</p>
+            
+            <hr class="my-4 border-light">
+            
+            <div class="row align-items-center">
+                <div class="col-md-5 mb-3 mb-md-0">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="#" class="text-white-50 text-decoration-none small">Политика конфиденциальности</a></li>
+                        <li class="list-inline-item ms-3"><a href="#" class="text-white-50 text-decoration-none small">Условия использования</a></li>
+                    </ul>
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <p class="mb-0">Разработано с <i class="fas fa-heart text-danger"></i> компанией 2Leasing</p>
+                <div class="col-md-2 text-center mb-3 mb-md-0">
+                    <a href="#" class="text-white-50 text-decoration-none small">
+                        <i class="fas fa-chevron-up me-1"></i> Наверх
+                    </a>
+                </div>
+                <div class="col-md-5 text-md-end">
+                    <p class="text-white-50 mb-0 small">&copy; ' . date('Y') . ' 2Leasing. Все права защищены.</p>
                 </div>
             </div>
         </div>
     </footer>
     
+    <!-- Скрипты -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Плавная прокрутка к якорям
+        document.querySelectorAll(\'a[href^="#"]\').forEach(anchor => {
+            anchor.addEventListener(\'click\', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute(\'href\'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: \'smooth\'
+                    });
+                }
+            });
+        });
+        
+        // Включаем все всплывающие подсказки
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll(\'[data-bs-toggle="tooltip"]\'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    </script>
     </body>
     </html>';
 }
