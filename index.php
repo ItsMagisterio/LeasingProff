@@ -678,6 +678,56 @@ function outputFooter() {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
         
+        // Добавление классов к карточкам для анимации
+        document.addEventListener(\'DOMContentLoaded\', function() {
+            // Добавляем overlay к карточкам
+            const vehicleCards = document.querySelectorAll(\'.vehicle-card\');
+            vehicleCards.forEach(card => {
+                // Получаем ссылку на детальную страницу
+                const cardLink = card.querySelector(\'a\') ? card.querySelector(\'a\').getAttribute(\'href\') : \'\';
+                
+                // Добавляем оверлей к картинке
+                const imgContainer = card.querySelector(\'.card-img-top\') ? card.querySelector(\'.card-img-top\').parentNode : null;
+                
+                if (imgContainer && cardLink) {
+                    const overlay = document.createElement(\'div\');
+                    overlay.className = \'custom-card-overlay\';
+                    overlay.innerHTML = `<a href="${cardLink}" class="btn btn-primary rounded-pill">Подробнее</a>`;
+                    imgContainer.style.position = \'relative\';
+                    imgContainer.appendChild(overlay);
+                }
+            });
+            
+            const realestateCards = document.querySelectorAll(\'.realestate-card\');
+            realestateCards.forEach(card => {
+                // Получаем ссылку на детальную страницу
+                const cardLink = card.querySelector(\'a\') ? card.querySelector(\'a\').getAttribute(\'href\') : \'\';
+                
+                // Добавляем оверлей к картинке
+                const imgContainer = card.querySelector(\'.card-img-top\') ? card.querySelector(\'.card-img-top\').parentNode : null;
+                
+                if (imgContainer && cardLink) {
+                    const overlay = document.createElement(\'div\');
+                    overlay.className = \'custom-card-overlay\';
+                    overlay.innerHTML = `<a href="${cardLink}" class="btn btn-accent rounded-pill">Подробнее</a>`;
+                    imgContainer.style.position = \'relative\';
+                    imgContainer.appendChild(overlay);
+                }
+            });
+            
+            // Анимация появления при скролле
+            const elements = document.querySelectorAll(\'.vehicle-card, .realestate-card, .feature-box, .calculator-card\');
+            elements.forEach(el => {
+                el.classList.add(\'fade-in-element\');
+            });
+            
+            // Добавляем плавную анимацию к кнопкам калькулятора
+            const calcButtons = document.querySelectorAll(\'.calculator-result .btn-primary\');
+            calcButtons.forEach(btn => {
+                btn.classList.add(\'pulse\');
+            });
+        });
+        
         // Добавляем класс для навигационной панели при прокрутке
         window.addEventListener(\'scroll\', function() {
             const navbar = document.querySelector(\'.navbar\');
