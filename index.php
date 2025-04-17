@@ -296,11 +296,11 @@ function outputHeader($title = 'Лизинг недвижимости и тра�
                 margin-bottom: 1.5rem;
             }
             
-            .vehicles-section {
+            .vehicles-section, .realestate-section {
                 padding: 5rem 0;
             }
             
-            .vehicle-card {
+            .vehicle-card, .realestate-card {
                 border: 1px solid #dee2e6;
                 border-radius: 0.25rem;
                 overflow: hidden;
@@ -308,28 +308,28 @@ function outputHeader($title = 'Лизинг недвижимости и тра�
                 height: 100%;
             }
             
-            .vehicle-card:hover {
+            .vehicle-card:hover, .realestate-card:hover {
                 box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             }
             
-            .vehicle-img {
+            .vehicle-img, .realestate-img {
                 height: 200px;
                 object-fit: cover;
                 width: 100%;
             }
             
-            .vehicle-price {
+            .vehicle-price, .realestate-price {
                 color: var(--accent-color);
                 font-weight: 700;
                 font-size: 1.2rem;
             }
             
-            .vehicle-features {
+            .vehicle-features, .realestate-features {
                 list-style: none;
                 padding-left: 0;
             }
             
-            .vehicle-features li {
+            .vehicle-features li, .realestate-features li {
                 margin-bottom: 0.5rem;
             }
             
@@ -487,7 +487,7 @@ function outputFooter() {
             <div class="row">
                 <div class="col-md-4 mb-4 mb-md-0">
                     <h5>2Leasing</h5>
-                    <p>Лизинг автомобилей на выгодных условиях для физических и юридических лиц</p>
+                    <p>Лизинг недвижимости и транспорта на выгодных условиях для физических и юридических лиц</p>
                     <div class="social-icons">
                         <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
@@ -508,11 +508,12 @@ function outputFooter() {
                 <div class="col-md-3 mb-4 mb-md-0">
                     <h5>Услуги</h5>
                     <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Лизинг недвижимости</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Лизинг транспорта</a></li>
                         <li><a href="#" class="text-white text-decoration-none">Лизинг для физлиц</a></li>
                         <li><a href="#" class="text-white text-decoration-none">Лизинг для юрлиц</a></li>
                         <li><a href="#" class="text-white text-decoration-none">Автопарк под ключ</a></li>
                         <li><a href="#" class="text-white text-decoration-none">Страхование</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Сервисное обслуживание</a></li>
                     </ul>
                 </div>
                 <div class="col-md-2">
@@ -817,6 +818,42 @@ function includeHomePage() {
             </div>
         </div>
     </section>';
+    
+    // Популярная недвижимость
+    $popularRealEstate = $realEstate->getAllRealEstate(6, 0, ['status' => 'available']);
+    
+    echo '<section class="realestate-section" id="realestate">
+        <div class="container">
+            <h2 class="text-center mb-5">Популярная недвижимость</h2>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">';
+            
+    foreach ($popularRealEstate as $property) {
+        echo '<div class="col">
+                <div class="realestate-card h-100">
+                    <img src="' . htmlspecialchars($property['image_url']) . '" class="realestate-img" alt="' . htmlspecialchars($property['title']) . '">
+                    <div class="card-body p-4">
+                        <h5 class="card-title">' . htmlspecialchars($property['title']) . '</h5>
+                        <p class="realestate-price mb-3">' . number_format($property['price'], 0, '.', ' ') . ' ₽</p>
+                        <p class="card-text">' . htmlspecialchars($property['short_description']) . '</p>
+                        <ul class="realestate-features">
+                            <li><i class="fas fa-ruler-combined me-2"></i>' . htmlspecialchars($property['square_meters']) . ' м²</li>
+                            <li><i class="fas fa-map-marker-alt me-2"></i>' . htmlspecialchars($property['location']) . '</li>
+                            <li><i class="fas fa-home me-2"></i>' . htmlspecialchars($property['type']) . '</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer border-0 bg-white p-4">
+                        <a href="index.php?page=real-estate-item&id=' . intval($property['id']) . '" class="btn btn-outline-primary w-100">Подробнее</a>
+                    </div>
+                </div>
+            </div>';
+    }
+    
+    echo '</div>
+            <div class="text-center mt-5">
+                <a href="index.php?page=real-estate" class="btn btn-accent rounded-pill px-4 py-2">Смотреть все объекты недвижимости</a>
+            </div>
+        </div>
+    </section>';
 
     // О компании
     echo '<section class="py-5 bg-light" id="about">
@@ -827,8 +864,8 @@ function includeHomePage() {
                 </div>
                 <div class="col-md-6">
                     <h2 class="mb-4">О компании 2Leasing</h2>
-                    <p class="lead">Мы помогаем клиентам получить автомобиль мечты на выгодных условиях с 2010 года.</p>
-                    <p>Компания 2Leasing специализируется на предоставлении услуг лизинга автомобилей для физических и юридических лиц. Мы сотрудничаем со всеми крупнейшими автопроизводителями и предлагаем широкий выбор автомобилей различных марок и моделей.</p>
+                    <p class="lead">Мы помогаем клиентам получить недвижимость и транспорт мечты на выгодных условиях с 2010 года.</p>
+                    <p>Компания 2Leasing специализируется на предоставлении услуг лизинга недвижимости и транспорта для физических и юридических лиц. Мы сотрудничаем со всеми крупнейшими застройщиками и автопроизводителями, предлагая широкий выбор объектов недвижимости и автомобилей различных категорий.</p>
                     <p>Наша команда профессионалов готова подобрать индивидуальное решение, учитывая ваши потребности и финансовые возможности.</p>
                     <div class="d-flex mt-4">
                         <div class="me-4 text-center">
@@ -840,8 +877,8 @@ function includeHomePage() {
                             <p>довольных клиентов</p>
                         </div>
                         <div class="text-center">
-                            <h3 class="fw-bold text-primary">500+</h3>
-                            <p>автомобилей</p>
+                            <h3 class="fw-bold text-primary">1000+</h3>
+                            <p>объектов</p>
                         </div>
                     </div>
                 </div>
@@ -852,9 +889,9 @@ function includeHomePage() {
     // Призыв к действию
     echo '<section class="call-to-action">
         <div class="container">
-            <h2 class="mb-4">Готовы получить автомобиль мечты?</h2>
+            <h2 class="mb-4">Готовы приобрести недвижимость или транспорт в лизинг?</h2>
             <p class="lead mb-4">Заполните заявку и наши менеджеры свяжутся с вами в ближайшее время</p>
-            <a href="index.php?page=register" class="btn btn-accent btn-lg">Подать заявку</a>
+            <a href="index.php?page=register" class="btn btn-accent btn-lg rounded-pill px-5">Подать заявку</a>
         </div>
     </section>';
 
