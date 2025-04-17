@@ -429,55 +429,68 @@ function outputHeader($title = 'Лизинг недвижимости и тра�
 
 // Навигационная панель
 function outputNavigation() {
-    global $auth;
+    global $auth, $page;
+    
+    // Для определения активного пункта меню
+    $is_home = $page === 'home' || empty($page);
+    $is_marketplace = $page === 'marketplace' || $page === 'vehicle';
+    $is_real_estate = $page === 'real-estate' || $page === 'real-estate-item';
     
     echo '<nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="index.php">
+            <!-- Логотип - переход на главную страницу -->
+            <a class="navbar-brand" href="index.php" title="Вернуться на главную страницу">
                 <span class="text-primary">2</span>Leasing
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <!-- Кнопка мобильного меню -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Переключить навигацию">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
+                    <!-- Пункт Главная -->
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Главная</a>
+                        <a class="nav-link' . ($is_home ? ' active' : '') . '" href="index.php" title="Главная страница">Главная</a>
                     </li>
+                    <!-- Выпадающее меню Транспорт -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="transportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle' . ($is_marketplace ? ' active' : '') . '" href="#" id="transportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Просмотр автомобилей">
                             Транспорт
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="transportDropdown">
-                            <li><a class="dropdown-item" href="index.php?page=marketplace">Все автомобили</a></li>
+                        <ul class="dropdown-menu shadow-sm" aria-labelledby="transportDropdown">
+                            <li><a class="dropdown-item" href="index.php?page=marketplace" title="Просмотр всех автомобилей">Все автомобили</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="index.php?page=marketplace&type=sedan">Седаны</a></li>
-                            <li><a class="dropdown-item" href="index.php?page=marketplace&type=suv">Внедорожники</a></li>
-                            <li><a class="dropdown-item" href="index.php?page=marketplace&type=business">Бизнес-класс</a></li>
-                            <li><a class="dropdown-item" href="index.php?page=marketplace&type=commercial">Коммерческий транспорт</a></li>
+                            <li><a class="dropdown-item" href="index.php?page=marketplace&type=sedan" title="Просмотр седанов">Седаны</a></li>
+                            <li><a class="dropdown-item" href="index.php?page=marketplace&type=suv" title="Просмотр внедорожников">Внедорожники</a></li>
+                            <li><a class="dropdown-item" href="index.php?page=marketplace&type=business" title="Просмотр автомобилей бизнес-класса">Бизнес-класс</a></li>
+                            <li><a class="dropdown-item" href="index.php?page=marketplace&type=commercial" title="Просмотр коммерческого транспорта">Коммерческий транспорт</a></li>
                         </ul>
                     </li>
+                    <!-- Выпадающее меню Недвижимость -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="realEstateDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle' . ($is_real_estate ? ' active' : '') . '" href="#" id="realEstateDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Просмотр недвижимости">
                             Недвижимость
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="realEstateDropdown">
-                            <li><a class="dropdown-item" href="index.php?page=real-estate">Все объекты</a></li>
+                        <ul class="dropdown-menu shadow-sm" aria-labelledby="realEstateDropdown">
+                            <li><a class="dropdown-item" href="index.php?page=real-estate" title="Просмотр всех объектов недвижимости">Все объекты</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="index.php?page=real-estate&type=apartment">Квартиры</a></li>
-                            <li><a class="dropdown-item" href="index.php?page=real-estate&type=house">Дома</a></li>
-                            <li><a class="dropdown-item" href="index.php?page=real-estate&type=commercial">Коммерческая недвижимость</a></li>
-                            <li><a class="dropdown-item" href="index.php?page=real-estate&type=land">Земельные участки</a></li>
+                            <li><a class="dropdown-item" href="index.php?page=real-estate&type=apartment" title="Просмотр квартир">Квартиры</a></li>
+                            <li><a class="dropdown-item" href="index.php?page=real-estate&type=house" title="Просмотр домов">Дома</a></li>
+                            <li><a class="dropdown-item" href="index.php?page=real-estate&type=commercial" title="Просмотр коммерческой недвижимости">Коммерческая недвижимость</a></li>
+                            <li><a class="dropdown-item" href="index.php?page=real-estate&type=land" title="Просмотр земельных участков">Земельные участки</a></li>
                         </ul>
                     </li>
+                    <!-- Ссылка на калькулятор лизинга -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#calculator">Калькулятор</a>
+                        <a class="nav-link" href="' . ($is_home ? '#calculator' : 'index.php#calculator') . '" title="Рассчитать стоимость лизинга">Калькулятор</a>
                     </li>
+                    <!-- Ссылка на раздел О нас -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#about">О нас</a>
+                        <a class="nav-link" href="' . ($is_home ? '#about' : 'index.php#about') . '" title="Информация о компании">О нас</a>
                     </li>
+                    <!-- Ссылка на раздел Контакты -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#contact">Контакты</a>
+                        <a class="nav-link" href="' . ($is_home ? '#contact' : 'index.php#contact') . '" title="Связаться с нами">Контакты</a>
                     </li>';
                     
     if ($auth->isLoggedIn()) {
@@ -501,25 +514,47 @@ function outputNavigation() {
                 <div class="d-flex align-items-center">';
     
     if ($auth->isLoggedIn()) {
+        // Выпадающее меню для авторизованного пользователя
         echo '<div class="dropdown">
-                <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="btn btn-outline-primary rounded-pill dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Профиль пользователя">
                     <i class="fas fa-user-circle me-1"></i> ' . htmlspecialchars($auth->getUserName()) . '
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                    <li><a class="dropdown-item" href="index.php?page=profile"><i class="fas fa-user me-2"></i>Профиль</a></li>
-                    <li><a class="dropdown-item" href="index.php?page=applications"><i class="fas fa-clipboard-list me-2"></i>Мои заявки</a></li>
-                    <li><hr class="dropdown-divider"></li>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userDropdown">
+                    <!-- Профиль пользователя -->
+                    <li><a class="dropdown-item" href="index.php?page=profile" title="Просмотр и редактирование личного профиля"><i class="fas fa-user me-2"></i>Профиль</a></li>
+                    <!-- Список заявок пользователя -->
+                    <li><a class="dropdown-item" href="index.php?page=applications" title="Просмотр ваших заявок на лизинг"><i class="fas fa-clipboard-list me-2"></i>Мои заявки</a></li>';
+                    
+        // Дополнительные пункты меню в зависимости от роли пользователя
+        if ($auth->isAdmin()) {
+            echo '<li><a class="dropdown-item" href="index.php?page=dashboard-admin" title="Переход в панель администратора"><i class="fas fa-tools me-2"></i>Админ-панель</a></li>';
+        } elseif ($auth->isManager()) {
+            echo '<li><a class="dropdown-item" href="index.php?page=dashboard-manager" title="Переход в панель менеджера"><i class="fas fa-tasks me-2"></i>Панель менеджера</a></li>';
+        } else {
+            echo '<li><a class="dropdown-item" href="index.php?page=dashboard-client" title="Переход в личный кабинет клиента"><i class="fas fa-home me-2"></i>Личный кабинет</a></li>';
+        }
+                    
+        echo '<li><hr class="dropdown-divider"></li>
+                    <!-- Кнопка выхода из системы -->
                     <li>
                         <form method="post" class="d-inline">
                             <input type="hidden" name="action" value="logout">
-                            <button type="submit" class="dropdown-item text-danger"><i class="fas fa-sign-out-alt me-2"></i>Выход</button>
+                            <button type="submit" class="dropdown-item text-danger" title="Выйти из системы"><i class="fas fa-sign-out-alt me-2"></i>Выход</button>
                         </form>
                     </li>
                 </ul>
               </div>';
+              
+        // Кнопка создания новой заявки для клиентов
+        if (!$auth->isAdmin() && !$auth->isManager()) {
+            echo '<a href="index.php?page=new-application" class="btn btn-primary rounded-pill ms-2" title="Создать новую заявку на лизинг">
+                <i class="fas fa-plus me-1"></i> Новая заявка
+            </a>';
+        }
     } else {
-        echo '<a href="index.php?page=login" class="btn btn-outline-primary me-2"><i class="fas fa-sign-in-alt me-1"></i> Вход</a>
-              <a href="index.php?page=register" class="btn btn-primary"><i class="fas fa-user-plus me-1"></i> Регистрация</a>';
+        // Кнопки для неавторизованных пользователей
+        echo '<a href="index.php?page=login" class="btn btn-outline-primary rounded-pill me-2" title="Войти в систему"><i class="fas fa-sign-in-alt me-1"></i> Вход</a>
+              <a href="index.php?page=register" class="btn btn-primary rounded-pill" title="Зарегистрироваться в системе"><i class="fas fa-user-plus me-1"></i> Регистрация</a>';
     }
     
     echo '</div>
@@ -541,19 +576,19 @@ function outputFooter() {
                     </div>
                     <p class="text-white-50 mb-4">Комплексные решения для лизинга недвижимости и транспорта на выгодных условиях для физических и юридических лиц по всей России.</p>
                     <div class="d-flex gap-3 mb-3">
-                        <a href="#" class="social-icon" title="Facebook">
+                        <a href="https://facebook.com" target="_blank" class="social-icon" title="Наша страница в Facebook">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="#" class="social-icon" title="Instagram">
+                        <a href="https://instagram.com" target="_blank" class="social-icon" title="Наш Instagram профиль">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="#" class="social-icon" title="ВКонтакте">
+                        <a href="https://vk.com" target="_blank" class="social-icon" title="Наша группа ВКонтакте">
                             <i class="fab fa-vk"></i>
                         </a>
-                        <a href="#" class="social-icon" title="Telegram">
+                        <a href="https://t.me/2leasing" target="_blank" class="social-icon" title="Наш канал в Telegram">
                             <i class="fab fa-telegram"></i>
                         </a>
-                        <a href="#" class="social-icon" title="YouTube">
+                        <a href="https://youtube.com" target="_blank" class="social-icon" title="Наш YouTube канал">
                             <i class="fab fa-youtube"></i>
                         </a>
                     </div>
@@ -561,44 +596,44 @@ function outputFooter() {
                 <div class="col-lg-2 col-md-6 col-6">
                     <h5 class="text-white mb-4">Компания</h5>
                     <ul class="footer-links">
-                        <li><a href="#about">О нас</a></li>
-                        <li><a href="#">Команда</a></li>
-                        <li><a href="#">Вакансии</a></li>
-                        <li><a href="#">Блог</a></li>
-                        <li><a href="#contact">Контакты</a></li>
+                        <li><a href="' . ($is_home ? '#about' : 'index.php#about') . '" title="Информация о компании">О нас</a></li>
+                        <li><a href="index.php?page=team" title="Наша команда">Команда</a></li>
+                        <li><a href="index.php?page=careers" title="Открытые вакансии">Вакансии</a></li>
+                        <li><a href="index.php?page=blog" title="Блог о лизинге">Блог</a></li>
+                        <li><a href="' . ($is_home ? '#contact' : 'index.php#contact') . '" title="Контактная информация">Контакты</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-6 col-6">
                     <h5 class="text-white mb-4">Услуги</h5>
                     <ul class="footer-links">
-                        <li><a href="index.php?page=real-estate">Лизинг недвижимости</a></li>
-                        <li><a href="index.php?page=marketplace">Лизинг транспорта</a></li>
-                        <li><a href="#">Лизинг для физлиц</a></li>
-                        <li><a href="#">Лизинг для юрлиц</a></li>
-                        <li><a href="#">Автопарк под ключ</a></li>
-                        <li><a href="#">Страхование</a></li>
+                        <li><a href="index.php?page=real-estate" title="Лизинг квартир, домов и коммерческой недвижимости">Лизинг недвижимости</a></li>
+                        <li><a href="index.php?page=marketplace" title="Лизинг автомобилей и спецтехники">Лизинг транспорта</a></li>
+                        <li><a href="index.php?page=personal" title="Предложения для физических лиц">Лизинг для физлиц</a></li>
+                        <li><a href="index.php?page=business" title="Предложения для юридических лиц">Лизинг для юрлиц</a></li>
+                        <li><a href="index.php?page=fleet" title="Комплексные решения для автопарка">Автопарк под ключ</a></li>
+                        <li><a href="index.php?page=insurance" title="Страхование лизингового имущества">Страхование</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-white mb-4">Контакты</h5>
                     <ul class="footer-links">
                         <li>
-                            <div class="d-flex">
+                            <a href="https://maps.google.com/?q=Москва,+Тверская+улица,+10" target="_blank" class="d-flex text-decoration-none" title="Посмотреть на карте">
                                 <i class="fas fa-map-marker-alt me-3 mt-1 text-primary"></i>
                                 <span>г. Москва, ул. Тверская, д. 10, офис 305</span>
-                            </div>
+                            </a>
                         </li>
                         <li>
-                            <div class="d-flex">
+                            <a href="tel:+74951234567" class="d-flex text-decoration-none" title="Позвонить нам">
                                 <i class="fas fa-phone-alt me-3 mt-1 text-primary"></i>
                                 <span>+7 (495) 123-45-67</span>
-                            </div>
+                            </a>
                         </li>
                         <li>
-                            <div class="d-flex">
+                            <a href="mailto:info@2leasing.ru" class="d-flex text-decoration-none" title="Написать нам на почту">
                                 <i class="fas fa-envelope me-3 mt-1 text-primary"></i>
                                 <span>info@2leasing.ru</span>
-                            </div>
+                            </a>
                         </li>
                         <li>
                             <div class="d-flex">
@@ -615,12 +650,12 @@ function outputFooter() {
             <div class="row align-items-center">
                 <div class="col-md-5 mb-3 mb-md-0">
                     <ul class="list-inline mb-0">
-                        <li class="list-inline-item"><a href="#" class="text-white-50 text-decoration-none small">Политика конфиденциальности</a></li>
-                        <li class="list-inline-item ms-3"><a href="#" class="text-white-50 text-decoration-none small">Условия использования</a></li>
+                        <li class="list-inline-item"><a href="index.php?page=privacy" class="text-white-50 text-decoration-none small" title="Наша политика конфиденциальности">Политика конфиденциальности</a></li>
+                        <li class="list-inline-item ms-3"><a href="index.php?page=terms" class="text-white-50 text-decoration-none small" title="Условия использования сервиса">Условия использования</a></li>
                     </ul>
                 </div>
                 <div class="col-md-2 text-center mb-3 mb-md-0">
-                    <a href="#" class="text-white-50 text-decoration-none small">
+                    <a href="#" class="text-white-50 text-decoration-none small" onclick="window.scrollTo({top: 0, behavior: \'smooth\'}); return false;" title="Прокрутить наверх">
                         <i class="fas fa-chevron-up me-1"></i> Наверх
                     </a>
                 </div>
