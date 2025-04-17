@@ -771,45 +771,119 @@ function includeHomePage() {
         </div>
     </section>';
 
-    // Популярные автомобили
-    $popularVehicles = $vehicles->getAllVehicles(6, 0, ['status' => 'available']);
+    // Примеры автомобилей для демонстрации
+    $sampleVehicles = [
+        [
+            'id' => 1,
+            'make' => 'BMW',
+            'model' => 'X5',
+            'image_url' => 'https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+            'price' => 7500000,
+            'monthly_payment' => 125000,
+            'short_description' => 'Роскошный внедорожник с высокой динамикой и премиальным уровнем комфорта',
+            'year' => 2023,
+            'mileage' => 0,
+            'fuel_type' => 'Бензин',
+            'features' => ['Кожаный салон', 'Панорамная крыша', 'Адаптивный круиз-контроль', 'Система кругового обзора']
+        ],
+        [
+            'id' => 2,
+            'make' => 'Mercedes-Benz',
+            'model' => 'E-Class',
+            'image_url' => 'https://images.unsplash.com/photo-1617813480365-b7510ea4931f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+            'price' => 6800000,
+            'monthly_payment' => 115000,
+            'short_description' => 'Элегантный седан бизнес-класса с инновационными технологиями',
+            'year' => 2023,
+            'mileage' => 0,
+            'fuel_type' => 'Дизель',
+            'features' => ['Мультиконтурные сиденья', 'MBUX', 'Цифровая приборная панель', 'Беспроводная зарядка']
+        ],
+        [
+            'id' => 3,
+            'make' => 'Tesla',
+            'model' => 'Model 3',
+            'image_url' => 'https://images.unsplash.com/photo-1612496910393-fda882c319e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+            'price' => 5200000,
+            'monthly_payment' => 85000,
+            'short_description' => 'Инновационный электромобиль с высокой автономностью и динамикой',
+            'year' => 2023,
+            'mileage' => 0,
+            'fuel_type' => 'Электро',
+            'features' => ['Автопилот', 'Запас хода 500 км', 'Разгон до 100 км/ч за 3.3 сек', 'Стеклянная крыша']
+        ],
+        [
+            'id' => 4,
+            'make' => 'Toyota',
+            'model' => 'Land Cruiser',
+            'image_url' => 'https://images.unsplash.com/photo-1594214575758-6e8982e5ce00?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+            'price' => 8200000,
+            'monthly_payment' => 135000,
+            'short_description' => 'Надежный внедорожник с легендарной проходимостью и комфортом',
+            'year' => 2023,
+            'mileage' => 0,
+            'fuel_type' => 'Дизель',
+            'features' => ['Полный привод', 'Система Kinetic Dynamic Suspension', '7 мест', 'Мультитерренный режим движения']
+        ],
+        [
+            'id' => 5,
+            'make' => 'Audi',
+            'model' => 'A6',
+            'image_url' => 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+            'price' => 6300000,
+            'monthly_payment' => 105000,
+            'short_description' => 'Технологичный бизнес-седан с прогрессивным дизайном и комфортом',
+            'year' => 2023,
+            'mileage' => 0,
+            'fuel_type' => 'Бензин',
+            'features' => ['Виртуальная приборная панель', 'Матричные фары', 'Адаптивная подвеска', 'B&O Sound System']
+        ],
+        [
+            'id' => 6,
+            'make' => 'Volkswagen',
+            'model' => 'Tiguan',
+            'image_url' => 'https://images.unsplash.com/photo-1612770128014-99577bea7d84?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+            'price' => 3900000,
+            'monthly_payment' => 65000,
+            'short_description' => 'Компактный кроссовер с высоким уровнем комфорта и безопасности',
+            'year' => 2023,
+            'mileage' => 0,
+            'fuel_type' => 'Бензин',
+            'features' => ['Адаптивный круиз-контроль', 'Цифровая приборная панель', 'Парктроник', 'Система контроля слепых зон']
+        ]
+    ];
     
-    echo '<section class="vehicles-section" id="vehicles">
+    echo '<section class="vehicles-section py-5" id="vehicles">
         <div class="container">
             <h2 class="text-center mb-5">Популярные автомобили</h2>
-            <div class="row g-4">';
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">';
             
-    if ($popularVehicles) {
-        foreach ($popularVehicles as $vehicle) {
-            $features = explode(',', $vehicle['features']);
-            
-            echo '<div class="col-lg-4 col-md-6">
-                <div class="vehicle-card">
+    foreach ($sampleVehicles as $vehicle) {
+        echo '<div class="col">
+                <div class="card vehicle-card h-100 shadow-sm border-0 rounded overflow-hidden">
                     <img src="' . htmlspecialchars($vehicle['image_url']) . '" alt="' . htmlspecialchars($vehicle['make'] . ' ' . $vehicle['model']) . '" class="vehicle-img">
-                    <div class="card-body">
-                        <h4>' . htmlspecialchars($vehicle['make'] . ' ' . $vehicle['model']) . '</h4>
-                        <p class="vehicle-price">' . number_format($vehicle['monthly_payment'], 0, ',', ' ') . ' ₽/мес</p>
-                        <ul class="vehicle-features">';
+                    <div class="card-body p-4">
+                        <h5 class="card-title">' . htmlspecialchars($vehicle['make'] . ' ' . $vehicle['model']) . '</h5>
+                        <p class="vehicle-price mb-2 fs-5 fw-bold text-primary">' . number_format($vehicle['monthly_payment'], 0, '.', ' ') . ' ₽/мес</p>
+                        <p class="small text-muted">Цена: ' . number_format($vehicle['price'], 0, '.', ' ') . ' ₽</p>
+                        <ul class="vehicle-features mt-3">';
                         
-            // Выводим до 4 характеристик
-            $featureCount = 0;
-            foreach ($features as $feature) {
-                if ($featureCount < 4) {
-                    echo '<li><i class="fas fa-check-circle text-success me-2"></i>' . htmlspecialchars($feature) . '</li>';
-                    $featureCount++;
-                }
+        // Выводим до 4 характеристик
+        $featureCount = 0;
+        foreach ($vehicle['features'] as $feature) {
+            if ($featureCount < 4) {
+                echo '<li><i class="fas fa-check-circle text-success me-2"></i>' . htmlspecialchars($feature) . '</li>';
+                $featureCount++;
             }
+        }
                         
-            echo '</ul>
-                        <a href="index.php?page=vehicle&id=' . $vehicle['id'] . '" class="btn btn-primary mt-3">Подробнее</a>
+        echo '</ul>
+                    </div>
+                    <div class="card-footer border-0 bg-white p-4">
+                        <a href="index.php?page=vehicle&id=' . $vehicle['id'] . '" class="btn btn-outline-primary rounded-pill w-100">Подробнее</a>
                     </div>
                 </div>
             </div>';
-        }
-    } else {
-        echo '<div class="col-12">
-            <div class="alert alert-info">Автомобили не найдены</div>
-        </div>';
     }
             
     echo '</div>
@@ -820,29 +894,91 @@ function includeHomePage() {
     </section>';
     
     // Популярная недвижимость
-    $popularRealEstate = $realEstate->getAllRealEstate(6, 0, ['status' => 'available']);
+    // Примеры объектов недвижимости для демонстрации
+    $sampleRealEstate = [
+        [
+            'id' => 1,
+            'title' => 'Квартира в центре города',
+            'image_url' => 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+            'price' => 15000000,
+            'short_description' => 'Современная 3-комнатная квартира с дизайнерским ремонтом в центре города',
+            'square_meters' => 85,
+            'location' => 'Москва, ул. Тверская',
+            'type' => 'Квартира'
+        ],
+        [
+            'id' => 2,
+            'title' => 'Загородный дом',
+            'image_url' => 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+            'price' => 25000000,
+            'short_description' => 'Просторный загородный дом с участком и всеми коммуникациями',
+            'square_meters' => 220,
+            'location' => 'Московская область, 15 км от МКАД',
+            'type' => 'Дом'
+        ],
+        [
+            'id' => 3,
+            'title' => 'Коммерческое помещение',
+            'image_url' => 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+            'price' => 35000000,
+            'short_description' => 'Помещение для бизнеса в новом торговом центре с высокой проходимостью',
+            'square_meters' => 150,
+            'location' => 'Москва, Кутузовский проспект',
+            'type' => 'Коммерческое'
+        ],
+        [
+            'id' => 4,
+            'title' => 'Студия в новостройке',
+            'image_url' => 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+            'price' => 7500000,
+            'short_description' => 'Уютная студия с современной отделкой в новом жилом комплексе бизнес-класса',
+            'square_meters' => 45,
+            'location' => 'Москва, ул. Ленинская',
+            'type' => 'Квартира'
+        ],
+        [
+            'id' => 5,
+            'title' => 'Таунхаус в коттеджном поселке',
+            'image_url' => 'https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+            'price' => 12000000,
+            'short_description' => 'Таунхаус 150 м² с гаражом и террасой в охраняемом коттеджном поселке',
+            'square_meters' => 150,
+            'location' => 'Московская область, Одинцовский район',
+            'type' => 'Таунхаус'
+        ],
+        [
+            'id' => 6,
+            'title' => 'Пентхаус с панорамным видом',
+            'image_url' => 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+            'price' => 60000000,
+            'short_description' => 'Двухуровневый пентхаус с панорамными окнами и террасой на крыше',
+            'square_meters' => 280,
+            'location' => 'Москва, Пресненская набережная',
+            'type' => 'Пентхаус'
+        ]
+    ];
     
-    echo '<section class="realestate-section" id="realestate">
+    echo '<section class="realestate-section py-5" id="realestate">
         <div class="container">
             <h2 class="text-center mb-5">Популярная недвижимость</h2>
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">';
             
-    foreach ($popularRealEstate as $property) {
+    foreach ($sampleRealEstate as $property) {
         echo '<div class="col">
-                <div class="realestate-card h-100">
+                <div class="card realestate-card h-100 shadow-sm border-0 rounded overflow-hidden">
                     <img src="' . htmlspecialchars($property['image_url']) . '" class="realestate-img" alt="' . htmlspecialchars($property['title']) . '">
                     <div class="card-body p-4">
                         <h5 class="card-title">' . htmlspecialchars($property['title']) . '</h5>
-                        <p class="realestate-price mb-3">' . number_format($property['price'], 0, '.', ' ') . ' ₽</p>
+                        <p class="realestate-price mb-3 fs-5 fw-bold text-primary">' . number_format($property['price'], 0, '.', ' ') . ' ₽</p>
                         <p class="card-text">' . htmlspecialchars($property['short_description']) . '</p>
-                        <ul class="realestate-features">
-                            <li><i class="fas fa-ruler-combined me-2"></i>' . htmlspecialchars($property['square_meters']) . ' м²</li>
-                            <li><i class="fas fa-map-marker-alt me-2"></i>' . htmlspecialchars($property['location']) . '</li>
-                            <li><i class="fas fa-home me-2"></i>' . htmlspecialchars($property['type']) . '</li>
+                        <ul class="realestate-features mt-3">
+                            <li><i class="fas fa-ruler-combined me-2 text-primary"></i>' . htmlspecialchars($property['square_meters']) . ' м²</li>
+                            <li><i class="fas fa-map-marker-alt me-2 text-primary"></i>' . htmlspecialchars($property['location']) . '</li>
+                            <li><i class="fas fa-home me-2 text-primary"></i>' . htmlspecialchars($property['type']) . '</li>
                         </ul>
                     </div>
                     <div class="card-footer border-0 bg-white p-4">
-                        <a href="index.php?page=real-estate-item&id=' . intval($property['id']) . '" class="btn btn-outline-primary w-100">Подробнее</a>
+                        <a href="index.php?page=real-estate-item&id=' . intval($property['id']) . '" class="btn btn-outline-primary rounded-pill w-100">Подробнее</a>
                     </div>
                 </div>
             </div>';
@@ -898,45 +1034,124 @@ function includeHomePage() {
     // Контакты
     echo '<section class="py-5" id="contact">
         <div class="container">
-            <h2 class="text-center mb-5">Свяжитесь с нами</h2>
-            <div class="row">
-                <div class="col-md-6 mb-4 mb-md-0">
-                    <form>
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Ваше имя</label>
-                            <input type="text" class="form-control" id="name" required>
+            <div class="text-center mb-5">
+                <h2 class="mb-3">Свяжитесь с нами</h2>
+                <p class="lead text-muted">Задайте вопрос или запишитесь на консультацию</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="card border-0 shadow-sm rounded-3 h-100">
+                        <div class="card-body p-4">
+                            <form id="contactForm">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="name" placeholder="Ваше имя" required>
+                                            <label for="name">Ваше имя</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="tel" class="form-control" id="phone" placeholder="Телефон" required>
+                                            <label for="phone">Телефон</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="email" placeholder="Email" required>
+                                    <label for="email">Email</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="subject" required>
+                                        <option value="" selected disabled>Выберите тему</option>
+                                        <option value="transport">Лизинг транспорта</option>
+                                        <option value="realestate">Лизинг недвижимости</option>
+                                        <option value="other">Другое</option>
+                                    </select>
+                                    <label for="subject">Тема обращения</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" id="message" style="height: 120px" placeholder="Сообщение" required></textarea>
+                                    <label for="message">Сообщение</label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="agree" required>
+                                    <label class="form-check-label small" for="agree">
+                                        Я согласен на обработку персональных данных в соответствии с <a href="#" class="text-decoration-none">политикой конфиденциальности</a>
+                                    </label>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg rounded-pill">Отправить сообщение</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Телефон</label>
-                            <input type="tel" class="form-control" id="phone" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Сообщение</label>
-                            <textarea class="form-control" id="message" rows="4" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Отправить</button>
-                    </form>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="mb-4">
-                        <h4><i class="fas fa-map-marker-alt me-2 text-primary"></i> Адрес</h4>
-                        <p>г. Москва, ул. Тверская, д. 10, офис 305</p>
-                    </div>
-                    <div class="mb-4">
-                        <h4><i class="fas fa-phone me-2 text-primary"></i> Телефон</h4>
-                        <p>+7 (495) 123-45-67</p>
-                    </div>
-                    <div class="mb-4">
-                        <h4><i class="fas fa-envelope me-2 text-primary"></i> Email</h4>
-                        <p>info@2leasing.ru</p>
-                    </div>
-                    <div>
-                        <h4><i class="fas fa-clock me-2 text-primary"></i> Режим работы</h4>
-                        <p>Пн-Пт: 9:00 - 20:00<br>Сб: 10:00 - 18:00<br>Вс: выходной</p>
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm rounded-3 h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex mb-4">
+                                <div class="flex-shrink-0">
+                                    <span class="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle text-white" style="width: 50px; height: 50px;">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </span>
+                                </div>
+                                <div class="ms-3">
+                                    <h4 class="mb-1">Адрес офиса</h4>
+                                    <p class="mb-0 text-muted">г. Москва, ул. Тверская, д. 10, офис 305</p>
+                                </div>
+                            </div>
+                            <div class="d-flex mb-4">
+                                <div class="flex-shrink-0">
+                                    <span class="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle text-white" style="width: 50px; height: 50px;">
+                                        <i class="fas fa-phone"></i>
+                                    </span>
+                                </div>
+                                <div class="ms-3">
+                                    <h4 class="mb-1">Телефон</h4>
+                                    <p class="mb-0 text-muted">+7 (495) 123-45-67</p>
+                                </div>
+                            </div>
+                            <div class="d-flex mb-4">
+                                <div class="flex-shrink-0">
+                                    <span class="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle text-white" style="width: 50px; height: 50px;">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                </div>
+                                <div class="ms-3">
+                                    <h4 class="mb-1">Email</h4>
+                                    <p class="mb-0 text-muted">info@2leasing.ru</p>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <span class="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle text-white" style="width: 50px; height: 50px;">
+                                        <i class="fas fa-clock"></i>
+                                    </span>
+                                </div>
+                                <div class="ms-3">
+                                    <h4 class="mb-1">Режим работы</h4>
+                                    <p class="mb-0 text-muted">Пн-Пт: 9:00 - 20:00<br>Сб: 10:00 - 18:00<br>Вс: выходной</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-3 border-top">
+                                <h5 class="mb-3">Мы в социальных сетях</h5>
+                                <div class="d-flex gap-3">
+                                    <a href="#" class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                        <i class="fab fa-vk"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                        <i class="fab fa-telegram"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -952,52 +1167,70 @@ function includeLoginPage() {
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-6 col-lg-5">
-                    <div class="card shadow-lg border-0 rounded-3">
-                        <div class="card-header bg-primary text-white py-3">
-                            <h3 class="text-center mb-0">Вход в личный кабинет</h3>
-                        </div>
-                        <div class="card-body p-4">';
+                    <div class="text-center mb-4">
+                        <h2>Вход в личный кабинет</h2>
+                        <p class="text-muted">Войдите, чтобы получить доступ к информации о ваших заявках и предложениях</p>
+                    </div>
+                    <div class="card shadow-lg border-0 rounded-3 overflow-hidden">
+                        <div class="card-body p-4 p-md-5">';
                         
     if (isset($error)) {
-        echo '<div class="alert alert-danger">' . htmlspecialchars($error) . '</div>';
+        echo '<div class="alert alert-danger" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>' . htmlspecialchars($error) . '
+              </div>';
     }
                         
     echo '<form method="post">
                                 <input type="hidden" name="action" value="login">
-                                <div class="mb-3">
-                                    <label for="login-email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="login-email" name="email" required>
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="login-email" name="email" placeholder="name@example.com" required>
+                                    <label for="login-email"><i class="fas fa-envelope me-2 text-muted"></i>Email</label>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="login-password" class="form-label">Пароль</label>
-                                    <input type="password" class="form-control" id="login-password" name="password" required>
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control" id="login-password" name="password" placeholder="Password" required>
+                                    <label for="login-password"><i class="fas fa-lock me-2 text-muted"></i>Пароль</label>
                                 </div>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="remember-me" name="remember">
-                                    <label class="form-check-label" for="remember-me">Запомнить меня</label>
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="remember-me" name="remember">
+                                        <label class="form-check-label" for="remember-me">Запомнить меня</label>
+                                    </div>
+                                    <a href="#" class="text-decoration-none small">Забыли пароль?</a>
                                 </div>
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary">Войти</button>
+                                <div class="d-grid mb-3">
+                                    <button type="submit" class="btn btn-primary btn-lg rounded-pill">Войти</button>
+                                </div>
+                                <div class="text-center">
+                                    <p class="mb-0">Нет аккаунта? <a href="index.php?page=register" class="text-decoration-none fw-semibold">Зарегистрироваться</a></p>
                                 </div>
                             </form>
-                            <div class="text-center mt-3">
-                                <a href="#" class="text-decoration-none">Забыли пароль?</a>
-                            </div>
-                        </div>
-                        <div class="card-footer text-center py-3 bg-light">
-                            <p class="mb-0">Нет аккаунта? <a href="index.php?page=register" class="text-decoration-none">Зарегистрироваться</a></p>
                         </div>
                     </div>
                     
                     <div class="mt-4">
-                        <div class="alert alert-info" role="alert">
-                            <h5>Демо-доступ</h5>
-                            <p class="mb-2">Для тестирования различных уровней доступа:</p>
-                            <ul class="mb-0">
-                                <li>Клиент: client@2leasing.ru / password</li>
-                                <li>Менеджер: manager1@2leasing.ru / password</li>
-                                <li>Администратор: admin@2leasing.ru / password</li>
-                            </ul>
+                        <div class="card shadow-sm border-0 rounded-3">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-info-circle me-2 text-primary"></i>Демо-доступ</h5>
+                                <p class="small mb-2">Для тестирования различных уровней доступа:</p>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-borderless mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="fw-semibold small">Клиент:</td>
+                                                <td class="small">client@2leasing.ru / password</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold small">Менеджер:</td>
+                                                <td class="small">manager1@2leasing.ru / password</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold small">Администратор:</td>
+                                                <td class="small">admin@2leasing.ru / password</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1014,44 +1247,59 @@ function includeRegisterPage() {
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <div class="card shadow-lg border-0 rounded-3">
-                        <div class="card-header bg-primary text-white py-3">
-                            <h3 class="text-center mb-0">Регистрация</h3>
-                        </div>
-                        <div class="card-body p-4">';
+                    <div class="text-center mb-4">
+                        <h2>Регистрация</h2>
+                        <p class="text-muted">Создайте аккаунт для доступа к услугам лизинга</p>
+                    </div>
+                    <div class="card shadow-lg border-0 rounded-3 overflow-hidden">
+                        <div class="card-body p-4 p-md-5">';
                         
     if (isset($error)) {
-        echo '<div class="alert alert-danger">' . htmlspecialchars($error) . '</div>';
+        echo '<div class="alert alert-danger" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>' . htmlspecialchars($error) . '
+              </div>';
     }
                         
     echo '<form class="row g-3" method="post">
                                 <input type="hidden" name="action" value="register">
                                 <div class="col-md-6">
-                                    <label for="register-fname" class="form-label">Имя</label>
-                                    <input type="text" class="form-control" id="register-fname" name="first_name" required>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="register-fname" name="first_name" placeholder="Имя" required>
+                                        <label for="register-fname"><i class="fas fa-user me-2 text-muted"></i>Имя</label>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="register-lname" class="form-label">Фамилия</label>
-                                    <input type="text" class="form-control" id="register-lname" name="last_name" required>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="register-lname" name="last_name" placeholder="Фамилия" required>
+                                        <label for="register-lname"><i class="fas fa-user me-2 text-muted"></i>Фамилия</label>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="register-email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="register-email" name="email" required>
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control" id="register-email" name="email" placeholder="Email" required>
+                                        <label for="register-email"><i class="fas fa-envelope me-2 text-muted"></i>Email</label>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="register-phone" class="form-label">Телефон</label>
-                                    <input type="tel" class="form-control" id="register-phone" name="phone" required>
+                                    <div class="form-floating mb-3">
+                                        <input type="tel" class="form-control" id="register-phone" name="phone" placeholder="Телефон" required>
+                                        <label for="register-phone"><i class="fas fa-phone me-2 text-muted"></i>Телефон</label>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="register-password" class="form-label">Пароль</label>
-                                    <input type="password" class="form-control" id="register-password" name="password" required>
+                                    <div class="form-floating mb-3">
+                                        <input type="password" class="form-control" id="register-password" name="password" placeholder="Пароль" required>
+                                        <label for="register-password"><i class="fas fa-lock me-2 text-muted"></i>Пароль</label>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="register-confirm-password" class="form-label">Подтверждение пароля</label>
-                                    <input type="password" class="form-control" id="register-confirm-password" name="password_confirm" required>
+                                    <div class="form-floating mb-3">
+                                        <input type="password" class="form-control" id="register-confirm-password" name="password_confirm" placeholder="Подтверждение пароля" required>
+                                        <label for="register-confirm-password"><i class="fas fa-lock me-2 text-muted"></i>Подтверждение пароля</label>
+                                    </div>
                                 </div>
                                 <div class="col-12">
-                                    <div class="form-check">
+                                    <div class="form-check mb-4">
                                         <input class="form-check-input" type="checkbox" id="agree-terms" name="terms" required>
                                         <label class="form-check-label" for="agree-terms">
                                             Я согласен с <a href="#" class="text-decoration-none">условиями использования</a> и <a href="#" class="text-decoration-none">политикой конфиденциальности</a>
@@ -1060,13 +1308,48 @@ function includeRegisterPage() {
                                 </div>
                                 <div class="col-12">
                                     <div class="d-grid">
-                                        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                                        <button type="submit" class="btn btn-primary btn-lg rounded-pill">Зарегистрироваться</button>
                                     </div>
                                 </div>
+                                <div class="col-12 text-center mt-3">
+                                    <p class="mb-0">Уже есть аккаунт? <a href="index.php?page=login" class="text-decoration-none fw-semibold">Войти</a></p>
+                                </div>
                             </form>
-                        </div>
-                        <div class="card-footer text-center py-3 bg-light">
-                            <p class="mb-0">Уже есть аккаунт? <a href="index.php?page=login" class="text-decoration-none">Войти</a></p>
+                            
+                            <div class="mt-4 pt-3 border-top">
+                                <div class="text-center">
+                                    <h5 class="mb-3">Преимущества регистрации</h5>
+                                    <div class="row g-4">
+                                        <div class="col-md-4">
+                                            <div class="feature p-3">
+                                                <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                                                    <i class="fas fa-clipboard-list"></i>
+                                                </div>
+                                                <h6>Отслеживание заявок</h6>
+                                                <p class="small text-muted mb-0">Следите за статусом своих заявок в реальном времени</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="feature p-3">
+                                                <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                                                    <i class="fas fa-calculator"></i>
+                                                </div>
+                                                <h6>Персональные предложения</h6>
+                                                <p class="small text-muted mb-0">Получайте индивидуальные условия лизинга</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="feature p-3">
+                                                <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                                                    <i class="fas fa-bell"></i>
+                                                </div>
+                                                <h6>Уведомления</h6>
+                                                <p class="small text-muted mb-0">Получайте уведомления о новых предложениях</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
