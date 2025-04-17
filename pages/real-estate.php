@@ -1,6 +1,6 @@
 <?php
 outputHeader('Недвижимость в лизинг');
-outputNavigation();
+
 
 // Получаем параметры фильтрации
 $page = isset($_GET['p']) ? max(1, (int) $_GET['p']) : 1;

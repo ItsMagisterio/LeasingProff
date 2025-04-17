@@ -47,7 +47,7 @@ if ($error) {
     outputHeader('Ошибка');
 }
 
-outputNavigation();
+
 ?>
 
 <div class="container py-5">
