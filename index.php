@@ -560,6 +560,9 @@ function outputNavigation() {
 
 // Подвал
 function outputFooter() {
+    global $page;
+    $is_home = $page === 'home' || empty($page);
+    
     echo '<footer class="footer mt-auto py-5">
         <div class="container">
             <div class="row g-4">
