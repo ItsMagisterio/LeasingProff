@@ -1869,12 +1869,12 @@ function includeHomePage() {
                 </div>
                 <div class="col-lg-5 d-none d-lg-block">
                     <div class="hero-image position-relative mt-5">
-                        <div class="card shadow-lg rounded-3 border-0 p-4 bg-white position-absolute" style="top: 0; right: 0;">
+                        <div class="card shadow-lg rounded-3 border-0 p-4 bg-white position-absolute" style="top: 0; right: 0; max-width: 300px;">
                             <div class="d-flex align-items-center mb-3">
-                                <div class="bg-primary rounded-circle text-white d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
                                     <i class="fas fa-car"></i>
                                 </div>
-                                <div class="ms-3">
+                                <div>
                                     <h5 class="mb-0">Автомобили</h5>
                                     <p class="text-muted small mb-0">от 20 000 ₽/мес</p>
                                 </div>
@@ -1882,13 +1882,14 @@ function includeHomePage() {
                             <div class="progress" style="height: 8px;">
                                 <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
+                            <img src="https://www.topgear.com/sites/default/files/2022/07/5%20Mercedes-Benz-EQS-SUV.jpg" alt="Автомобиль в лизинг" class="mt-3 img-fluid rounded" style="height: 120px; object-fit: cover; width: 100%;">
                         </div>
-                        <div class="card shadow-lg rounded-3 border-0 p-4 bg-white position-absolute" style="bottom: 0; left: 0;">
+                        <div class="card shadow-lg rounded-3 border-0 p-4 bg-white position-absolute" style="bottom: 0; left: 0; max-width: 300px;">
                             <div class="d-flex align-items-center mb-3">
-                                <div class="bg-accent rounded-circle text-white d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                <div class="rounded-circle bg-accent text-white d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
                                     <i class="fas fa-home"></i>
                                 </div>
-                                <div class="ms-3">
+                                <div>
                                     <h5 class="mb-0">Недвижимость</h5>
                                     <p class="text-muted small mb-0">от 50 000 ₽/мес</p>
                                 </div>
@@ -1896,6 +1897,7 @@ function includeHomePage() {
                             <div class="progress" style="height: 8px;">
                                 <div class="progress-bar bg-warning" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
+                            <img src="https://c4.wallpaperflare.com/wallpaper/94/650/382/5c1cbaf96bcec-wallpaper-preview.jpg" alt="Недвижимость в лизинг" class="mt-3 img-fluid rounded" style="height: 120px; object-fit: cover; width: 100%;">
                         </div>
                     </div>
                 </div>
