@@ -593,8 +593,6 @@ function outputFooter() {
                     <ul class="footer-links">
                         <li><a href="' . ($is_home ? '#about' : 'index.php#about') . '" title="Информация о компании">О нас</a></li>
                         <li><a href="index.php?page=team" title="Наша команда">Команда</a></li>
-                        <li><a href="index.php?page=careers" title="Открытые вакансии">Вакансии</a></li>
-                        <li><a href="index.php?page=blog" title="Блог о лизинге">Блог</a></li>
                         <li><a href="' . ($is_home ? '#contact' : 'index.php#contact') . '" title="Контактная информация">Контакты</a></li>
                     </ul>
                 </div>
@@ -603,10 +601,6 @@ function outputFooter() {
                     <ul class="footer-links">
                         <li><a href="index.php?page=real-estate" title="Лизинг квартир, домов и коммерческой недвижимости">Лизинг недвижимости</a></li>
                         <li><a href="index.php?page=marketplace" title="Лизинг автомобилей и спецтехники">Лизинг транспорта</a></li>
-                        <li><a href="index.php?page=personal" title="Предложения для физических лиц">Лизинг для физлиц</a></li>
-                        <li><a href="index.php?page=business" title="Предложения для юридических лиц">Лизинг для юрлиц</a></li>
-                        <li><a href="index.php?page=fleet" title="Комплексные решения для автопарка">Автопарк под ключ</a></li>
-                        <li><a href="index.php?page=insurance" title="Страхование лизингового имущества">Страхование</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -682,6 +676,53 @@ function outputFooter() {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll(\'[data-bs-toggle="tooltip"]\'));
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Добавляем класс для навигационной панели при прокрутке
+        window.addEventListener(\'scroll\', function() {
+            const navbar = document.querySelector(\'.navbar\');
+            if (window.scrollY > 50) {
+                navbar.classList.add(\'scrolled\');
+            } else {
+                navbar.classList.remove(\'scrolled\');
+            }
+        });
+        
+        // Анимация появления элементов при прокрутке
+        document.addEventListener(\'DOMContentLoaded\', function() {
+            // Добавляем класс fade-in-element к основным секциям
+            const sections = document.querySelectorAll(\'.vehicle-card, .realestate-card, .feature-card, .calculator-card\');
+            sections.forEach(section => {
+                section.classList.add(\'fade-in-element\');
+            });
+            
+            const fadeElements = document.querySelectorAll(\'.fade-in-element\');
+            
+            function checkFade() {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.classList.add(\'fade-in\');
+                    }
+                });
+            }
+            
+            // Запускаем проверку при загрузке страницы
+            checkFade();
+            // Запускаем проверку при прокрутке
+            window.addEventListener(\'scroll\', checkFade);
+            
+            // Установка активного класса для текущей страницы в навигации
+            const currentPage = window.location.href;
+            const navLinks = document.querySelectorAll(\'.nav-link\');
+            
+            navLinks.forEach(link => {
+                if (link.href === currentPage) {
+                    link.classList.add(\'active\');
+                }
+            });
         });
     </script>
     </body>
