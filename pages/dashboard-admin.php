@@ -27,6 +27,7 @@ $unassignedApplications = $applications->getUnassignedApplications();
             </div>
             <div class="col-md-6 text-md-end">
                 <a href="index.php?page=dashboard-admin" class="active">Обзор</a>
+                <a href="index.php?page=dashboard-parsers">Парсеры</a>
                 <a href="#">Менеджеры</a>
                 <a href="#">Клиенты</a>
                 <a href="#">Настройки</a>

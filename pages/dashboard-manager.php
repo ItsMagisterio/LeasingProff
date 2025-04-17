@@ -18,6 +18,7 @@ $applicationsStats = $applications->getApplicationsCountByStatus();
             </div>
             <div class="col-md-6 text-md-end">
                 <a href="index.php?page=dashboard-manager" class="active">Заявки</a>
+                <a href="index.php?page=dashboard-parsers">Парсеры</a>
                 <a href="#">Клиенты</a>
                 <a href="#">Отчеты</a>
                 <form method="post" class="d-inline">
