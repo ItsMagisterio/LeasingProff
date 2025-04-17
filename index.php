@@ -592,7 +592,6 @@ function outputFooter() {
                     <h5 class="text-white mb-4">Компания</h5>
                     <ul class="footer-links">
                         <li><a href="' . ($is_home ? '#about' : 'index.php#about') . '" title="Информация о компании">О нас</a></li>
-                        <li><a href="index.php?page=team" title="Наша команда">Команда</a></li>
                         <li><a href="' . ($is_home ? '#contact' : 'index.php#contact') . '" title="Контактная информация">Контакты</a></li>
                     </ul>
                 </div>
@@ -2826,9 +2825,7 @@ switch ($page) {
     case 'applications':
         includeApplicationsPage();
         break;
-    case 'team':
-        includeTeamPage();
-        break;
+
     case 'careers':
         includeCareersPage();
         break;
