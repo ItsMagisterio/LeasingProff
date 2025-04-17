@@ -913,6 +913,9 @@ switch ($page) {
     case 'real-estate-item':
         include 'pages/real-estate-item.php';
         break;
+    case 'dashboard-parsers':
+        include 'pages/dashboard-parsers.php';
+        break;
     default:
         includeHomePage();
         break;
