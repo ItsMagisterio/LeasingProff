@@ -224,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // HTML заголовок
-function outputHeader($title = 'Лизинг автомобилей') {
+function outputHeader($title = 'Лизинг недвижимости и транспорта') {
     echo '<!DOCTYPE html>
     <html lang="ru">
     <head>
@@ -233,6 +233,7 @@ function outputHeader($title = 'Лизинг автомобилей') {
         <title>' . htmlspecialchars($title) . ' | 2Leasing</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <script src="js/leasing-calculator.js" defer></script>
         <style>
             /* Основные стили */
             :root {
@@ -544,40 +545,220 @@ function outputFooter() {
 // Главная страница
 function includeHomePage() {
     global $vehicles;
+    global $realEstate;
     
     echo '<section class="hero-section">
         <div class="container">
-            <h1>Лизинг автомобилей для всех</h1>
-            <p class="lead mb-4">Получите автомобиль вашей мечты на выгодных условиях</p>
-            <a href="index.php?page=register" class="btn btn-accent btn-lg me-2">Начать сейчас</a>
-            <a href="#vehicles" class="btn btn-outline-light btn-lg">Смотреть автомобили</a>
+            <h1>Универсальный лизинг 2Leasing</h1>
+            <p class="lead mb-4">Лизинг недвижимости и транспорта на выгодных условиях</p>
+            <div class="mt-5">
+                <a href="index.php?page=register" class="btn btn-primary btn-lg me-2 rounded-pill">Начать сейчас</a>
+                <a href="#calculator" class="btn btn-outline-light btn-lg rounded-pill">Рассчитать лизинг</a>
+            </div>
         </div>
     </section>
-
-    <section class="features-section">
+    
+    <!-- Секция калькулятора лизинга -->
+    <section id="calculator" class="py-5 bg-light">
         <div class="container">
-            <h2 class="text-center mb-5">Наши преимущества</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="card border-0 shadow">
+                        <div class="card-body p-4">
+                            <h2 class="text-center mb-4">Рассчитайте ваш лизинг</h2>
+                            
+                            <ul class="nav nav-pills nav-justified mb-4" id="leasingTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="vehicle-tab" data-bs-toggle="pill" data-bs-target="#vehicle-calc" type="button" role="tab" aria-controls="vehicle-calc" aria-selected="true">
+                                        <i class="fas fa-car me-2"></i>Транспорт
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="realestate-tab" data-bs-toggle="pill" data-bs-target="#realestate-calc" type="button" role="tab" aria-controls="realestate-calc" aria-selected="false">
+                                        <i class="fas fa-home me-2"></i>Недвижимость
+                                    </button>
+                                </li>
+                            </ul>
+                            
+                            <div class="tab-content" id="leasingTabsContent">
+                                <!-- Калькулятор для транспорта -->
+                                <div class="tab-pane fade show active" id="vehicle-calc" role="tabpanel" aria-labelledby="vehicle-tab">
+                                    <form id="vehicleCalcForm">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label for="vehiclePrice" class="form-label">Стоимость транспорта (₽)</label>
+                                                <input type="range" class="form-range" id="vehiclePriceRange" min="500000" max="10000000" step="100000" value="3000000" oninput="updateVehiclePrice()">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="vehiclePrice" value="3000000" min="500000" max="10000000" oninput="updateVehiclePriceRange()">
+                                                    <span class="input-group-text">₽</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="vehicleDownPayment" class="form-label">Первоначальный взнос (%)</label>
+                                                <input type="range" class="form-range" id="vehicleDownPaymentRange" min="10" max="49" value="20" oninput="updateVehicleDownPayment()">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="vehicleDownPayment" value="20" min="10" max="49" oninput="updateVehicleDownPaymentRange()">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="vehicleTerm" class="form-label">Срок лизинга (месяцев)</label>
+                                                <input type="range" class="form-range" id="vehicleTermRange" min="12" max="60" step="12" value="36" oninput="updateVehicleTerm()">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="vehicleTerm" value="36" min="12" max="60" step="12" oninput="updateVehicleTermRange()">
+                                                    <span class="input-group-text">мес.</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="vehicleType" class="form-label">Тип транспорта</label>
+                                                <select class="form-select" id="vehicleType">
+                                                    <option value="car">Легковой автомобиль</option>
+                                                    <option value="truck">Грузовой автомобиль</option>
+                                                    <option value="special">Спецтехника</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 text-center mt-4">
+                                                <button type="button" class="btn btn-primary px-5 rounded-pill" onclick="calculateVehicleLeasing()">Рассчитать</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    
+                                    <div id="vehicleResult" class="mt-4" style="display: none;">
+                                        <hr>
+                                        <h4 class="text-center">Результаты расчета</h4>
+                                        <div class="row mt-3">
+                                            <div class="col-md-4 text-center">
+                                                <h5 id="vehicleMonthlyPayment">42 300 ₽</h5>
+                                                <p class="text-muted">Ежемесячный платеж</p>
+                                            </div>
+                                            <div class="col-md-4 text-center">
+                                                <h5 id="vehicleTotalCost">3 720 000 ₽</h5>
+                                                <p class="text-muted">Общая стоимость</p>
+                                            </div>
+                                            <div class="col-md-4 text-center">
+                                                <h5 id="vehicleDownPaymentAmount">600 000 ₽</h5>
+                                                <p class="text-muted">Первоначальный взнос</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="vehicleCompanies" class="mt-4">
+                                            <h5>Подходящие предложения</h5>
+                                            <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
+                                                <!-- Предложения лизинговых компаний будут добавлены JavaScript -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Калькулятор для недвижимости -->
+                                <div class="tab-pane fade" id="realestate-calc" role="tabpanel" aria-labelledby="realestate-tab">
+                                    <form id="realEstateCalcForm">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label for="realEstatePrice" class="form-label">Стоимость объекта (₽)</label>
+                                                <input type="range" class="form-range" id="realEstatePriceRange" min="2000000" max="50000000" step="1000000" value="10000000" oninput="updateRealEstatePrice()">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="realEstatePrice" value="10000000" min="2000000" max="50000000" oninput="updateRealEstatePriceRange()">
+                                                    <span class="input-group-text">₽</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="realEstateDownPayment" class="form-label">Первоначальный взнос (%)</label>
+                                                <input type="range" class="form-range" id="realEstateDownPaymentRange" min="20" max="70" value="30" oninput="updateRealEstateDownPayment()">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="realEstateDownPayment" value="30" min="20" max="70" oninput="updateRealEstateDownPaymentRange()">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="realEstateTerm" class="form-label">Срок лизинга (месяцев)</label>
+                                                <input type="range" class="form-range" id="realEstateTermRange" min="12" max="120" step="12" value="60" oninput="updateRealEstateTerm()">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="realEstateTerm" value="60" min="12" max="120" step="12" oninput="updateRealEstateTermRange()">
+                                                    <span class="input-group-text">мес.</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="realEstateType" class="form-label">Тип недвижимости</label>
+                                                <select class="form-select" id="realEstateType">
+                                                    <option value="apartment">Квартира</option>
+                                                    <option value="house">Частный дом</option>
+                                                    <option value="commercial">Коммерческая недвижимость</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 text-center mt-4">
+                                                <button type="button" class="btn btn-primary px-5 rounded-pill" onclick="calculateRealEstateLeasing()">Рассчитать</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    
+                                    <div id="realEstateResult" class="mt-4" style="display: none;">
+                                        <hr>
+                                        <h4 class="text-center">Результаты расчета</h4>
+                                        <div class="row mt-3">
+                                            <div class="col-md-4 text-center">
+                                                <h5 id="realEstateMonthlyPayment">126 700 ₽</h5>
+                                                <p class="text-muted">Ежемесячный платеж</p>
+                                            </div>
+                                            <div class="col-md-4 text-center">
+                                                <h5 id="realEstateTotalCost">12 600 000 ₽</h5>
+                                                <p class="text-muted">Общая стоимость</p>
+                                            </div>
+                                            <div class="col-md-4 text-center">
+                                                <h5 id="realEstateDownPaymentAmount">3 000 000 ₽</h5>
+                                                <p class="text-muted">Первоначальный взнос</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="realEstateCompanies" class="mt-4">
+                                            <h5>Подходящие предложения</h5>
+                                            <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
+                                                <!-- Предложения лизинговых компаний будут добавлены JavaScript -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="features-section py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Почему выбирают 2Leasing</h2>
             <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card shadow-sm rounded">
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card shadow-sm rounded h-100">
                         <div class="feature-icon">
                             <i class="fas fa-hand-holding-usd"></i>
                         </div>
                         <h3>Выгодные условия</h3>
-                        <p>Минимальный первоначальный взнос и гибкие условия финансирования</p>
+                        <p>Минимальные первоначальные взносы и гибкие условия финансирования</p>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card shadow-sm rounded">
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card shadow-sm rounded h-100">
+                        <div class="feature-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3>Недвижимость</h3>
+                        <p>Квартиры, дома и коммерческие объекты с выгодными лизинговыми программами</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card shadow-sm rounded h-100">
                         <div class="feature-icon">
                             <i class="fas fa-car"></i>
                         </div>
-                        <h3>Широкий выбор</h3>
-                        <p>Более 500 моделей автомобилей различных марок и комплектаций</p>
+                        <h3>Транспорт</h3>
+                        <p>Более 500 моделей автомобилей и спецтехники от ведущих производителей</p>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card shadow-sm rounded">
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card shadow-sm rounded h-100">
                         <div class="feature-icon">
                             <i class="fas fa-tachometer-alt"></i>
                         </div>
