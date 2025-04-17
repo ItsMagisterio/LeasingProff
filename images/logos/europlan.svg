@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(10, 15)">
+    <!-- Text "Европлан" -->
+    <path d="M0 0H15V5H5V10H13V15H5V20H15V25H0V0Z" fill="#007E33"/>
+    <path d="M20 0H35V5H25V10H33V15H25V20H35V25H20V0Z" fill="#007E33"/>
+    <path d="M40 0H45V20H55V25H40V0Z" fill="#007E33"/>
+    <path d="M60 15.5C60 8.5 65.5 3 72.5 3C79.5 3 85 8.5 85 15.5C85 22.5 79.5 28 72.5 28C65.5 28 60 22.5 60 15.5ZM66 15.5C66 19.5 69 23 72.5 23C76 23 79 19.5 79 15.5C79 11.5 76 8 72.5 8C69 8 66 11.5 66 15.5Z" fill="#007E33"/>
+    <path d="M90 0H95L105 14V0H110V25H105L95 11V25H90V0Z" fill="#007E33"/>
+    <path d="M115 25L125 0H130L140 25H134L132 20H123L121 25H115ZM125 15H130L127.5 7.5L125 15Z" fill="#007E33"/>
+    <path d="M145 0H150L160 14V0H165V25H160L150 11V25H145V0Z" fill="#007E33"/>
+  </g>
+</svg>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(10, 15)">
+    <!-- Text "Альфа-Лизинг" -->
+    <path d="M0 25L10 0H15L25 25H19L17 20H8L6 25H0ZM10 15H15L12.5 7.5L10 15Z" fill="#EF3124"/>
+    <path d="M30 0H36V25H30V0Z" fill="#EF3124"/>
+    <path d="M40 0H46V20H55V25H40V0Z" fill="#EF3124"/>
+    <path d="M60 0H65L75 14V0H80V25H75L65 11V25H60V0Z" fill="#EF3124"/>
+    <path d="M85 0H91V25H85V0Z" fill="#EF3124"/>
+    <path d="M95 12.5C95 5.5 100.5 0 107.5 0C114.5 0 120 5.5 120 12.5C120 19.5 114.5 25 107.5 25C100.5 25 95 19.5 95 12.5ZM101 12.5C101 16.5 104 20 107.5 20C111 20 114 16.5 114 12.5C114 8.5 111 5 107.5 5C104 5 101 8.5 101 12.5Z" fill="#EF3124"/>
+    <path d="M125 0H140V5H131V9H138V14H131V20H140V25H125V0Z" fill="#EF3124"/>
+    <path d="M145 0H160V5H151V9H158V14H151V20H160V25H145V0Z" fill="#EF3124"/>
+    <path d="M165 0H180V5H171V9H178V14H171V20H180V25H165V0Z" fill="#EF3124"/>
+  </g>
+</svg>

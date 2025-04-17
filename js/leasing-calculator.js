@@ -8,7 +8,7 @@ const leasingCompanies = [
     {
         id: 1,
         name: 'Альфа-Лизинг',
-        logo: 'https://alfabank.gcdn.co/media/about/f5a97dc0-dc55-4f91-81ad-b7df1ada8d44.svg',
+        logo: '/images/logos/alfa-leasing.svg',
         rating: 4.9,
         vehicleRates: {
             car: { minRate: 9.5, maxRate: 12.5 },
@@ -26,7 +26,7 @@ const leasingCompanies = [
     {
         id: 2,
         name: 'ВТБ Лизинг',
-        logo: 'https://www.vtb.ru/media-service/sites/www.vtb.ru/files/vtb-logo.svg',
+        logo: '/images/logos/vtb-leasing.svg',
         rating: 4.7,
         vehicleRates: {
             car: { minRate: 10.0, maxRate: 13.0 },
@@ -44,7 +44,7 @@ const leasingCompanies = [
     {
         id: 3,
         name: 'Сбербанк Лизинг',
-        logo: 'https://www.sberbank.ru/portalserver/static/templates/logo.svg',
+        logo: '/images/logos/sberbank-leasing.svg',
         rating: 4.8,
         vehicleRates: {
             car: { minRate: 9.8, maxRate: 12.8 },

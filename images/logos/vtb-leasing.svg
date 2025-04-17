@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(10, 15)">
+    <!-- Text "ВТБ Лизинг" -->
+    <path d="M5 0H20V5H15V25H10V5H5V0Z" fill="#0A2973"/>
+    <path d="M25 0H40V5H35V25H30V5H25V0Z" fill="#0A2973"/>
+    <path d="M45 0H65V5H58V25H52V5H45V0Z" fill="#0A2973"/>
+    
+    <path d="M70 0H76V25H70V0Z" fill="#0A2973"/>
+    <path d="M80 0H85L95 14V0H100V25H95L85 11V25H80V0Z" fill="#0A2973"/>
+    <path d="M105 12.5C105 5.5 110.5 0 117.5 0C124.5 0 130 5.5 130 12.5C130 19.5 124.5 25 117.5 25C110.5 25 105 19.5 105 12.5ZM111 12.5C111 16.5 114 20 117.5 20C121 20 124 16.5 124 12.5C124 8.5 121 5 117.5 5C114 5 111 8.5 111 12.5Z" fill="#0A2973"/>
+    <path d="M135 0H150V5H141V9H148V14H141V20H150V25H135V0Z" fill="#0A2973"/>
+    <path d="M155 0H161V20H170V25H155V0Z" fill="#0A2973"/>
+    <path d="M175 25L185 0H190L200 25H194L192 20H183L181 25H175ZM185 15H190L187.5 7.5L185 15Z" fill="#0A2973"/>
+  </g>
+</svg>
