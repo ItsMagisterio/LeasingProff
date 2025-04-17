@@ -14,14 +14,10 @@ class Database {
      */
     private function __construct() {
         $dbUrl = getenv('DATABASE_URL');
-        $dbHost = getenv('PGHOST');
-        $dbPort = getenv('PGPORT');
-        $dbUser = getenv('PGUSER');
-        $dbPass = getenv('PGPASSWORD');
-        $dbName = getenv('PGDATABASE');
-
+        
         try {
-            $this->connection = pg_connect("host=$dbHost port=$dbPort dbname=$dbName user=$dbUser password=$dbPass");
+            // Используем строку подключения из переменной окружения DATABASE_URL
+            $this->connection = pg_connect($dbUrl);
             if (!$this->connection) {
                 throw new Exception("Не удалось подключиться к базе данных: " . pg_last_error());
             }
