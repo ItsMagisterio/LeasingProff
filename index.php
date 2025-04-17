@@ -545,12 +545,7 @@ function outputNavigation() {
                 </ul>
               </div>';
               
-        // Кнопка создания новой заявки для клиентов
-        if (!$auth->isAdmin() && !$auth->isManager()) {
-            echo '<a href="index.php?page=new-application" class="btn btn-primary rounded-pill ms-2" title="Создать новую заявку на лизинг">
-                <i class="fas fa-plus me-1"></i> Новая заявка
-            </a>';
-        }
+        // Убрали кнопку "Новая заявка" по запросу пользователя
     } else {
         // Кнопки для неавторизованных пользователей
         echo '<a href="index.php?page=login" class="btn btn-outline-primary rounded-pill me-2" title="Войти в систему"><i class="fas fa-sign-in-alt me-1"></i> Вход</a>
@@ -691,6 +686,1119 @@ function outputFooter() {
     </script>
     </body>
     </html>';
+}
+
+// Профиль пользователя
+function includeProfilePage() {
+    global $auth;
+    
+    // Перенаправление на страницу входа, если пользователь не авторизован
+    if (!$auth->isLoggedIn()) {
+        header('Location: index.php?page=login');
+        exit;
+    }
+    
+    echo '<section class="py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 64px; height: 64px;">
+                                    <i class="fas fa-user fa-2x"></i>
+                                </div>
+                                <div>
+                                    <h2 class="mb-0">Профиль пользователя</h2>
+                                    <p class="text-muted mb-0">Управление личными данными</p>
+                                </div>
+                            </div>
+                            
+                            <form method="post" class="needs-validation" novalidate>
+                                <input type="hidden" name="action" value="update_profile">
+                                
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="firstName" class="form-label">Имя</label>
+                                        <input type="text" class="form-control" id="firstName" name="firstName" value="' . htmlspecialchars($auth->getUserName()) . '" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lastName" class="form-label">Фамилия</label>
+                                        <input type="text" class="form-control" id="lastName" name="lastName" value="Пользователь" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" value="user@example.com" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="phone" class="form-label">Телефон</label>
+                                        <input type="tel" class="form-control" id="phone" name="phone" value="+7 (900) 123-45-67">
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="address" class="form-label">Адрес</label>
+                                        <input type="text" class="form-control" id="address" name="address" value="г. Москва, ул. Примерная, д. 10, кв. 123">
+                                    </div>
+                                    
+                                    <div class="col-12 mt-4 border-top pt-4">
+                                        <h5>Изменение пароля</h5>
+                                        <p class="text-muted small">Оставьте поля пустыми, если не хотите менять пароль</p>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="currentPassword" class="form-label">Текущий пароль</label>
+                                        <input type="password" class="form-control" id="currentPassword" name="currentPassword">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="newPassword" class="form-label">Новый пароль</label>
+                                        <input type="password" class="form-control" id="newPassword" name="newPassword">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="confirmPassword" class="form-label">Подтверждение пароля</label>
+                                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                                    </div>
+                                    
+                                    <div class="col-12 mt-4">
+                                        <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                            <i class="fas fa-save me-2"></i> Сохранить изменения
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>';
+}
+
+// Страница заявок пользователя
+function includeApplicationsPage() {
+    global $auth;
+    
+    // Перенаправление на страницу входа, если пользователь не авторизован
+    if (!$auth->isLoggedIn()) {
+        header('Location: index.php?page=login');
+        exit;
+    }
+    
+    echo '<section class="py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 64px; height: 64px;">
+                                        <i class="fas fa-clipboard-list fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="mb-0">Мои заявки</h2>
+                                        <p class="text-muted mb-0">История заявок на лизинг</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Дата</th>
+                                            <th scope="col">Тип</th>
+                                            <th scope="col">Объект</th>
+                                            <th scope="col">Стоимость</th>
+                                            <th scope="col">Статус</th>
+                                            <th scope="col">Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>15.04.2025</td>
+                                            <td>Транспорт</td>
+                                            <td>BMW X5 2023</td>
+                                            <td>5 800 000 ₽</td>
+                                            <td><span class="badge bg-success">Одобрена</span></td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-outline-primary me-1" title="Просмотреть"><i class="fas fa-eye"></i></button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary" title="Скачать документы"><i class="fas fa-download"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">2</th>
+                                            <td>10.04.2025</td>
+                                            <td>Недвижимость</td>
+                                            <td>Квартира, 65 м²</td>
+                                            <td>12 500 000 ₽</td>
+                                            <td><span class="badge bg-warning text-dark">В обработке</span></td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-outline-primary me-1" title="Просмотреть"><i class="fas fa-eye"></i></button>
+                                                <button type="button" class="btn btn-sm btn-outline-danger" title="Отменить"><i class="fas fa-times"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">3</th>
+                                            <td>05.03.2025</td>
+                                            <td>Транспорт</td>
+                                            <td>Toyota Camry 2022</td>
+                                            <td>3 200 000 ₽</td>
+                                            <td><span class="badge bg-danger">Отклонена</span></td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-outline-primary me-1" title="Просмотреть"><i class="fas fa-eye"></i></button>
+                                                <button type="button" class="btn btn-sm btn-outline-success" title="Повторить заявку"><i class="fas fa-redo"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="text-center mt-4">
+                                <p class="text-muted mb-0">Показаны все заявки</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>';
+}
+
+// Страница о команде
+function includeTeamPage() {
+    echo '<section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Наша команда</h2>
+                <p class="lead text-muted">Познакомьтесь с профессионалами, работающими для вас</p>
+            </div>
+            
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="rounded-circle bg-primary mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
+                                <i class="fas fa-user fa-3x text-white"></i>
+                            </div>
+                            <h4>Иванов Иван</h4>
+                            <p class="text-primary mb-2">Генеральный директор</p>
+                            <p class="text-muted mb-3">Более 15 лет опыта в сфере лизинга и финансов. Руководит компанией с момента её основания.</p>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="#" class="btn btn-sm btn-outline-primary rounded-circle" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="btn btn-sm btn-outline-primary rounded-circle" title="Email"><i class="fas fa-envelope"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="rounded-circle bg-primary mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
+                                <i class="fas fa-user fa-3x text-white"></i>
+                            </div>
+                            <h4>Петрова Елена</h4>
+                            <p class="text-primary mb-2">Финансовый директор</p>
+                            <p class="text-muted mb-3">Эксперт в области финансового анализа и планирования. Отвечает за финансовую стратегию компании.</p>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="#" class="btn btn-sm btn-outline-primary rounded-circle" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="btn btn-sm btn-outline-primary rounded-circle" title="Email"><i class="fas fa-envelope"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="rounded-circle bg-primary mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
+                                <i class="fas fa-user fa-3x text-white"></i>
+                            </div>
+                            <h4>Сидоров Алексей</h4>
+                            <p class="text-primary mb-2">Руководитель отдела продаж</p>
+                            <p class="text-muted mb-3">Специалист с 10-летним опытом работы в продажах. Отвечает за развитие клиентской базы и повышение продаж.</p>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="#" class="btn btn-sm btn-outline-primary rounded-circle" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="btn btn-sm btn-outline-primary rounded-circle" title="Email"><i class="fas fa-envelope"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>';
+}
+
+// Страница вакансий
+function includeCareersPage() {
+    echo '<section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Вакансии</h2>
+                <p class="lead text-muted">Присоединяйтесь к нашей команде профессионалов</p>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-4">
+                            <h4>Менеджер по лизингу</h4>
+                            <p class="text-primary mb-3">Москва, полный рабочий день</p>
+                            <p class="text-muted">Мы ищем опытного менеджера по лизингу для работы с клиентами и партнерами. Вы будете отвечать за консультирование клиентов, подготовку предложений и сопровождение сделок.</p>
+                            <h5>Требования:</h5>
+                            <ul class="text-muted mb-3">
+                                <li>Опыт работы в сфере лизинга от 2 лет</li>
+                                <li>Высшее экономическое образование</li>
+                                <li>Знание законодательства в области лизинга</li>
+                                <li>Навыки ведения переговоров и продаж</li>
+                            </ul>
+                            <button type="button" class="btn btn-primary rounded-pill px-4">Откликнуться</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-4">
+                            <h4>Финансовый аналитик</h4>
+                            <p class="text-primary mb-3">Москва, полный рабочий день</p>
+                            <p class="text-muted">Мы ищем финансового аналитика для оценки рисков и анализа лизинговых сделок. Вы будете отвечать за финансовый анализ клиентов и подготовку отчетности.</p>
+                            <h5>Требования:</h5>
+                            <ul class="text-muted mb-3">
+                                <li>Опыт работы в финансовом анализе от 3 лет</li>
+                                <li>Высшее экономическое образование</li>
+                                <li>Знание бухгалтерского учета и финансового анализа</li>
+                                <li>Опыт работы с базами данных и финансовой отчетностью</li>
+                            </ul>
+                            <button type="button" class="btn btn-primary rounded-pill px-4">Откликнуться</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h4>Специалист по маркетингу</h4>
+                            <p class="text-primary mb-3">Москва, удаленная работа</p>
+                            <p class="text-muted">Мы ищем специалиста по маркетингу для продвижения наших услуг. Вы будете отвечать за разработку и реализацию маркетинговой стратегии, ведение социальных сетей и создание контента.</p>
+                            <h5>Требования:</h5>
+                            <ul class="text-muted mb-3">
+                                <li>Опыт работы в маркетинге от 2 лет</li>
+                                <li>Опыт ведения социальных сетей и создания контента</li>
+                                <li>Знание основ SEO и контекстной рекламы</li>
+                                <li>Навыки аналитики и работы с метриками</li>
+                            </ul>
+                            <button type="button" class="btn btn-primary rounded-pill px-4">Откликнуться</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>';
+}
+
+// Страница блога
+function includeBlogPage() {
+    echo '<section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Блог о лизинге</h2>
+                <p class="lead text-muted">Полезные статьи, новости и советы по лизингу</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-primary me-2">Новости</span>
+                                <small class="text-muted">15 апреля 2025</small>
+                            </div>
+                            <h3 class="mb-3">Изменения в законодательстве о лизинге в 2025 году</h3>
+                            <p class="text-muted">В 2025 году вступили в силу новые изменения в законодательстве о лизинге, которые значительно упрощают процедуру оформления сделок и снижают налоговую нагрузку на лизингополучателей...</p>
+                            <a href="#" class="btn btn-outline-primary rounded-pill">Читать далее</a>
+                        </div>
+                    </div>
+                    
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-success me-2">Советы</span>
+                                <small class="text-muted">10 апреля 2025</small>
+                            </div>
+                            <h3 class="mb-3">Как выбрать оптимальный срок лизинга для автомобиля</h3>
+                            <p class="text-muted">Срок лизинга является одним из ключевых параметров, влияющих на стоимость сделки. В этой статье мы рассмотрим, как определить оптимальный срок лизинга для автомобиля в зависимости от его класса и ваших потребностей...</p>
+                            <a href="#" class="btn btn-outline-primary rounded-pill">Читать далее</a>
+                        </div>
+                    </div>
+                    
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-info text-dark me-2">Аналитика</span>
+                                <small class="text-muted">5 апреля 2025</small>
+                            </div>
+                            <h3 class="mb-3">Тренды рынка лизинга недвижимости в 2025 году</h3>
+                            <p class="text-muted">Рынок лизинга недвижимости стремительно развивается. В 2025 году мы наблюдаем ряд интересных тенденций, которые могут повлиять на решения инвесторов и предпринимателей...</p>
+                            <a href="#" class="btn btn-outline-primary rounded-pill">Читать далее</a>
+                        </div>
+                    </div>
+                    
+                    <nav class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled"><a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a></li>
+                        </ul>
+                    </nav>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-4">
+                            <h4 class="mb-3">Категории</h4>
+                            <div class="list-group list-group-flush">
+                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    Новости
+                                    <span class="badge bg-primary rounded-pill">12</span>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    Советы
+                                    <span class="badge bg-primary rounded-pill">8</span>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    Аналитика
+                                    <span class="badge bg-primary rounded-pill">5</span>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    Интервью
+                                    <span class="badge bg-primary rounded-pill">3</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h4 class="mb-3">Подписка на новости</h4>
+                            <p class="text-muted mb-3">Получайте новые статьи на вашу электронную почту</p>
+                            <form>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control" placeholder="Ваш email" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 rounded-pill">Подписаться</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>';
+}
+
+// Страница лизинга для физических лиц
+function includePersonalLeasingPage() {
+    echo '<section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Лизинг для физических лиц</h2>
+                <p class="lead text-muted">Доступные программы лизинга для частных клиентов</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3" style="width: 64px; height: 64px;">
+                                    <i class="fas fa-car fa-2x text-white"></i>
+                                </div>
+                                <h3 class="mb-0">Автолизинг для физических лиц</h3>
+                            </div>
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Срок лизинга от 12 до 60 месяцев</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Первоначальный взнос от 10%</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Возможность включения страховки в платежи</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Минимальный пакет документов</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Возможность выкупа автомобиля по окончании срока</span>
+                                </li>
+                            </ul>
+                            <a href="#calculator" class="btn btn-primary rounded-pill">Рассчитать лизинг</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3" style="width: 64px; height: 64px;">
+                                    <i class="fas fa-home fa-2x text-white"></i>
+                                </div>
+                                <h3 class="mb-0">Лизинг недвижимости для физических лиц</h3>
+                            </div>
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Срок лизинга от 12 до 120 месяцев</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Первоначальный взнос от 20%</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Лизинг квартир, домов и коммерческой недвижимости</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Возможность досрочного выкупа</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Индивидуальный график платежей</span>
+                                </li>
+                            </ul>
+                            <a href="#calculator" class="btn btn-primary rounded-pill">Рассчитать лизинг</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-5">
+                <div class="col-lg-10 mx-auto">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="mb-4 text-center">Как оформить лизинг</h3>
+                            <div class="row g-4">
+                                <div class="col-md-3 text-center">
+                                    <div class="rounded-circle bg-light mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                        <i class="fas fa-calculator fa-2x text-primary"></i>
+                                    </div>
+                                    <h5>Расчет</h5>
+                                    <p class="text-muted small">Рассчитайте лизинг на калькуляторе</p>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <div class="rounded-circle bg-light mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                        <i class="fas fa-file-alt fa-2x text-primary"></i>
+                                    </div>
+                                    <h5>Заявка</h5>
+                                    <p class="text-muted small">Подайте заявку онлайн</p>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <div class="rounded-circle bg-light mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                        <i class="fas fa-check-circle fa-2x text-primary"></i>
+                                    </div>
+                                    <h5>Одобрение</h5>
+                                    <p class="text-muted small">Получите одобрение</p>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <div class="rounded-circle bg-light mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                        <i class="fas fa-handshake fa-2x text-primary"></i>
+                                    </div>
+                                    <h5>Оформление</h5>
+                                    <p class="text-muted small">Подпишите договор и получите объект</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>';
+}
+
+// Страница лизинга для юридических лиц
+function includeBusinessLeasingPage() {
+    echo '<section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Лизинг для юридических лиц</h2>
+                <p class="lead text-muted">Эффективные решения для вашего бизнеса</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3" style="width: 64px; height: 64px;">
+                                    <i class="fas fa-truck fa-2x text-white"></i>
+                                </div>
+                                <h3 class="mb-0">Лизинг транспорта для бизнеса</h3>
+                            </div>
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Легковой и грузовой транспорт, спецтехника</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Срок лизинга от 12 до 60 месяцев</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Первоначальный взнос от 10%</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Ускоренная амортизация и налоговые преимущества</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Комплексное страхование</span>
+                                </li>
+                            </ul>
+                            <a href="#calculator" class="btn btn-primary rounded-pill">Рассчитать лизинг</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3" style="width: 64px; height: 64px;">
+                                    <i class="fas fa-building fa-2x text-white"></i>
+                                </div>
+                                <h3 class="mb-0">Лизинг недвижимости для бизнеса</h3>
+                            </div>
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Офисные, торговые, складские помещения</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Срок лизинга от 24 до 120 месяцев</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Первоначальный взнос от 20%</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Гибкий график платежей с учетом сезонности</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Возможность выкупа или продления лизинга</span>
+                                </li>
+                            </ul>
+                            <a href="#calculator" class="btn btn-primary rounded-pill">Рассчитать лизинг</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-5">
+                <div class="col-lg-10 mx-auto">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="mb-4 text-center">Преимущества лизинга для бизнеса</h3>
+                            <div class="row g-4">
+                                <div class="col-md-4">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-percentage fa-2x text-primary"></i>
+                                        </div>
+                                        <div class="ms-3">
+                                            <h5>Налоговые льготы</h5>
+                                            <p class="text-muted small">Снижение налогооблагаемой базы за счет отнесения лизинговых платежей на расходы</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-bolt fa-2x text-primary"></i>
+                                        </div>
+                                        <div class="ms-3">
+                                            <h5>Ускоренная амортизация</h5>
+                                            <p class="text-muted small">Применение повышающего коэффициента при расчете амортизации</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-coins fa-2x text-primary"></i>
+                                        </div>
+                                        <div class="ms-3">
+                                            <h5>Сохранение оборотных средств</h5>
+                                            <p class="text-muted small">Нет необходимости выводить значительные средства из оборота</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>';
+}
+
+// Страница автопарка под ключ
+function includeFleetLeasingPage() {
+    echo '<section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Автопарк под ключ</h2>
+                <p class="lead text-muted">Комплексные решения для формирования и обслуживания автопарка вашей компании</p>
+            </div>
+            
+            <div class="row mb-5">
+                <div class="col-lg-6">
+                    <h3 class="mb-4">Что включает в себя услуга</h3>
+                    <p class="text-muted mb-4">Мы предлагаем полный комплекс услуг по формированию, обновлению и обслуживанию автопарка вашей компании. Вы получаете готовое решение, которое позволит вам сосредоточиться на основном бизнесе, не отвлекаясь на вопросы управления транспортом.</p>
+                    
+                    <div class="d-flex mb-3">
+                        <div class="flex-shrink-0">
+                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                <i class="fas fa-search text-white"></i>
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <h5>Подбор и приобретение автомобилей</h5>
+                            <p class="text-muted small">Поможем выбрать оптимальные модели под ваши задачи и бюджет</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex mb-3">
+                        <div class="flex-shrink-0">
+                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                <i class="fas fa-file-contract text-white"></i>
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <h5>Лизинговое финансирование</h5>
+                            <p class="text-muted small">Оформление всех автомобилей в лизинг на выгодных условиях</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex mb-3">
+                        <div class="flex-shrink-0">
+                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                <i class="fas fa-shield-alt text-white"></i>
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <h5>Комплексное страхование</h5>
+                            <p class="text-muted small">ОСАГО, КАСКО и другие виды страхования для всего автопарка</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                <i class="fas fa-tools text-white"></i>
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <h5>Сервисное обслуживание</h5>
+                            <p class="text-muted small">Регулярное техобслуживание, ремонт и сезонная замена шин</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <h4 class="mb-4">Преимущества для вашего бизнеса</h4>
+                            
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-check-circle fa-2x text-primary"></i>
+                                        </div>
+                                        <div class="ms-3">
+                                            <h5>Экономия времени и ресурсов</h5>
+                                            <p class="text-muted small">Все заботы по управлению автопарком мы берем на себя</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                                <li class="mb-3">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-check-circle fa-2x text-primary"></i>
+                                        </div>
+                                        <div class="ms-3">
+                                            <h5>Оптимизация расходов</h5>
+                                            <p class="text-muted small">Прозрачный бюджет и экономия на масштабах при обслуживании</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                                <li class="mb-3">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-check-circle fa-2x text-primary"></i>
+                                        </div>
+                                        <div class="ms-3">
+                                            <h5>Снижение налоговой нагрузки</h5>
+                                            <p class="text-muted small">Лизинговые платежи относятся на расходы и снижают налогооблагаемую базу</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                                <li>
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-check-circle fa-2x text-primary"></i>
+                                        </div>
+                                        <div class="ms-3">
+                                            <h5>Регулярное обновление автопарка</h5>
+                                            <p class="text-muted small">Возможность планового обновления техники без крупных единовременных вложений</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            
+                            <div class="mt-4">
+                                <a href="index.php?page=contact" class="btn btn-primary rounded-pill px-4">Оставить заявку</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="text-center mb-4">Наши клиенты</h3>
+                            <div class="row row-cols-2 row-cols-md-4 g-4 text-center">
+                                <div class="col">
+                                    <div class="p-3">
+                                        <div class="bg-light rounded p-3 d-flex align-items-center justify-content-center" style="height: 100px;">
+                                            <h5 class="mb-0 text-muted">Компания А</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="p-3">
+                                        <div class="bg-light rounded p-3 d-flex align-items-center justify-content-center" style="height: 100px;">
+                                            <h5 class="mb-0 text-muted">Компания Б</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="p-3">
+                                        <div class="bg-light rounded p-3 d-flex align-items-center justify-content-center" style="height: 100px;">
+                                            <h5 class="mb-0 text-muted">Компания В</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="p-3">
+                                        <div class="bg-light rounded p-3 d-flex align-items-center justify-content-center" style="height: 100px;">
+                                            <h5 class="mb-0 text-muted">Компания Г</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>';
+}
+
+// Страница страхования
+function includeInsurancePage() {
+    echo '<section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Страхование</h2>
+                <p class="lead text-muted">Комплексные решения для страхования лизингового имущества</p>
+            </div>
+            
+            <div class="row g-4 mb-5">
+                <div class="col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4 text-center">
+                            <div class="rounded-circle bg-primary mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                <i class="fas fa-car fa-2x text-white"></i>
+                            </div>
+                            <h4>ОСАГО и КАСКО</h4>
+                            <p class="text-muted mb-4">Обязательное и добровольное страхование транспортных средств. Защита от ущерба, угона и других рисков.</p>
+                            <ul class="list-unstyled text-start mb-4">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Быстрое оформление полиса</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Выгодные тарифы для клиентов лизинга</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Помощь при урегулировании страховых случаев</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Включение страховки в лизинговые платежи</span>
+                                </li>
+                            </ul>
+                            <a href="#insurance-form" class="btn btn-primary rounded-pill">Оформить страховку</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4 text-center">
+                            <div class="rounded-circle bg-primary mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                <i class="fas fa-building fa-2x text-white"></i>
+                            </div>
+                            <h4>Страхование недвижимости</h4>
+                            <p class="text-muted mb-4">Комплексная защита объектов недвижимости от пожара, затопления, повреждений и других рисков.</p>
+                            <ul class="list-unstyled text-start mb-4">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Индивидуальный расчет стоимости полиса</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Включение в лизинговый договор</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Страхование конструктивных элементов и отделки</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Страхование гражданской ответственности</span>
+                                </li>
+                            </ul>
+                            <a href="#insurance-form" class="btn btn-primary rounded-pill">Оформить страховку</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4 text-center">
+                            <div class="rounded-circle bg-primary mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                <i class="fas fa-industry fa-2x text-white"></i>
+                            </div>
+                            <h4>Страхование оборудования</h4>
+                            <p class="text-muted mb-4">Защита промышленного, торгового и другого оборудования, приобретаемого в лизинг.</p>
+                            <ul class="list-unstyled text-start mb-4">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Страхование от поломок и выхода из строя</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Защита от краж и умышленного повреждения</span>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Страхование на период транспортировки</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-check text-primary me-2"></i>
+                                    <span>Специальные условия для крупных лизинговых сделок</span>
+                                </li>
+                            </ul>
+                            <a href="#insurance-form" class="btn btn-primary rounded-pill">Оформить страховку</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card border-0 shadow-sm" id="insurance-form">
+                        <div class="card-body p-4">
+                            <h3 class="text-center mb-4">Заявка на страхование</h3>
+                            <form>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="insuranceName" class="form-label">Имя</label>
+                                        <input type="text" class="form-control" id="insuranceName" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="insurancePhone" class="form-label">Телефон</label>
+                                        <input type="tel" class="form-control" id="insurancePhone" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="insuranceEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="insuranceEmail" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="insuranceType" class="form-label">Тип страхования</label>
+                                        <select class="form-select" id="insuranceType" required>
+                                            <option value="" selected disabled>Выберите тип страхования</option>
+                                            <option value="auto">ОСАГО и КАСКО</option>
+                                            <option value="property">Страхование недвижимости</option>
+                                            <option value="equipment">Страхование оборудования</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="insuranceMessage" class="form-label">Комментарий</label>
+                                        <textarea class="form-control" id="insuranceMessage" rows="3"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="insuranceAgree" required>
+                                            <label class="form-check-label small text-muted" for="insuranceAgree">
+                                                Я согласен с <a href="index.php?page=privacy">политикой конфиденциальности</a> и даю согласие на обработку персональных данных
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-center mt-4">
+                                        <button type="submit" class="btn btn-primary rounded-pill px-5">Отправить заявку</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>';
+}
+
+// Страница политики конфиденциальности
+function includePrivacyPage() {
+    echo '<section class="py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4 p-lg-5">
+                            <h2 class="mb-4">Политика конфиденциальности</h2>
+                            
+                            <p class="text-muted">Последнее обновление: 10 апреля 2025 г.</p>
+                            
+                            <p>Настоящая Политика конфиденциальности определяет порядок обработки и защиты персональных данных, предоставляемых пользователями при использовании сайта и услуг компании "2Leasing".</p>
+                            
+                            <h4 class="mt-4">1. Общие положения</h4>
+                            <p>1.1. Настоящая Политика конфиденциальности является официальным документом и определяет порядок обработки и защиты информации о физических и юридических лицах, использующих сайт и услуги "2Leasing".</p>
+                            <p>1.2. Целью настоящей Политики является обеспечение надлежащей защиты информации о пользователях, в том числе их персональных данных, от несанкционированного доступа и разглашения.</p>
+                            <p>1.3. Отношения, связанные со сбором, хранением, распространением и защитой информации о пользователях, регулируются настоящей Политикой и действующим законодательством Российской Федерации.</p>
+                            <p>1.4. Используя сайт и услуги "2Leasing", пользователь выражает свое согласие с условиями настоящей Политики конфиденциальности.</p>
+                            
+                            <h4 class="mt-4">2. Сбор и использование персональных данных</h4>
+                            <p>2.1. Компания "2Leasing" собирает и хранит только ту персональную информацию, которая необходима для предоставления услуг лизинга и связанных с ними сервисов.</p>
+                            <p>2.2. Персональная информация пользователя, которую обрабатывает "2Leasing", включает в себя:</p>
+                            <ul>
+                                <li>Фамилию, имя, отчество</li>
+                                <li>Контактную информацию (телефон, email, адрес)</li>
+                                <li>Паспортные данные (для оформления договоров)</li>
+                                <li>Финансовую информацию (для оценки платежеспособности)</li>
+                                <li>Информацию о предпочтениях и интересах пользователя</li>
+                            </ul>
+                            
+                            <h4 class="mt-4">3. Цели обработки персональных данных</h4>
+                            <p>3.1. "2Leasing" обрабатывает персональные данные пользователей в следующих целях:</p>
+                            <ul>
+                                <li>Идентификация пользователя в рамках предоставления услуг</li>
+                                <li>Заключение и исполнение договоров лизинга</li>
+                                <li>Обработка заявок и запросов пользователей</li>
+                                <li>Предоставление пользователям персонализированных предложений</li>
+                                <li>Улучшение качества услуг и удобства использования сайта</li>
+                                <li>Проведение статистических и маркетинговых исследований</li>
+                            </ul>
+                            
+                            <h4 class="mt-4">4. Защита персональных данных</h4>
+                            <p>4.1. "2Leasing" принимает необходимые организационные и технические меры для защиты персональной информации пользователя от неправомерного или случайного доступа, уничтожения, изменения, блокирования, копирования, распространения, а также от иных неправомерных действий третьих лиц.</p>
+                            
+                            <h4 class="mt-4">5. Заключительные положения</h4>
+                            <p>5.1. "2Leasing" имеет право вносить изменения в настоящую Политику конфиденциальности. При внесении изменений в актуальной редакции указывается дата последнего обновления.</p>
+                            <p>5.2. По всем вопросам, связанным с настоящей Политикой, пользователь может обратиться в компанию по контактным данным, указанным на сайте.</p>
+                            
+                            <div class="mt-5">
+                                <a href="index.php" class="btn btn-outline-primary rounded-pill">
+                                    <i class="fas fa-arrow-left me-2"></i> Вернуться на главную
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>';
+}
+
+// Страница условий использования
+function includeTermsPage() {
+    echo '<section class="py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4 p-lg-5">
+                            <h2 class="mb-4">Условия использования</h2>
+                            
+                            <p class="text-muted">Последнее обновление: 10 апреля 2025 г.</p>
+                            
+                            <p>Настоящий документ определяет условия использования сайта и услуг компании "2Leasing". Используя наш сайт и услуги, вы соглашаетесь с настоящими условиями.</p>
+                            
+                            <h4 class="mt-4">1. Общие положения</h4>
+                            <p>1.1. Сайт и услуги "2Leasing" предназначены для предоставления информации о лизинговых продуктах и услугах, а также для оформления заявок на лизинг.</p>
+                            <p>1.2. Компания "2Leasing" оставляет за собой право в любое время изменять, добавлять или удалять пункты настоящих Условий без уведомления пользователя.</p>
+                            <p>1.3. Продолжение использования сайта и услуг "2Leasing" после внесения изменений в Условия означает принятие и согласие пользователя с такими изменениями.</p>
+                            
+                            <h4 class="mt-4">2. Права и обязанности пользователя</h4>
+                            <p>2.1. Пользователь имеет право:</p>
+                            <ul>
+                                <li>Получать информацию о лизинговых продуктах и услугах</li>
+                                <li>Оформлять заявки на лизинг</li>
+                                <li>Использовать калькулятор для расчета лизинговых платежей</li>
+                                <li>Обращаться в компанию по указанным на сайте контактным данным</li>
+                            </ul>
+                            
+                            <p>2.2. Пользователь обязуется:</p>
+                            <ul>
+                                <li>Предоставлять достоверную информацию при заполнении форм на сайте</li>
+                                <li>Не нарушать работоспособность сайта</li>
+                                <li>Не использовать сайт для распространения информации рекламного или коммерческого характера без согласования с администрацией сайта</li>
+                                <li>Не использовать сайт для каких-либо противоправных действий</li>
+                            </ul>
+                            
+                            <h4 class="mt-4">3. Ответственность</h4>
+                            <p>3.1. Компания "2Leasing" не несет ответственности за временные технические сбои и перерывы в работе сайта, а также за их последствия.</p>
+                            <p>3.2. Компания "2Leasing" не несет ответственности за любые убытки, которые пользователь может понести в результате использования или невозможности использования сайта.</p>
+                            <p>3.3. Пользователь несет полную ответственность за сохранность своих учетных данных и за последствия, которые могут возникнуть из-за их утраты или несанкционированного использования.</p>
+                            
+                            <h4 class="mt-4">4. Интеллектуальная собственность</h4>
+                            <p>4.1. Все материалы, размещенные на сайте "2Leasing", включая тексты, графику, логотипы, изображения, а также их подборка и расположение, являются интеллектуальной собственностью компании и защищены законодательством Российской Федерации.</p>
+                            <p>4.2. Любое использование материалов сайта без согласия правообладателя не допускается.</p>
+                            
+                            <h4 class="mt-4">5. Заключительные положения</h4>
+                            <p>5.1. Настоящие Условия регулируются и толкуются в соответствии с законодательством Российской Федерации.</p>
+                            <p>5.2. Любые споры, возникающие из настоящих Условий или в связи с ними, подлежат разрешению в соответствии с законодательством Российской Федерации.</p>
+                            <p>5.3. По всем вопросам, связанным с настоящими Условиями, пользователь может обратиться в компанию по контактным данным, указанным на сайте.</p>
+                            
+                            <div class="mt-5">
+                                <a href="index.php" class="btn btn-outline-primary rounded-pill">
+                                    <i class="fas fa-arrow-left me-2"></i> Вернуться на главную
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>';
 }
 
 // Главная страница
@@ -1620,6 +2728,39 @@ switch ($page) {
         break;
     case 'dashboard-parsers':
         include 'pages/dashboard-parsers.php';
+        break;
+    case 'profile':
+        includeProfilePage();
+        break;
+    case 'applications':
+        includeApplicationsPage();
+        break;
+    case 'team':
+        includeTeamPage();
+        break;
+    case 'careers':
+        includeCareersPage();
+        break;
+    case 'blog':
+        includeBlogPage();
+        break;
+    case 'personal':
+        includePersonalLeasingPage();
+        break;
+    case 'business':
+        includeBusinessLeasingPage();
+        break;
+    case 'fleet':
+        includeFleetLeasingPage();
+        break;
+    case 'insurance':
+        includeInsurancePage();
+        break;
+    case 'privacy':
+        includePrivacyPage();
+        break;
+    case 'terms':
+        includeTermsPage();
         break;
     default:
         includeHomePage();
