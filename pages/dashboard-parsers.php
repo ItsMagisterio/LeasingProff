@@ -39,7 +39,7 @@ $sourceStats = pg_query($db->getConnection(), $query);
 
 // HTML заголовок
 outputHeader('Управление парсерами');
-outputNavigation();
+
 ?>
 
 <div class="container-fluid user-dashboard">
