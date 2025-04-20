@@ -13,59 +13,51 @@ class RealEstate {
      * Получить список всех объектов недвижимости
      */
     public function getAllRealEstate($limit = 0, $offset = 0, $filters = []) {
-        $sql = "SELECT * FROM real_estate WHERE 1=1";
-
-        // Применяем фильтры
+        $jsonFile = __DIR__ . '/../data/real_estate.json';
+        $jsonData = file_get_contents($jsonFile);
+        $data = json_decode($jsonData, true);
+        
+        $properties = $data['records'];
+        
+        // Apply filters
         if (!empty($filters)) {
-            if (isset($filters['type']) && $filters['type']) {
-                $type = $this->db->escapeString($filters['type']);
-                $sql .= " AND type = '$type'";
-            }
-
-            if (isset($filters['min_price']) && $filters['min_price']) {
-                $minPrice = (float) $filters['min_price'];
-                $sql .= " AND price >= $minPrice";
-            }
-
-            if (isset($filters['max_price']) && $filters['max_price']) {
-                $maxPrice = (float) $filters['max_price'];
-                $sql .= " AND price <= $maxPrice";
-            }
-
-            if (isset($filters['min_area']) && $filters['min_area']) {
-                $minArea = (float) $filters['min_area'];
-                $sql .= " AND area >= $minArea";
-            }
-
-            if (isset($filters['max_area']) && $filters['max_area']) {
-                $maxArea = (float) $filters['max_area'];
-                $sql .= " AND area <= $maxArea";
-            }
-
-            if (isset($filters['rooms']) && $filters['rooms']) {
-                $rooms = (int) $filters['rooms'];
-                $sql .= " AND rooms = $rooms";
-            }
-
-            if (isset($filters['status']) && $filters['status']) {
-                $status = $this->db->escapeString($filters['status']);
-                $sql .= " AND status = '$status'";
-            }
+            $properties = array_filter($properties, function($property) use ($filters) {
+                if (isset($filters['type']) && $filters['type'] && $property['type'] !== $filters['type']) {
+                    return false;
+                }
+                if (isset($filters['min_price']) && $filters['min_price'] && $property['price'] < $filters['min_price']) {
+                    return false;
+                }
+                if (isset($filters['max_price']) && $filters['max_price'] && $property['price'] > $filters['max_price']) {
+                    return false;
+                }
+                if (isset($filters['min_area']) && $filters['min_area'] && $property['area'] < $filters['min_area']) {
+                    return false;
+                }
+                if (isset($filters['max_area']) && $filters['max_area'] && $property['area'] > $filters['max_area']) {
+                    return false;
+                }
+                if (isset($filters['rooms']) && $filters['rooms'] && $property['rooms'] != $filters['rooms']) {
+                    return false;
+                }
+                if (isset($filters['status']) && $filters['status'] && $property['status'] !== $filters['status']) {
+                    return false;
+                }
+                return true;
+            });
         }
 
-        // Сортировка и пагинация
-        $sql .= " ORDER BY price DESC";
+        // Sort by price descending
+        usort($properties, function($a, $b) {
+            return $b['price'] - $a['price'];
+        });
 
+        // Apply pagination
         if ($limit > 0) {
-            $sql .= " LIMIT $limit";
-
-            if ($offset > 0) {
-                $sql .= " OFFSET $offset";
-            }
+            $properties = array_slice($properties, $offset, $limit);
         }
 
-        $result = $this->db->query($sql);
-        return $this->db->fetchAll($result);
+        return array_values($properties);
     }
 
     /**
