@@ -200,7 +200,8 @@ class Applications {
         
         $result = $this->db->query($sql);
         
-        if ($this->db->affectedRows($result) > 0) {
+        // Проверяем результат - либо числовое значение > 0, либо true (для JSON-базы)
+        if ($result === true || (is_numeric($result) && $result > 0) || $this->db->affectedRows($result) > 0) {
             return [
                 'success' => true,
                 'application_id' => $applicationId
@@ -226,7 +227,8 @@ class Applications {
         
         $result = $this->db->query($sql);
         
-        if ($this->db->affectedRows($result) > 0) {
+        // Проверяем результат - либо числовое значение > 0, либо true (для JSON-базы)
+        if ($result === true || (is_numeric($result) && $result > 0) || $this->db->affectedRows($result) > 0) {
             return [
                 'success' => true,
                 'application_id' => $applicationId

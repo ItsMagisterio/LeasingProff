@@ -15,7 +15,7 @@
         "updated_at": "datetime"
     },
     "indices": [],
-    "auto_increment": 9,
+    "auto_increment": 15,
     "records": [
         {
             "user_id": 4,
@@ -122,6 +122,84 @@
             "id": 8,
             "created_at": "2025-04-20 16:57:04",
             "updated_at": "2025-04-20 16:57:04"
+        },
+        {
+            "user_id": 10,
+            "real_estate_id": 6,
+            "type": "real_estate",
+            "status": "new",
+            "initial_payment": 30000000,
+            "term_months": 60,
+            "monthly_payment": 2669334,
+            "comments": "",
+            "id": 9,
+            "created_at": "2025-04-20 16:58:45",
+            "updated_at": "2025-04-20 16:58:45"
+        },
+        {
+            "user_id": 10,
+            "real_estate_id": 6,
+            "type": "real_estate",
+            "status": "new",
+            "initial_payment": 30000000,
+            "term_months": 60,
+            "monthly_payment": 2669334,
+            "comments": "",
+            "id": 10,
+            "created_at": "2025-04-20 16:58:50",
+            "updated_at": "2025-04-20 16:58:50"
+        },
+        {
+            "user_id": 10,
+            "real_estate_id": 6,
+            "type": "real_estate",
+            "status": "new",
+            "initial_payment": 30000000,
+            "term_months": 60,
+            "monthly_payment": 2669334,
+            "comments": "",
+            "id": 11,
+            "created_at": "2025-04-20 16:58:57",
+            "updated_at": "2025-04-20 16:58:57"
+        },
+        {
+            "user_id": 10,
+            "real_estate_id": 6,
+            "type": "real_estate",
+            "status": "new",
+            "initial_payment": 30000000,
+            "term_months": 60,
+            "monthly_payment": 2669334,
+            "comments": "",
+            "id": 12,
+            "created_at": "2025-04-20 16:59:09",
+            "updated_at": "2025-04-20 16:59:09"
+        },
+        {
+            "user_id": 10,
+            "real_estate_id": 6,
+            "type": "real_estate",
+            "status": "new",
+            "initial_payment": 30000000,
+            "term_months": 60,
+            "monthly_payment": 2669334,
+            "comments": "",
+            "id": 13,
+            "created_at": "2025-04-20 16:59:36",
+            "updated_at": "2025-04-20 16:59:36"
+        },
+        {
+            "user_id": 10,
+            "real_estate_id": 6,
+            "type": "real_estate",
+            "status": "new",
+            "initial_payment": 30000000,
+            "term_months": 60,
+            "monthly_payment": 2669334,
+            "comments": "",
+            "id": 14,
+            "created_at": "2025-04-20 16:59:45",
+            "updated_at": "2025-04-20 16:59:45"
         }
     ]
 }

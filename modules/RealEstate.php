@@ -74,7 +74,7 @@ class RealEstate {
             
             if (isset($data['records']) && is_array($data['records'])) {
                 foreach ($data['records'] as $property) {
-                    if (isset($property['id']) && $property['id'] == $realEstateId) {
+                    if (isset($property['id']) && (int)$property['id'] === $realEstateId) {
                         return $property;
                     }
                 }
@@ -116,7 +116,8 @@ class RealEstate {
 
         $result = $this->db->query($sql);
 
-        if ($this->db->affectedRows($result) > 0) {
+        // Проверяем результат - либо числовое значение > 0, либо true (для JSON-базы)
+        if ($result === true || (is_numeric($result) && $result > 0) || $this->db->affectedRows($result) > 0) {
             return [
                 'success' => true,
                 'real_estate_id' => $this->db->lastInsertId('real_estate')
@@ -222,7 +223,8 @@ class RealEstate {
         $sql = "UPDATE real_estate SET " . implode(', ', $updates) . " WHERE id = $realEstateId";
         $result = $this->db->query($sql);
 
-        if ($this->db->affectedRows($result) > 0) {
+        // Проверяем результат - либо числовое значение > 0, либо true (для JSON-базы)
+        if ($result === true || (is_numeric($result) && $result > 0) || $this->db->affectedRows($result) > 0) {
             return [
                 'success' => true,
                 'real_estate_id' => $realEstateId
@@ -253,7 +255,8 @@ class RealEstate {
 
         $result = $this->db->query("DELETE FROM real_estate WHERE id = $realEstateId");
 
-        if ($this->db->affectedRows($result) > 0) {
+        // Проверяем результат - либо числовое значение > 0, либо true (для JSON-базы)
+        if ($result === true || (is_numeric($result) && $result > 0) || $this->db->affectedRows($result) > 0) {
             return [
                 'success' => true,
                 'message' => 'Объект недвижимости успешно удален'
