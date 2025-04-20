@@ -13,21 +13,38 @@ class Auth {
      * Авторизация пользователя
      */
     public function login($email, $password) {
-        $email = $this->db->escapeString($email);
-        $result = $this->db->query("SELECT * FROM users WHERE email = '$email'");
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/users.json';
         
-        if (is_array($result) && count($result) > 0) {
-            $user = $result[0]; // Берем первую запись напрямую, т.к. fetchRow может неправильно работать
-            
-            if (password_verify($password, $user['password'])) {
-                // Сохраняем пользователя в сессии
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_email'] = $user['email'];
-                $_SESSION['user_role'] = isset($user['role']) ? $user['role'] : 'client'; // Проверяем наличие роли
-                $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
-                
-                return true;
+        if (!file_exists($jsonFile)) {
+            return false;
+        }
+        
+        $jsonData = file_get_contents($jsonFile);
+        $userData = json_decode($jsonData, true);
+        
+        if (!isset($userData['records']) || !is_array($userData['records'])) {
+            return false;
+        }
+        
+        // Ищем пользователя с указанным email
+        $user = null;
+        foreach ($userData['records'] as $record) {
+            if (isset($record['email']) && $record['email'] === $email) {
+                $user = $record;
+                break;
             }
+        }
+        
+        // Проверяем найденного пользователя
+        if ($user && password_verify($password, $user['password'])) {
+            // Сохраняем пользователя в сессии
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_email'] = $user['email'];
+            $_SESSION['user_role'] = isset($user['role']) ? $user['role'] : 'client'; // Проверяем наличие роли
+            $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
+            
+            return true;
         }
         
         return false;
@@ -37,42 +54,72 @@ class Auth {
      * Регистрация нового пользователя
      */
     public function register($userData) {
-        // Проверяем, не занят ли email
-        $email = $this->db->escapeString($userData['email']);
-        $result = $this->db->query("SELECT id FROM users WHERE email = '$email'");
+        $email = $userData['email'];
         
-        if (is_array($result) && count($result) > 0) {
-            return [
-                'success' => false,
-                'message' => 'Email уже зарегистрирован в системе'
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/users.json';
+        
+        // Проверка существования файла и создание пустой структуры, если файла нет
+        if (!file_exists($jsonFile)) {
+            $usersData = [
+                'next_id' => 1,
+                'records' => []
             ];
+        } else {
+            $jsonData = file_get_contents($jsonFile);
+            $usersData = json_decode($jsonData, true);
+            
+            if (!isset($usersData['next_id'])) {
+                $usersData['next_id'] = 1;
+            }
+            
+            if (!isset($usersData['records'])) {
+                $usersData['records'] = [];
+            }
+        }
+        
+        // Проверяем, не занят ли email
+        foreach ($usersData['records'] as $user) {
+            if (isset($user['email']) && $user['email'] === $email) {
+                return [
+                    'success' => false,
+                    'message' => 'Email уже зарегистрирован в системе'
+                ];
+            }
         }
         
         // Хэшируем пароль
         $password = password_hash($userData['password'], PASSWORD_DEFAULT);
         
-        // Подготавливаем данные
-        $firstName = $this->db->escapeString($userData['first_name']);
-        $lastName = $this->db->escapeString($userData['last_name']);
-        $phone = $this->db->escapeString($userData['phone']);
-        $role = 'client'; // По умолчанию все новые пользователи - клиенты
+        // Определяем ID для нового пользователя
+        $userId = $usersData['next_id'];
+        $usersData['next_id']++;
         
-        // Добавляем пользователя
-        $result = $this->db->query("
-            INSERT INTO users (email, password, first_name, last_name, phone, role) 
-            VALUES ('$email', '$password', '$firstName', '$lastName', '$phone', '$role')
-        ");
+        // Подготавливаем данные для нового пользователя
+        $newUser = [
+            'id' => $userId,
+            'email' => $email,
+            'password' => $password,
+            'first_name' => $userData['first_name'],
+            'last_name' => $userData['last_name'],
+            'phone' => $userData['phone'],
+            'role' => 'client', // По умолчанию все новые пользователи - клиенты
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
         
-        // Проверяем, что запрос выполнен успешно
-        if ($result === true || (is_numeric($result) && $result > 0)) {
-            // Получаем ID нового пользователя
-            $userId = $this->db->lastInsertId('users');
-            
+        // Добавляем пользователя в массив
+        $usersData['records'][] = $newUser;
+        
+        // Сохраняем обновленные данные в файл
+        $result = file_put_contents($jsonFile, json_encode($usersData, JSON_PRETTY_PRINT));
+        
+        if ($result !== false) {
             // Авторизуем пользователя
             $_SESSION['user_id'] = $userId;
             $_SESSION['user_email'] = $email;
-            $_SESSION['user_role'] = $role;
-            $_SESSION['user_name'] = $firstName . ' ' . $lastName;
+            $_SESSION['user_role'] = 'client';
+            $_SESSION['user_name'] = $userData['first_name'] . ' ' . $userData['last_name'];
             
             return [
                 'success' => true,
@@ -118,11 +165,27 @@ class Auth {
             return null;
         }
         
-        $userId = $_SESSION['user_id'];
-        $result = $this->db->query("SELECT * FROM users WHERE id = $userId");
+        $userId = (int) $_SESSION['user_id'];
         
-        if (is_array($result) && count($result) > 0) {
-            return $result[0]; // Берем первый результат напрямую
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/users.json';
+        
+        if (!file_exists($jsonFile)) {
+            return null;
+        }
+        
+        $jsonData = file_get_contents($jsonFile);
+        $userData = json_decode($jsonData, true);
+        
+        if (!isset($userData['records']) || !is_array($userData['records'])) {
+            return null;
+        }
+        
+        // Ищем пользователя с указанным ID
+        foreach ($userData['records'] as $user) {
+            if (isset($user['id']) && (int)$user['id'] === $userId) {
+                return $user;
+            }
         }
         
         return null;

@@ -13,25 +13,57 @@ class Users {
      * Получить список всех пользователей
      */
     public function getAllUsers($role = null, $limit = 0, $offset = 0) {
-        $sql = "SELECT id, email, first_name, last_name, phone, role, created_at FROM users";
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/users.json';
         
-        if ($role) {
-            $role = $this->db->escapeString($role);
-            $sql .= " WHERE role = '$role'";
+        if (!file_exists($jsonFile)) {
+            return [];
         }
         
-        $sql .= " ORDER BY last_name, first_name";
+        $jsonData = file_get_contents($jsonFile);
+        $userData = json_decode($jsonData, true);
         
-        if ($limit > 0) {
-            $sql .= " LIMIT $limit";
+        if (!isset($userData['records']) || !is_array($userData['records'])) {
+            return [];
+        }
+        
+        $users = $userData['records'];
+        
+        // Фильтрация по роли, если указана
+        if ($role) {
+            $users = array_filter($users, function($user) use ($role) {
+                return isset($user['role']) && $user['role'] === $role;
+            });
+        }
+        
+        // Сортировка по фамилии и имени
+        usort($users, function($a, $b) {
+            $lastNameA = $a['last_name'] ?? '';
+            $lastNameB = $b['last_name'] ?? '';
             
-            if ($offset > 0) {
-                $sql .= " OFFSET $offset";
+            $firstNameA = $a['first_name'] ?? '';
+            $firstNameB = $b['first_name'] ?? '';
+            
+            if ($lastNameA === $lastNameB) {
+                return $firstNameA <=> $firstNameB;
+            }
+            
+            return $lastNameA <=> $lastNameB;
+        });
+        
+        // Применение пагинации
+        if ($limit > 0) {
+            $users = array_slice($users, $offset, $limit);
+        }
+        
+        // Удаляем пароли из результата
+        foreach ($users as &$user) {
+            if (isset($user['password'])) {
+                unset($user['password']);
             }
         }
         
-        $result = $this->db->query($sql);
-        return $this->db->fetchAll($result);
+        return $users;
     }
     
     /**
@@ -39,12 +71,30 @@ class Users {
      */
     public function getUserById($userId) {
         $userId = (int) $userId;
-        $sql = "SELECT id, email, first_name, last_name, phone, role, created_at FROM users WHERE id = $userId";
         
-        $result = $this->db->query($sql);
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/users.json';
         
-        if (count($result) > 0) {
-            return $this->db->fetchRow($result);
+        if (!file_exists($jsonFile)) {
+            return null;
+        }
+        
+        $jsonData = file_get_contents($jsonFile);
+        $userData = json_decode($jsonData, true);
+        
+        if (!isset($userData['records']) || !is_array($userData['records'])) {
+            return null;
+        }
+        
+        // Ищем пользователя с указанным ID
+        foreach ($userData['records'] as $user) {
+            if (isset($user['id']) && (int)$user['id'] === $userId) {
+                // Удаляем пароль из результата
+                if (isset($user['password'])) {
+                    unset($user['password']);
+                }
+                return $user;
+            }
         }
         
         return null;
@@ -54,13 +104,29 @@ class Users {
      * Получить данные пользователя по email
      */
     public function getUserByEmail($email) {
-        $email = $this->db->escapeString($email);
-        $sql = "SELECT id, email, first_name, last_name, phone, role, created_at FROM users WHERE email = '$email'";
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/users.json';
         
-        $result = $this->db->query($sql);
+        if (!file_exists($jsonFile)) {
+            return null;
+        }
         
-        if (count($result) > 0) {
-            return $this->db->fetchRow($result);
+        $jsonData = file_get_contents($jsonFile);
+        $userData = json_decode($jsonData, true);
+        
+        if (!isset($userData['records']) || !is_array($userData['records'])) {
+            return null;
+        }
+        
+        // Ищем пользователя с указанным email
+        foreach ($userData['records'] as $user) {
+            if (isset($user['email']) && $user['email'] === $email) {
+                // Удаляем пароль из результата
+                if (isset($user['password'])) {
+                    unset($user['password']);
+                }
+                return $user;
+            }
         }
         
         return null;
@@ -72,49 +138,84 @@ class Users {
     public function updateUser($userId, $userData) {
         $userId = (int) $userId;
         
-        // Проверяем существование пользователя
-        $result = $this->db->query("SELECT id FROM users WHERE id = $userId");
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/users.json';
         
-        if (count($result) === 0) {
+        if (!file_exists($jsonFile)) {
+            return [
+                'success' => false,
+                'message' => 'Файл с пользователями не найден'
+            ];
+        }
+        
+        $jsonData = file_get_contents($jsonFile);
+        $usersData = json_decode($jsonData, true);
+        
+        if (!isset($usersData['records']) || !is_array($usersData['records'])) {
+            return [
+                'success' => false,
+                'message' => 'Ошибка структуры данных пользователей'
+            ];
+        }
+        
+        $userFound = false;
+        $userUpdated = false;
+        
+        // Обновляем данные пользователя
+        foreach ($usersData['records'] as &$user) {
+            if (isset($user['id']) && (int)$user['id'] === $userId) {
+                $userFound = true;
+                
+                // Обновляем поля пользователя
+                if (isset($userData['first_name'])) {
+                    $user['first_name'] = $userData['first_name'];
+                    $userUpdated = true;
+                }
+                
+                if (isset($userData['last_name'])) {
+                    $user['last_name'] = $userData['last_name'];
+                    $userUpdated = true;
+                }
+                
+                if (isset($userData['phone'])) {
+                    $user['phone'] = $userData['phone'];
+                    $userUpdated = true;
+                }
+                
+                if (isset($userData['role'])) {
+                    $user['role'] = $userData['role'];
+                    $userUpdated = true;
+                }
+                
+                if (isset($userData['password']) && $userData['password']) {
+                    $user['password'] = password_hash($userData['password'], PASSWORD_DEFAULT);
+                    $userUpdated = true;
+                }
+                
+                $user['updated_at'] = date('Y-m-d H:i:s');
+                break;
+            }
+        }
+        
+        if (!$userFound) {
             return [
                 'success' => false,
                 'message' => 'Пользователь не найден'
             ];
         }
         
-        $updates = [];
-        
-        if (isset($userData['first_name'])) {
-            $firstName = $this->db->escapeString($userData['first_name']);
-            $updates[] = "first_name = '$firstName'";
+        if (!$userUpdated) {
+            return [
+                'success' => true,
+                'message' => 'Нет изменений в данных пользователя',
+                'user_id' => $userId
+            ];
         }
         
-        if (isset($userData['last_name'])) {
-            $lastName = $this->db->escapeString($userData['last_name']);
-            $updates[] = "last_name = '$lastName'";
-        }
+        // Сохраняем обновленные данные в файл
+        $result = file_put_contents($jsonFile, json_encode($usersData, JSON_PRETTY_PRINT));
         
-        if (isset($userData['phone'])) {
-            $phone = $this->db->escapeString($userData['phone']);
-            $updates[] = "phone = '$phone'";
-        }
-        
-        if (isset($userData['role'])) {
-            $role = $this->db->escapeString($userData['role']);
-            $updates[] = "role = '$role'";
-        }
-        
-        if (isset($userData['password']) && $userData['password']) {
-            $password = password_hash($userData['password'], PASSWORD_DEFAULT);
-            $updates[] = "password = '$password'";
-        }
-        
-        $updates[] = "updated_at = CURRENT_TIMESTAMP";
-        
-        $sql = "UPDATE users SET " . implode(', ', $updates) . " WHERE id = $userId";
-        $result = $this->db->query($sql);
-        
-        if ($this->db->affectedRows($result) > 0) {
+        if ($result !== false) {
             return [
                 'success' => true,
                 'user_id' => $userId
