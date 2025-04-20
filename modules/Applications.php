@@ -13,61 +13,126 @@ class Applications {
      * Получить список всех заявок
      */
     public function getAllApplications($limit = 0, $offset = 0, $filters = []) {
-        $sql = "SELECT a.*, 
-                u.first_name as client_first_name, 
-                u.last_name as client_last_name,
-                u.email as client_email,
-                m.first_name as manager_first_name,
-                m.last_name as manager_last_name,
-                v.make as vehicle_make,
-                v.model as vehicle_model,
-                v.year as vehicle_year,
-                re.title as real_estate_title,
-                re.area as real_estate_area,
-                re.address as real_estate_address,
-                re.type as real_estate_type
-                FROM applications a
-                LEFT JOIN users u ON a.user_id = u.id
-                LEFT JOIN users m ON a.manager_id = m.id
-                LEFT JOIN vehicles v ON a.vehicle_id = v.id
-                LEFT JOIN real_estate re ON a.real_estate_id = re.id
-                WHERE 1=1";
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/applications.json';
+        $usersFile = __DIR__ . '/../data/users.json';
+        $vehiclesFile = __DIR__ . '/../data/vehicles.json';
+        $realEstateFile = __DIR__ . '/../data/real_estate.json';
+        
+        if (!file_exists($jsonFile)) {
+            return [];
+        }
+        
+        $jsonData = file_get_contents($jsonFile);
+        $appData = json_decode($jsonData, true);
+        $applications = $appData['records'];
+        
+        // Загружаем данные пользователей, транспорта и недвижимости
+        $users = [];
+        if (file_exists($usersFile)) {
+            $userData = json_decode(file_get_contents($usersFile), true);
+            if (isset($userData['records']) && is_array($userData['records'])) {
+                foreach ($userData['records'] as $user) {
+                    if (isset($user['id'])) {
+                        $users[$user['id']] = $user;
+                    }
+                }
+            }
+        }
+        
+        $vehicles = [];
+        if (file_exists($vehiclesFile)) {
+            $vehicleData = json_decode(file_get_contents($vehiclesFile), true);
+            if (isset($vehicleData['records']) && is_array($vehicleData['records'])) {
+                foreach ($vehicleData['records'] as $vehicle) {
+                    if (isset($vehicle['id'])) {
+                        $vehicles[$vehicle['id']] = $vehicle;
+                    }
+                }
+            }
+        }
+        
+        $realEstates = [];
+        if (file_exists($realEstateFile)) {
+            $reData = json_decode(file_get_contents($realEstateFile), true);
+            if (isset($reData['records']) && is_array($reData['records'])) {
+                foreach ($reData['records'] as $re) {
+                    if (isset($re['id'])) {
+                        $realEstates[$re['id']] = $re;
+                    }
+                }
+            }
+        }
         
         // Применяем фильтры
         if (!empty($filters)) {
-            if (isset($filters['user_id']) && $filters['user_id']) {
-                $userId = (int) $filters['user_id'];
-                $sql .= " AND a.user_id = $userId";
+            $applications = array_filter($applications, function($app) use ($filters) {
+                if (isset($filters['user_id']) && $filters['user_id'] && $app['user_id'] != $filters['user_id']) {
+                    return false;
+                }
+                
+                if (isset($filters['manager_id']) && $filters['manager_id'] && $app['manager_id'] != $filters['manager_id']) {
+                    return false;
+                }
+                
+                if (isset($filters['status']) && $filters['status'] && $app['status'] != $filters['status']) {
+                    return false;
+                }
+                
+                if (isset($filters['unassigned']) && $filters['unassigned'] && !empty($app['manager_id'])) {
+                    return false;
+                }
+                
+                return true;
+            });
+        }
+        
+        // Сортировка по дате создания (новые в начале)
+        usort($applications, function($a, $b) {
+            return strtotime($b['created_at']) - strtotime($a['created_at']);
+        });
+        
+        // Добавляем дополнительные поля из связанных таблиц
+        foreach ($applications as &$app) {
+            // Добавляем данные о пользователе
+            if (isset($app['user_id']) && isset($users[$app['user_id']])) {
+                $user = $users[$app['user_id']];
+                $app['client_first_name'] = $user['first_name'] ?? '';
+                $app['client_last_name'] = $user['last_name'] ?? '';
+                $app['client_email'] = $user['email'] ?? '';
             }
             
-            if (isset($filters['manager_id']) && $filters['manager_id']) {
-                $managerId = (int) $filters['manager_id'];
-                $sql .= " AND a.manager_id = $managerId";
+            // Добавляем данные о менеджере
+            if (isset($app['manager_id']) && isset($users[$app['manager_id']])) {
+                $manager = $users[$app['manager_id']];
+                $app['manager_first_name'] = $manager['first_name'] ?? '';
+                $app['manager_last_name'] = $manager['last_name'] ?? '';
             }
             
-            if (isset($filters['status']) && $filters['status']) {
-                $status = $this->db->escapeString($filters['status']);
-                $sql .= " AND a.status = '$status'";
+            // Добавляем данные о транспорте
+            if (isset($app['vehicle_id']) && isset($vehicles[$app['vehicle_id']])) {
+                $vehicle = $vehicles[$app['vehicle_id']];
+                $app['vehicle_make'] = $vehicle['make'] ?? '';
+                $app['vehicle_model'] = $vehicle['model'] ?? '';
+                $app['vehicle_year'] = $vehicle['year'] ?? '';
             }
             
-            if (isset($filters['unassigned']) && $filters['unassigned']) {
-                $sql .= " AND a.manager_id IS NULL";
+            // Добавляем данные о недвижимости
+            if (isset($app['real_estate_id']) && isset($realEstates[$app['real_estate_id']])) {
+                $re = $realEstates[$app['real_estate_id']];
+                $app['real_estate_title'] = $re['title'] ?? '';
+                $app['real_estate_area'] = $re['area'] ?? '';
+                $app['real_estate_address'] = $re['address'] ?? '';
+                $app['real_estate_type'] = $re['type'] ?? '';
             }
         }
         
-        // Сортировка и пагинация
-        $sql .= " ORDER BY a.created_at DESC";
-        
+        // Пагинация
         if ($limit > 0) {
-            $sql .= " LIMIT $limit";
-            
-            if ($offset > 0) {
-                $sql .= " OFFSET $offset";
-            }
+            $applications = array_slice($applications, $offset, $limit);
         }
         
-        $result = $this->db->query($sql);
-        return $this->db->fetchAll($result);
+        return array_values($applications);
     }
     
     /**
@@ -75,40 +140,105 @@ class Applications {
      */
     public function getApplicationById($applicationId) {
         $applicationId = (int) $applicationId;
-        $sql = "SELECT a.*, 
-                u.first_name as client_first_name, 
-                u.last_name as client_last_name,
-                u.email as client_email,
-                u.phone as client_phone,
-                m.first_name as manager_first_name,
-                m.last_name as manager_last_name,
-                m.email as manager_email,
-                v.make as vehicle_make,
-                v.model as vehicle_model,
-                v.year as vehicle_year,
-                v.color as vehicle_color,
-                v.price as vehicle_price,
-                v.image_url as vehicle_image,
-                re.title as real_estate_title,
-                re.type as real_estate_type,
-                re.area as real_estate_area,
-                re.address as real_estate_address,
-                re.price as real_estate_price,
-                re.image_url as real_estate_image
-                FROM applications a
-                LEFT JOIN users u ON a.user_id = u.id
-                LEFT JOIN users m ON a.manager_id = m.id
-                LEFT JOIN vehicles v ON a.vehicle_id = v.id
-                LEFT JOIN real_estate re ON a.real_estate_id = re.id
-                WHERE a.id = $applicationId";
         
-        $result = $this->db->query($sql);
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/applications.json';
+        $usersFile = __DIR__ . '/../data/users.json';
+        $vehiclesFile = __DIR__ . '/../data/vehicles.json';
+        $realEstateFile = __DIR__ . '/../data/real_estate.json';
         
-        if (count($result) > 0) {
-            return $this->db->fetchRow($result);
+        if (!file_exists($jsonFile)) {
+            return null;
         }
         
-        return null;
+        $jsonData = file_get_contents($jsonFile);
+        $appData = json_decode($jsonData, true);
+        
+        if (!isset($appData['records']) || !is_array($appData['records'])) {
+            return null;
+        }
+        
+        // Ищем нужную заявку
+        $application = null;
+        foreach ($appData['records'] as $app) {
+            if (isset($app['id']) && (int)$app['id'] === $applicationId) {
+                $application = $app;
+                break;
+            }
+        }
+        
+        if (!$application) {
+            return null;
+        }
+        
+        // Загружаем данные о пользователе
+        if (isset($application['user_id']) && file_exists($usersFile)) {
+            $userData = json_decode(file_get_contents($usersFile), true);
+            if (isset($userData['records']) && is_array($userData['records'])) {
+                foreach ($userData['records'] as $user) {
+                    if (isset($user['id']) && (int)$user['id'] === (int)$application['user_id']) {
+                        $application['client_first_name'] = $user['first_name'] ?? '';
+                        $application['client_last_name'] = $user['last_name'] ?? '';
+                        $application['client_email'] = $user['email'] ?? '';
+                        $application['client_phone'] = $user['phone'] ?? '';
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // Загружаем данные о менеджере
+        if (isset($application['manager_id']) && file_exists($usersFile)) {
+            $userData = json_decode(file_get_contents($usersFile), true);
+            if (isset($userData['records']) && is_array($userData['records'])) {
+                foreach ($userData['records'] as $user) {
+                    if (isset($user['id']) && (int)$user['id'] === (int)$application['manager_id']) {
+                        $application['manager_first_name'] = $user['first_name'] ?? '';
+                        $application['manager_last_name'] = $user['last_name'] ?? '';
+                        $application['manager_email'] = $user['email'] ?? '';
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // Загружаем данные о транспорте
+        if (isset($application['vehicle_id']) && file_exists($vehiclesFile)) {
+            $vehicleData = json_decode(file_get_contents($vehiclesFile), true);
+            if (isset($vehicleData['records']) && is_array($vehicleData['records'])) {
+                foreach ($vehicleData['records'] as $vehicle) {
+                    if (isset($vehicle['id']) && (int)$vehicle['id'] === (int)$application['vehicle_id']) {
+                        $application['vehicle_make'] = $vehicle['make'] ?? '';
+                        $application['vehicle_model'] = $vehicle['model'] ?? '';
+                        $application['vehicle_year'] = $vehicle['year'] ?? '';
+                        $application['vehicle_color'] = $vehicle['color'] ?? '';
+                        $application['vehicle_price'] = $vehicle['price'] ?? '';
+                        $application['vehicle_image'] = $vehicle['image_url'] ?? '';
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // Загружаем данные о недвижимости
+        if (isset($application['real_estate_id']) && file_exists($realEstateFile)) {
+            $reData = json_decode(file_get_contents($realEstateFile), true);
+            if (isset($reData['records']) && is_array($reData['records'])) {
+                foreach ($reData['records'] as $re) {
+                    if (isset($re['id']) && (int)$re['id'] === (int)$application['real_estate_id']) {
+                        $application['real_estate_title'] = $re['title'] ?? '';
+                        $application['real_estate_type'] = $re['type'] ?? '';
+                        $application['real_estate_area'] = $re['area'] ?? '';
+                        $application['real_estate_address'] = $re['address'] ?? '';
+                        $application['real_estate_price'] = $re['price'] ?? '';
+                        $application['real_estate_image'] = $re['image_url'] ?? '';
+                        break;
+                    }
+                }
+            }
+        }
+        
+        return $application;
     }
     
     /**
@@ -255,32 +385,40 @@ class Applications {
             'completed' => 0
         ];
         
-        $userFilter = '';
-        if ($userId) {
-            $userId = (int) $userId;
-            $userFilter = "WHERE user_id = $userId";
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/applications.json';
+        
+        if (!file_exists($jsonFile)) {
+            return $counts;
         }
         
-        $sql = "SELECT status, COUNT(*) as count
-                FROM applications
-                $userFilter
-                GROUP BY status";
+        $jsonData = file_get_contents($jsonFile);
+        $appData = json_decode($jsonData, true);
         
-        $result = $this->db->query($sql);
-        $rows = $this->db->fetchAll($result);
+        if (!isset($appData['records']) || !is_array($appData['records'])) {
+            return $counts;
+        }
         
-        if ($rows) {
-            foreach ($rows as $row) {
-                if (isset($row['status'])) {
-                    $status = $row['status'];
-                    $count = isset($row['count']) ? $row['count'] : 0;
-                    
-                    if (isset($counts[$status])) {
-                        $counts[$status] = (int) $count;
-                    }
-                    
-                    $counts['total'] += (int) $count;
+        $applications = $appData['records'];
+        
+        // Фильтруем заявки по пользователю, если указан
+        if ($userId) {
+            $userId = (int) $userId;
+            $applications = array_filter($applications, function($app) use ($userId) {
+                return isset($app['user_id']) && (int)$app['user_id'] === $userId;
+            });
+        }
+        
+        // Подсчитываем количество заявок по статусам
+        foreach ($applications as $app) {
+            if (isset($app['status'])) {
+                $status = $app['status'];
+                
+                if (isset($counts[$status])) {
+                    $counts[$status]++;
                 }
+                
+                $counts['total']++;
             }
         }
         
@@ -291,70 +429,206 @@ class Applications {
      * Получить количество заявок по менеджерам
      */
     public function getApplicationsCountByManager() {
-        $sql = "SELECT 
-                m.id as manager_id,
-                m.first_name,
-                m.last_name,
-                COUNT(a.id) as total,
-                SUM(CASE WHEN a.status = 'new' THEN 1 ELSE 0 END) as new,
-                SUM(CASE WHEN a.status = 'in_progress' THEN 1 ELSE 0 END) as in_progress,
-                SUM(CASE WHEN a.status = 'approved' THEN 1 ELSE 0 END) as approved,
-                SUM(CASE WHEN a.status = 'rejected' THEN 1 ELSE 0 END) as rejected
-                FROM users m
-                LEFT JOIN applications a ON m.id = a.manager_id
-                WHERE m.role = 'manager'
-                GROUP BY m.id, m.first_name, m.last_name
-                ORDER BY total DESC";
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/applications.json';
+        $usersFile = __DIR__ . '/../data/users.json';
         
-        $result = $this->db->query($sql);
-        return $this->db->fetchAll($result);
+        $managerStats = [];
+        
+        if (!file_exists($jsonFile) || !file_exists($usersFile)) {
+            return [];
+        }
+        
+        // Загружаем данные о пользователях
+        $userData = json_decode(file_get_contents($usersFile), true);
+        if (!isset($userData['records']) || !is_array($userData['records'])) {
+            return [];
+        }
+        
+        // Находим всех менеджеров
+        $managers = [];
+        foreach ($userData['records'] as $user) {
+            if (isset($user['role']) && $user['role'] === 'manager') {
+                $managers[$user['id']] = [
+                    'manager_id' => $user['id'],
+                    'first_name' => $user['first_name'] ?? '',
+                    'last_name' => $user['last_name'] ?? '',
+                    'total' => 0,
+                    'new' => 0,
+                    'in_progress' => 0, 
+                    'approved' => 0,
+                    'rejected' => 0
+                ];
+            }
+        }
+        
+        // Если нет менеджеров, возвращаем пустой массив
+        if (empty($managers)) {
+            return [];
+        }
+        
+        // Загружаем данные о заявках
+        $appData = json_decode(file_get_contents($jsonFile), true);
+        if (!isset($appData['records']) || !is_array($appData['records'])) {
+            return array_values($managers);
+        }
+        
+        // Обрабатываем заявки
+        foreach ($appData['records'] as $app) {
+            if (isset($app['manager_id']) && isset($managers[$app['manager_id']])) {
+                $managers[$app['manager_id']]['total']++;
+                
+                if (isset($app['status'])) {
+                    switch ($app['status']) {
+                        case 'new':
+                            $managers[$app['manager_id']]['new']++;
+                            break;
+                        case 'in_progress':
+                            $managers[$app['manager_id']]['in_progress']++;
+                            break;
+                        case 'approved':
+                            $managers[$app['manager_id']]['approved']++;
+                            break;
+                        case 'rejected':
+                            $managers[$app['manager_id']]['rejected']++;
+                            break;
+                    }
+                }
+            }
+        }
+        
+        // Сортируем менеджеров по общему количеству заявок
+        usort($managers, function($a, $b) {
+            return $b['total'] - $a['total'];
+        });
+        
+        return array_values($managers);
     }
     
     /**
      * Получить количество неназначенных заявок
      */
     public function getUnassignedApplicationsCount() {
-        $sql = "SELECT COUNT(*) as count FROM applications WHERE manager_id IS NULL";
-        $result = $this->db->query($sql);
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/applications.json';
         
-        if (is_array($result) && !empty($result)) {
-            // Проверяем разные возможные форматы результата
-            if (isset($result[0]['COUNT(*)'])) {
-                return (int) $result[0]['COUNT(*)'];
-            } elseif (isset($result[0]['count'])) {
-                return (int) $result[0]['count'];
-            } elseif (isset($result[0][0])) {
-                return (int) $result[0][0];
-            }
+        if (!file_exists($jsonFile)) {
+            return 0;
         }
         
-        return 0;
+        $jsonData = file_get_contents($jsonFile);
+        $appData = json_decode($jsonData, true);
+        
+        if (!isset($appData['records']) || !is_array($appData['records'])) {
+            return 0;
+        }
+        
+        // Фильтруем заявки без менеджера
+        $unassignedApplications = array_filter($appData['records'], function($app) {
+            return empty($app['manager_id']) || $app['manager_id'] === null;
+        });
+        
+        return count($unassignedApplications);
     }
     
     /**
      * Получить неназначенные заявки
      */
     public function getUnassignedApplications($limit = 0) {
-        $sql = "SELECT a.*, 
-                u.first_name as client_first_name, 
-                u.last_name as client_last_name,
-                v.make as vehicle_make,
-                v.model as vehicle_model,
-                re.title as real_estate_title,
-                re.type as real_estate_type
-                FROM applications a
-                LEFT JOIN users u ON a.user_id = u.id
-                LEFT JOIN vehicles v ON a.vehicle_id = v.id
-                LEFT JOIN real_estate re ON a.real_estate_id = re.id
-                WHERE a.manager_id IS NULL
-                ORDER BY a.created_at DESC";
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/applications.json';
+        $usersFile = __DIR__ . '/../data/users.json';
+        $vehiclesFile = __DIR__ . '/../data/vehicles.json';
+        $realEstateFile = __DIR__ . '/../data/real_estate.json';
         
-        if ($limit > 0) {
-            $sql .= " LIMIT $limit";
+        if (!file_exists($jsonFile)) {
+            return [];
         }
         
-        $result = $this->db->query($sql);
-        return $this->db->fetchAll($result);
+        $jsonData = file_get_contents($jsonFile);
+        $appData = json_decode($jsonData, true);
+        
+        if (!isset($appData['records']) || !is_array($appData['records'])) {
+            return [];
+        }
+        
+        // Фильтруем заявки без менеджера
+        $unassignedApplications = array_filter($appData['records'], function($app) {
+            return empty($app['manager_id']) || $app['manager_id'] === null;
+        });
+        
+        // Сортировка по дате создания (новые в начале)
+        usort($unassignedApplications, function($a, $b) {
+            return strtotime($b['created_at']) - strtotime($a['created_at']);
+        });
+        
+        // Загружаем данные пользователей, транспорта и недвижимости
+        $users = [];
+        if (file_exists($usersFile)) {
+            $userData = json_decode(file_get_contents($usersFile), true);
+            if (isset($userData['records']) && is_array($userData['records'])) {
+                foreach ($userData['records'] as $user) {
+                    if (isset($user['id'])) {
+                        $users[$user['id']] = $user;
+                    }
+                }
+            }
+        }
+        
+        $vehicles = [];
+        if (file_exists($vehiclesFile)) {
+            $vehicleData = json_decode(file_get_contents($vehiclesFile), true);
+            if (isset($vehicleData['records']) && is_array($vehicleData['records'])) {
+                foreach ($vehicleData['records'] as $vehicle) {
+                    if (isset($vehicle['id'])) {
+                        $vehicles[$vehicle['id']] = $vehicle;
+                    }
+                }
+            }
+        }
+        
+        $realEstates = [];
+        if (file_exists($realEstateFile)) {
+            $reData = json_decode(file_get_contents($realEstateFile), true);
+            if (isset($reData['records']) && is_array($reData['records'])) {
+                foreach ($reData['records'] as $re) {
+                    if (isset($re['id'])) {
+                        $realEstates[$re['id']] = $re;
+                    }
+                }
+            }
+        }
+        
+        // Добавляем дополнительные поля из связанных таблиц
+        foreach ($unassignedApplications as &$app) {
+            // Добавляем данные о пользователе
+            if (isset($app['user_id']) && isset($users[$app['user_id']])) {
+                $user = $users[$app['user_id']];
+                $app['client_first_name'] = $user['first_name'] ?? '';
+                $app['client_last_name'] = $user['last_name'] ?? '';
+            }
+            
+            // Добавляем данные о транспорте
+            if (isset($app['vehicle_id']) && isset($vehicles[$app['vehicle_id']])) {
+                $vehicle = $vehicles[$app['vehicle_id']];
+                $app['vehicle_make'] = $vehicle['make'] ?? '';
+                $app['vehicle_model'] = $vehicle['model'] ?? '';
+            }
+            
+            // Добавляем данные о недвижимости
+            if (isset($app['real_estate_id']) && isset($realEstates[$app['real_estate_id']])) {
+                $re = $realEstates[$app['real_estate_id']];
+                $app['real_estate_title'] = $re['title'] ?? '';
+                $app['real_estate_type'] = $re['type'] ?? '';
+            }
+        }
+        
+        // Пагинация
+        if ($limit > 0) {
+            $unassignedApplications = array_slice($unassignedApplications, 0, $limit);
+        }
+        
+        return array_values($unassignedApplications);
     }
 }
 ?>
