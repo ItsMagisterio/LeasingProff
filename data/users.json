@@ -13,7 +13,7 @@
     "indices": [
         "email"
     ],
-    "auto_increment": 7,
+    "auto_increment": 9,
     "records": [
         {
             "email": "admin@2leasing.ru",
@@ -75,6 +75,28 @@
             "id": 6,
             "created_at": "2025-04-20 16:06:27",
             "updated_at": "2025-04-20 16:06:27"
+        },
+        {
+            "email": "vavrencukbagdan28@gmail.com",
+            "password": "$2y$10$dvQ2JfJChDIZV2\/R7A2O0OnISgu1wCxIee87MX1S.OZfWkRZ5M62u",
+            "first_name": "\u043a\u043a\u043f\u0435\u0435\u043a\u043f",
+            "last_name": "\u043f\u043f\u0430\u0430\u0432\u044b\u0430\u0430",
+            "phone": "803335653455",
+            "role": "client",
+            "id": 7,
+            "created_at": "2025-04-20 16:46:25",
+            "updated_at": "2025-04-20 16:46:25"
+        },
+        {
+            "email": "vavrencukbaagdan28@gmail.com",
+            "password": "$2y$10$jdSBtBjLf\/HgO\/ElfNzg\/uCFnOJ4xMaGpbfvXfeEIa.uC2v.Q7.7S",
+            "first_name": "\u0411\u043e\u0433\u0434\u0430\u043d",
+            "last_name": "Andrey",
+            "phone": "90333565345",
+            "role": "client",
+            "id": 8,
+            "created_at": "2025-04-20 16:48:29",
+            "updated_at": "2025-04-20 16:48:29"
         }
     ]
 }

@@ -267,14 +267,16 @@ class Applications {
         
         if ($rows) {
             foreach ($rows as $row) {
-                $status = $row['status'];
-                $count = $row['count'];
-                
-                if (isset($counts[$status])) {
-                    $counts[$status] = (int) $count;
+                if (isset($row['status'])) {
+                    $status = $row['status'];
+                    $count = isset($row['count']) ? $row['count'] : 0;
+                    
+                    if (isset($counts[$status])) {
+                        $counts[$status] = (int) $count;
+                    }
+                    
+                    $counts['total'] += (int) $count;
                 }
-                
-                $counts['total'] += (int) $count;
             }
         }
         
@@ -308,11 +310,18 @@ class Applications {
      * Получить количество неназначенных заявок
      */
     public function getUnassignedApplicationsCount() {
-        $sql = "SELECT COUNT(*) FROM applications WHERE manager_id IS NULL";
+        $sql = "SELECT COUNT(*) as count FROM applications WHERE manager_id IS NULL";
         $result = $this->db->query($sql);
         
-        if (is_array($result) && isset($result[0]) && isset($result[0]['COUNT(*)'])) {
-            return (int) $result[0]['COUNT(*)'];
+        if (is_array($result) && !empty($result)) {
+            // Проверяем разные возможные форматы результата
+            if (isset($result[0]['COUNT(*)'])) {
+                return (int) $result[0]['COUNT(*)'];
+            } elseif (isset($result[0]['count'])) {
+                return (int) $result[0]['count'];
+            } elseif (isset($result[0][0])) {
+                return (int) $result[0][0];
+            }
         }
         
         return 0;
