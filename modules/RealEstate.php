@@ -390,8 +390,12 @@ class RealEstate {
         $result = $this->db->query("SELECT DISTINCT $field FROM real_estate ORDER BY $field");
         $values = [];
         
-        foreach ($result as $row) {
-            $values[] = $row[$field];
+        if (!empty($result)) {
+            foreach ($result as $row) {
+                if (isset($row[$field])) {
+                    $values[] = $row[$field];
+                }
+            }
         }
         
         return $values;

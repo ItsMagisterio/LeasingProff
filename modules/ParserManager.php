@@ -300,7 +300,7 @@ class ParserManager {
             $result = $this->db->query($query);
             
             // Если такого автомобиля нет, добавляем его
-            if (isset($result[0]) && $result[0]['COUNT(*)'] == 0) {
+            if (empty($result) || (isset($result[0]) && isset($result[0]['count']) && $result[0]['count'] == 0)) {
                 $query = "INSERT INTO vehicles (
                     make, model, year, engine, power, drive_type, transmission, 
                     color, interior, features, image_url, price, monthly_payment, 
@@ -325,10 +325,10 @@ class ParserManager {
                 )";
                 
                 $result = $this->db->query($query);
-                if ($result !== false && $this->db->affectedRows($result) > 0) {
+                if ($result !== false) {
                     $savedCount++;
                 } else {
-                    $this->log("Ошибка при сохранении автомобиля {$vehicle['make']} {$vehicle['model']}: " . $this->db->lastError());
+                    $this->log("Ошибка при сохранении автомобиля {$vehicle['make']} {$vehicle['model']}");
                 }
             }
         }
