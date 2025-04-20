@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(10, 15)">
+    <!-- Text "РЕСО-Лизинг" -->
+    <path d="M0 0H15V5H5V10H12V15H5V25H0V0Z" fill="#ED1C24"/>
+    <path d="M20 0H35V5H25V10H33V15H25V20H35V25H20V0Z" fill="#ED1C24"/>
+    <path d="M40 0H53C56 0 59 3 59 6.5C59 10 56 13 53 13H45V25H40V0ZM45 8H51C52 8 53 7 53 6C53 5 52 5 51 5H45V8Z" fill="#ED1C24"/>
+    <path d="M65 15.5C65 8.5 70.5 3 77.5 3C84.5 3 90 8.5 90 15.5C90 22.5 84.5 28 77.5 28C70.5 28 65 22.5 65 15.5ZM71 15.5C71 19.5 74 23 77.5 23C81 23 84 19.5 84 15.5C84 11.5 81 8 77.5 8C74 8 71 11.5 71 15.5Z" fill="#ED1C24"/>
+    <path d="M95 0H100V10H95V0ZM95 15H100V25H95V15Z" fill="#ED1C24"/>
+    <path d="M105 0H120V5H110V10H118V15H110V20H120V25H105V0Z" fill="#ED1C24"/>
+    <path d="M125 0H140V5H130V25H125V0Z" fill="#ED1C24"/>
+    <path d="M145 0H150L160 14V0H165V25H160L150 11V25H145V0Z" fill="#ED1C24"/>
+    <path d="M170 0H175V20H185V25H170V0Z" fill="#ED1C24"/>
+  </g>
+</svg>
