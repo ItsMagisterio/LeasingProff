@@ -291,9 +291,14 @@ class RealEstate {
         
         if (count($result) > 0) {
             $row = $result[0];
+            
+            // Проверяем наличие ключей
+            $min = isset($row['min']) ? (int) $row['min'] : 0;
+            $max = isset($row['max']) ? (int) $row['max'] : 10000000;
+            
             return [
-                'min' => (int) $row['min'],
-                'max' => (int) $row['max']
+                'min' => $min,
+                'max' => $max
             ];
         }
         
@@ -311,9 +316,14 @@ class RealEstate {
         
         if (count($result) > 0) {
             $row = $result[0];
+            
+            // Проверяем наличие ключей
+            $min = isset($row['min']) ? (float) $row['min'] : 0;
+            $max = isset($row['max']) ? (float) $row['max'] : 500;
+            
             return [
-                'min' => (float) $row['min'],
-                'max' => (float) $row['max']
+                'min' => $min,
+                'max' => $max
             ];
         }
         

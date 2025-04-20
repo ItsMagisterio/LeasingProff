@@ -496,6 +496,37 @@ class Database {
             ];
         }
         
+        // Обработка MIN и MAX функций
+        if (preg_match('/SELECT\s+MIN\((.*?)\)\s+as\s+min,\s+MAX\((.*?)\)\s+as\s+max/i', $sql, $matches)) {
+            $minField = trim($matches[1]);
+            $maxField = trim($matches[2]);
+            
+            if (empty($records)) {
+                return [
+                    ['min' => null, 'max' => null]
+                ];
+            }
+            
+            $minValue = null;
+            $maxValue = null;
+            
+            foreach ($records as $record) {
+                if (isset($record[$minField])) {
+                    $value = $record[$minField];
+                    if ($minValue === null || $value < $minValue) {
+                        $minValue = $value;
+                    }
+                    if ($maxValue === null || $value > $maxValue) {
+                        $maxValue = $value;
+                    }
+                }
+            }
+            
+            return [
+                ['min' => $minValue, 'max' => $maxValue]
+            ];
+        }
+        
         // Фильтрация по WHERE
         if (strpos($sql, 'WHERE') !== false) {
             preg_match('/WHERE\s+(.*?)(\s+ORDER BY|\s+LIMIT|$)/i', $sql, $matches);
