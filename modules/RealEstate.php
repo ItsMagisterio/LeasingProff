@@ -285,8 +285,8 @@ class RealEstate {
     public function getRealEstatePriceRange() {
         $result = $this->db->query("SELECT MIN(price) as min, MAX(price) as max FROM real_estate");
         
-        if (pg_num_rows($result) > 0) {
-            $row = pg_fetch_assoc($result);
+        if (count($result) > 0) {
+            $row = $result[0];
             return [
                 'min' => (int) $row['min'],
                 'max' => (int) $row['max']
@@ -305,8 +305,8 @@ class RealEstate {
     public function getRealEstateAreaRange() {
         $result = $this->db->query("SELECT MIN(area) as min, MAX(area) as max FROM real_estate");
         
-        if (pg_num_rows($result) > 0) {
-            $row = pg_fetch_assoc($result);
+        if (count($result) > 0) {
+            $row = $result[0];
             return [
                 'min' => (float) $row['min'],
                 'max' => (float) $row['max']
@@ -364,9 +364,12 @@ class RealEstate {
         }
         
         $result = $this->db->query($sql);
-        $row = pg_fetch_row($result);
         
-        return (int) $row[0];
+        if (is_array($result) && isset($result[0]) && isset($result[0]['COUNT(*)'])) {
+            return (int) $result[0]['COUNT(*)'];
+        }
+        
+        return 0;
     }
     
     /**
@@ -383,7 +386,7 @@ class RealEstate {
         $result = $this->db->query("SELECT DISTINCT $field FROM real_estate ORDER BY $field");
         $values = [];
         
-        while ($row = pg_fetch_assoc($result)) {
+        foreach ($result as $row) {
             $values[] = $row[$field];
         }
         

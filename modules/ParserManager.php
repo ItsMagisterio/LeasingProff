@@ -13,8 +13,7 @@ class ParserManager {
      * Конструктор класса
      */
     public function __construct() {
-        $db = Database::getInstance();
-        $this->connection = $db->getConnection();
+        $this->db = Database::getInstance();
         
         // Регистрируем все доступные парсеры
         $this->registerParsers();
@@ -298,11 +297,10 @@ class ParserManager {
                       color = '{$this->escapeString($vehicle['color'])}' AND 
                       source = '{$this->escapeString($source)}'";
                       
-            $result = pg_query($this->connection, $query);
-            $row = pg_fetch_row($result);
+            $result = $this->db->query($query);
             
             // Если такого автомобиля нет, добавляем его
-            if ($row[0] == 0) {
+            if (isset($result[0]) && $result[0]['COUNT(*)'] == 0) {
                 $query = "INSERT INTO vehicles (
                     make, model, year, engine, power, drive_type, transmission, 
                     color, interior, features, image_url, price, monthly_payment, 
@@ -326,10 +324,11 @@ class ParserManager {
                     'available'
                 )";
                 
-                if (pg_query($this->connection, $query)) {
+                $result = $this->db->query($query);
+                if ($result !== false && $this->db->affectedRows($result) > 0) {
                     $savedCount++;
                 } else {
-                    $this->log("Ошибка при сохранении автомобиля {$vehicle['make']} {$vehicle['model']}: " . pg_last_error($this->connection));
+                    $this->log("Ошибка при сохранении автомобиля {$vehicle['make']} {$vehicle['model']}: " . $this->db->lastError());
                 }
             }
         }
@@ -341,7 +340,7 @@ class ParserManager {
      * Экранирует строку для безопасного использования в SQL запросах
      */
     private function escapeString($string) {
-        return pg_escape_string($this->connection, $string);
+        return $this->db->escapeString($string);
     }
     
     /**
