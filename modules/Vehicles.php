@@ -13,7 +13,7 @@ class Vehicles {
      * Получить список всех автомобилей
      */
     public function getAllVehicles($limit = 0, $offset = 0, $filters = []) {
-        $sql = "SELECT * FROM vehicles WHERE 1=1";
+        $sql = "SELECT * FROM vehicles WHERE status != 'deleted' OR status IS NULL";
         
         // Применяем фильтры
         if (!empty($filters)) {
