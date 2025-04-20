@@ -64,7 +64,7 @@ class Auth {
         ");
         
         // Проверяем, что запрос выполнен успешно
-        if (is_numeric($result) && $result > 0) {
+        if ($result === true || (is_numeric($result) && $result > 0)) {
             // Получаем ID нового пользователя
             $userId = $this->db->lastInsertId('users');
             
