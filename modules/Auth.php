@@ -16,7 +16,7 @@ class Auth {
         $email = $this->db->escapeString($email);
         $result = $this->db->query("SELECT * FROM users WHERE email = '$email'");
         
-        if (pg_num_rows($result) > 0) {
+        if (count($result) > 0) {
             $user = $this->db->fetchRow($result);
             
             if (password_verify($password, $user['password'])) {
@@ -41,7 +41,7 @@ class Auth {
         $email = $this->db->escapeString($userData['email']);
         $result = $this->db->query("SELECT id FROM users WHERE email = '$email'");
         
-        if (pg_num_rows($result) > 0) {
+        if (count($result) > 0) {
             return [
                 'success' => false,
                 'message' => 'Email уже зарегистрирован в системе'
@@ -120,7 +120,7 @@ class Auth {
         $userId = $_SESSION['user_id'];
         $result = $this->db->query("SELECT * FROM users WHERE id = $userId");
         
-        if (pg_num_rows($result) > 0) {
+        if (count($result) > 0) {
             return $this->db->fetchRow($result);
         }
         

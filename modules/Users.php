@@ -16,7 +16,7 @@ class Users {
         $sql = "SELECT id, email, first_name, last_name, phone, role, created_at FROM users";
         
         if ($role) {
-            $role = pg_escape_string($role);
+            $role = $this->db->escapeString($role);
             $sql .= " WHERE role = '$role'";
         }
         
@@ -43,7 +43,7 @@ class Users {
         
         $result = $this->db->query($sql);
         
-        if (pg_num_rows($result) > 0) {
+        if (count($result) > 0) {
             return $this->db->fetchRow($result);
         }
         
@@ -54,12 +54,12 @@ class Users {
      * Получить данные пользователя по email
      */
     public function getUserByEmail($email) {
-        $email = pg_escape_string($email);
+        $email = $this->db->escapeString($email);
         $sql = "SELECT id, email, first_name, last_name, phone, role, created_at FROM users WHERE email = '$email'";
         
         $result = $this->db->query($sql);
         
-        if (pg_num_rows($result) > 0) {
+        if (count($result) > 0) {
             return $this->db->fetchRow($result);
         }
         
@@ -75,7 +75,7 @@ class Users {
         // Проверяем существование пользователя
         $result = $this->db->query("SELECT id FROM users WHERE id = $userId");
         
-        if (pg_num_rows($result) === 0) {
+        if (count($result) === 0) {
             return [
                 'success' => false,
                 'message' => 'Пользователь не найден'
@@ -85,22 +85,22 @@ class Users {
         $updates = [];
         
         if (isset($userData['first_name'])) {
-            $firstName = pg_escape_string($userData['first_name']);
+            $firstName = $this->db->escapeString($userData['first_name']);
             $updates[] = "first_name = '$firstName'";
         }
         
         if (isset($userData['last_name'])) {
-            $lastName = pg_escape_string($userData['last_name']);
+            $lastName = $this->db->escapeString($userData['last_name']);
             $updates[] = "last_name = '$lastName'";
         }
         
         if (isset($userData['phone'])) {
-            $phone = pg_escape_string($userData['phone']);
+            $phone = $this->db->escapeString($userData['phone']);
             $updates[] = "phone = '$phone'";
         }
         
         if (isset($userData['role'])) {
-            $role = pg_escape_string($userData['role']);
+            $role = $this->db->escapeString($userData['role']);
             $updates[] = "role = '$role'";
         }
         
