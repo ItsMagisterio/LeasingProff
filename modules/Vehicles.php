@@ -65,7 +65,7 @@ class Vehicles {
         $vehicleId = (int) $vehicleId;
         $result = $this->db->query("SELECT * FROM vehicles WHERE id = $vehicleId");
         
-        if (pg_num_rows($result) > 0) {
+        if (count($result) > 0) {
             return $this->db->fetchRow($result);
         }
         
@@ -122,7 +122,7 @@ class Vehicles {
         // Проверяем существование автомобиля
         $result = $this->db->query("SELECT id FROM vehicles WHERE id = $vehicleId");
         
-        if (pg_num_rows($result) === 0) {
+        if (count($result) === 0) {
             return [
                 'success' => false,
                 'message' => 'Автомобиль не найден'
@@ -228,7 +228,7 @@ class Vehicles {
         // Проверяем, есть ли заявки на этот автомобиль
         $result = $this->db->query("SELECT id FROM applications WHERE vehicle_id = $vehicleId");
         
-        if (pg_num_rows($result) > 0) {
+        if (count($result) > 0) {
             return [
                 'success' => false,
                 'message' => 'Невозможно удалить автомобиль, так как на него есть заявки'
@@ -257,7 +257,7 @@ class Vehicles {
         $result = $this->db->query("SELECT DISTINCT make FROM vehicles ORDER BY make");
         $makes = [];
         
-        while ($row = pg_fetch_assoc($result)) {
+        foreach ($result as $row) {
             $makes[] = $row['make'];
         }
         
@@ -272,7 +272,7 @@ class Vehicles {
         $result = $this->db->query("SELECT DISTINCT model FROM vehicles WHERE make = '$make' ORDER BY model");
         $models = [];
         
-        while ($row = pg_fetch_assoc($result)) {
+        foreach ($result as $row) {
             $models[] = $row['model'];
         }
         

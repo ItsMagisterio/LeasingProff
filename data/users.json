@@ -13,7 +13,7 @@
     "indices": [
         "email"
     ],
-    "auto_increment": 6,
+    "auto_increment": 7,
     "records": [
         {
             "email": "admin@2leasing.ru",
@@ -64,6 +64,17 @@
             "id": 5,
             "created_at": "2025-04-20 16:04:21",
             "updated_at": "2025-04-20 16:04:21"
+        },
+        {
+            "email": "vavrencukbogdan28@gmail.com",
+            "password": "$2y$10$MZ.hmLL27rzsFJD\/ZDd9ber04jgc7k2l29avrB41OIpgbYFyHRBfG",
+            "first_name": "\u0411\u043e\u0433\u0434\u0430\u043d",
+            "last_name": "\u0411\u043e\u0433\u0434\u0430\u043d",
+            "phone": "80333565345",
+            "role": "client",
+            "id": 6,
+            "created_at": "2025-04-20 16:06:27",
+            "updated_at": "2025-04-20 16:06:27"
         }
     ]
 }

@@ -136,7 +136,7 @@ class Users {
         // Проверяем, есть ли заявки у этого пользователя
         $result = $this->db->query("SELECT id FROM applications WHERE user_id = $userId");
         
-        if (pg_num_rows($result) > 0) {
+        if (count($result) > 0) {
             return [
                 'success' => false,
                 'message' => 'Невозможно удалить пользователя, так как у него есть заявки'
@@ -203,10 +203,10 @@ class Users {
      */
     public function createManager($userData) {
         // Проверяем, не занят ли email
-        $email = pg_escape_string($userData['email']);
+        $email = $this->db->escapeString($userData['email']);
         $result = $this->db->query("SELECT id FROM users WHERE email = '$email'");
         
-        if (pg_num_rows($result) > 0) {
+        if (count($result) > 0) {
             return [
                 'success' => false,
                 'message' => 'Email уже зарегистрирован в системе'
@@ -217,9 +217,9 @@ class Users {
         $password = password_hash($userData['password'], PASSWORD_DEFAULT);
         
         // Подготавливаем данные
-        $firstName = pg_escape_string($userData['first_name']);
-        $lastName = pg_escape_string($userData['last_name']);
-        $phone = pg_escape_string($userData['phone']);
+        $firstName = $this->db->escapeString($userData['first_name']);
+        $lastName = $this->db->escapeString($userData['last_name']);
+        $phone = $this->db->escapeString($userData['phone']);
         $role = 'manager';
         
         // Добавляем пользователя
