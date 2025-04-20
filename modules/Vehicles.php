@@ -257,8 +257,12 @@ class Vehicles {
         $result = $this->db->query("SELECT DISTINCT make FROM vehicles ORDER BY make");
         $makes = [];
         
-        foreach ($result as $row) {
-            $makes[] = $row['make'];
+        if (!empty($result)) {
+            foreach ($result as $row) {
+                if (isset($row['make'])) {
+                    $makes[] = $row['make'];
+                }
+            }
         }
         
         return $makes;
@@ -272,8 +276,12 @@ class Vehicles {
         $result = $this->db->query("SELECT DISTINCT model FROM vehicles WHERE make = '$make' ORDER BY model");
         $models = [];
         
-        foreach ($result as $row) {
-            $models[] = $row['model'];
+        if (!empty($result)) {
+            foreach ($result as $row) {
+                if (isset($row['model'])) {
+                    $models[] = $row['model'];
+                }
+            }
         }
         
         return $models;

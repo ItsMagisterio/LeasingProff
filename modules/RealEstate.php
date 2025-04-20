@@ -265,8 +265,12 @@ class RealEstate {
         $result = $this->db->query("SELECT DISTINCT type FROM real_estate ORDER BY type");
         $types = [];
         
-        foreach ($result as $row) {
-            $types[] = $row['type'];
+        if (!empty($result)) {
+            foreach ($result as $row) {
+                if (isset($row['type'])) {
+                    $types[] = $row['type'];
+                }
+            }
         }
         
         return $types;
