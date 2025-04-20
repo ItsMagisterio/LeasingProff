@@ -16,14 +16,14 @@ class Auth {
         $email = $this->db->escapeString($email);
         $result = $this->db->query("SELECT * FROM users WHERE email = '$email'");
         
-        if (count($result) > 0) {
-            $user = $this->db->fetchRow($result);
+        if (is_array($result) && count($result) > 0) {
+            $user = $result[0]; // Берем первую запись напрямую, т.к. fetchRow может неправильно работать
             
             if (password_verify($password, $user['password'])) {
                 // Сохраняем пользователя в сессии
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_email'] = $user['email'];
-                $_SESSION['user_role'] = $user['role'];
+                $_SESSION['user_role'] = isset($user['role']) ? $user['role'] : 'client'; // Проверяем наличие роли
                 $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
                 
                 return true;
@@ -41,7 +41,7 @@ class Auth {
         $email = $this->db->escapeString($userData['email']);
         $result = $this->db->query("SELECT id FROM users WHERE email = '$email'");
         
-        if (count($result) > 0) {
+        if (is_array($result) && count($result) > 0) {
             return [
                 'success' => false,
                 'message' => 'Email уже зарегистрирован в системе'
@@ -63,7 +63,8 @@ class Auth {
             VALUES ('$email', '$password', '$firstName', '$lastName', '$phone', '$role')
         ");
         
-        if ($this->db->affectedRows($result) > 0) {
+        // Проверяем, что запрос выполнен успешно
+        if (is_numeric($result) && $result > 0) {
             // Получаем ID нового пользователя
             $userId = $this->db->lastInsertId('users');
             
@@ -120,8 +121,8 @@ class Auth {
         $userId = $_SESSION['user_id'];
         $result = $this->db->query("SELECT * FROM users WHERE id = $userId");
         
-        if (count($result) > 0) {
-            return $this->db->fetchRow($result);
+        if (is_array($result) && count($result) > 0) {
+            return $result[0]; // Берем первый результат напрямую
         }
         
         return null;
