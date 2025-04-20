@@ -249,31 +249,66 @@ class Applications {
         $initialPayment = (float) $applicationData['initial_payment'];
         $termMonths = (int) $applicationData['term_months'];
         $monthlyPayment = (float) $applicationData['monthly_payment'];
-        $comments = $this->db->escapeString($applicationData['comments'] ?? '');
-        $type = $this->db->escapeString($applicationData['type'] ?? 'vehicle');
+        $comments = $applicationData['comments'] ?? '';
+        $type = $applicationData['type'] ?? 'vehicle';
         
-        // Формируем SQL в зависимости от типа заявки
-        if ($type === 'real_estate') {
-            $realEstateId = (int) $applicationData['real_estate_id'];
-            $sql = "INSERT INTO applications 
-                    (user_id, real_estate_id, type, status, initial_payment, term_months, monthly_payment, comments)
-                    VALUES 
-                    ($userId, $realEstateId, '$type', 'new', $initialPayment, $termMonths, $monthlyPayment, '$comments')";
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/applications.json';
+        
+        // Проверка существования файла и создание пустой структуры, если файла нет
+        if (!file_exists($jsonFile)) {
+            $appData = [
+                'next_id' => 1,
+                'records' => []
+            ];
         } else {
-            $vehicleId = (int) $applicationData['vehicle_id'];
-            $sql = "INSERT INTO applications 
-                    (user_id, vehicle_id, type, status, initial_payment, term_months, monthly_payment, comments)
-                    VALUES 
-                    ($userId, $vehicleId, '$type', 'new', $initialPayment, $termMonths, $monthlyPayment, '$comments')";
+            $jsonData = file_get_contents($jsonFile);
+            $appData = json_decode($jsonData, true);
+            
+            if (!isset($appData['next_id'])) {
+                $appData['next_id'] = 1;
+            }
+            
+            if (!isset($appData['records'])) {
+                $appData['records'] = [];
+            }
         }
         
-        $result = $this->db->query($sql);
+        // Определяем ID для новой заявки
+        $newId = $appData['next_id'];
+        $appData['next_id']++;
         
-        // Проверяем результат - либо числовое значение > 0, либо true (для JSON-базы)
-        if ($result === true || (is_numeric($result) && $result > 0) || $this->db->affectedRows($result) > 0) {
+        // Создаем новую заявку
+        $newApplication = [
+            'id' => $newId,
+            'user_id' => $userId,
+            'status' => 'new',
+            'type' => $type,
+            'initial_payment' => $initialPayment,
+            'term_months' => $termMonths,
+            'monthly_payment' => $monthlyPayment,
+            'comments' => $comments,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+        
+        // Добавляем специфические поля в зависимости от типа
+        if ($type === 'real_estate') {
+            $newApplication['real_estate_id'] = (int) $applicationData['real_estate_id'];
+        } else {
+            $newApplication['vehicle_id'] = (int) $applicationData['vehicle_id'];
+        }
+        
+        // Добавляем заявку в массив
+        $appData['records'][] = $newApplication;
+        
+        // Сохраняем обновленные данные в файл
+        $result = file_put_contents($jsonFile, json_encode($appData, JSON_PRETTY_PRINT));
+        
+        if ($result !== false) {
             return [
                 'success' => true,
-                'application_id' => $this->db->lastInsertId('applications')
+                'application_id' => $newId
             ];
         }
         
@@ -287,33 +322,9 @@ class Applications {
      * Создать новую заявку на лизинг недвижимости
      */
     public function createRealEstateApplication($applicationData) {
-        $userId = (int) $applicationData['user_id'];
-        $realEstateId = (int) $applicationData['real_estate_id'];
-        $initialPayment = (float) $applicationData['initial_payment'];
-        $termMonths = (int) $applicationData['term_months'];
-        $monthlyPayment = (float) $applicationData['monthly_payment'];
-        $comments = $this->db->escapeString($applicationData['comments'] ?? '');
-        $type = $this->db->escapeString($applicationData['type'] ?? 'real_estate');
-        
-        $sql = "INSERT INTO applications 
-                (user_id, real_estate_id, type, status, initial_payment, term_months, monthly_payment, comments)
-                VALUES 
-                ($userId, $realEstateId, '$type', 'new', $initialPayment, $termMonths, $monthlyPayment, '$comments')";
-        
-        $result = $this->db->query($sql);
-        
-        // Проверяем результат - либо числовое значение > 0, либо true (для JSON-базы)
-        if ($result === true || (is_numeric($result) && $result > 0) || $this->db->affectedRows($result) > 0) {
-            return [
-                'success' => true,
-                'application_id' => $this->db->lastInsertId('applications')
-            ];
-        }
-        
-        return [
-            'success' => false,
-            'message' => 'Ошибка при создании заявки на недвижимость'
-        ];
+        // Добавляем тип 'real_estate' и вызываем основной метод createApplication
+        $applicationData['type'] = 'real_estate';
+        return $this->createApplication($applicationData);
     }
     
     /**
@@ -321,17 +332,51 @@ class Applications {
      */
     public function updateApplicationStatus($applicationId, $status, $comments = '') {
         $applicationId = (int) $applicationId;
-        $status = $this->db->escapeString($status);
-        $comments = $this->db->escapeString($comments);
         
-        $sql = "UPDATE applications 
-                SET status = '$status', comments = '$comments', updated_at = CURRENT_TIMESTAMP 
-                WHERE id = $applicationId";
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/applications.json';
         
-        $result = $this->db->query($sql);
+        if (!file_exists($jsonFile)) {
+            return [
+                'success' => false,
+                'message' => 'Файл с заявками не найден'
+            ];
+        }
         
-        // Проверяем результат - либо числовое значение > 0, либо true (для JSON-базы)
-        if ($result === true || (is_numeric($result) && $result > 0) || $this->db->affectedRows($result) > 0) {
+        $jsonData = file_get_contents($jsonFile);
+        $appData = json_decode($jsonData, true);
+        
+        if (!isset($appData['records']) || !is_array($appData['records'])) {
+            return [
+                'success' => false,
+                'message' => 'Ошибка структуры данных заявок'
+            ];
+        }
+        
+        $applicationUpdated = false;
+        
+        // Обновляем статус и комментарии заявки
+        foreach ($appData['records'] as &$app) {
+            if (isset($app['id']) && (int)$app['id'] === $applicationId) {
+                $app['status'] = $status;
+                $app['comments'] = $comments;
+                $app['updated_at'] = date('Y-m-d H:i:s');
+                $applicationUpdated = true;
+                break;
+            }
+        }
+        
+        if (!$applicationUpdated) {
+            return [
+                'success' => false,
+                'message' => 'Заявка не найдена'
+            ];
+        }
+        
+        // Сохраняем обновленные данные в файл
+        $result = file_put_contents($jsonFile, json_encode($appData, JSON_PRETTY_PRINT));
+        
+        if ($result !== false) {
             return [
                 'success' => true,
                 'application_id' => $applicationId
@@ -351,14 +396,49 @@ class Applications {
         $applicationId = (int) $applicationId;
         $managerId = (int) $managerId;
         
-        $sql = "UPDATE applications 
-                SET manager_id = $managerId, updated_at = CURRENT_TIMESTAMP 
-                WHERE id = $applicationId";
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/applications.json';
         
-        $result = $this->db->query($sql);
+        if (!file_exists($jsonFile)) {
+            return [
+                'success' => false,
+                'message' => 'Файл с заявками не найден'
+            ];
+        }
         
-        // Проверяем результат - либо числовое значение > 0, либо true (для JSON-базы)
-        if ($result === true || (is_numeric($result) && $result > 0) || $this->db->affectedRows($result) > 0) {
+        $jsonData = file_get_contents($jsonFile);
+        $appData = json_decode($jsonData, true);
+        
+        if (!isset($appData['records']) || !is_array($appData['records'])) {
+            return [
+                'success' => false,
+                'message' => 'Ошибка структуры данных заявок'
+            ];
+        }
+        
+        $applicationUpdated = false;
+        
+        // Обновляем статус и комментарии заявки
+        foreach ($appData['records'] as &$app) {
+            if (isset($app['id']) && (int)$app['id'] === $applicationId) {
+                $app['manager_id'] = $managerId;
+                $app['updated_at'] = date('Y-m-d H:i:s');
+                $applicationUpdated = true;
+                break;
+            }
+        }
+        
+        if (!$applicationUpdated) {
+            return [
+                'success' => false,
+                'message' => 'Заявка не найдена'
+            ];
+        }
+        
+        // Сохраняем обновленные данные в файл
+        $result = file_put_contents($jsonFile, json_encode($appData, JSON_PRETTY_PRINT));
+        
+        if ($result !== false) {
             return [
                 'success' => true,
                 'application_id' => $applicationId
