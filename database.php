@@ -2,38 +2,37 @@
 /**
  * Класс для работы с базой данных
  * 
- * Обеспечивает соединение с PostgreSQL и основные функции для работы с данными
+ * Обеспечивает хранение данных в JSON-файлах и основные функции для работы с данными
  */
 class Database {
-    private $connection;
+    private $dataDir;
+    private $tables = [];
     private static $instance = null;
     
     /**
      * Конструктор класса
-     * Устанавливает соединение с базой данных
+     * Инициализирует хранилище данных
      */
     private function __construct() {
-        $dbUrl = getenv('DATABASE_URL');
+        // Директория для хранения файлов базы данных
+        $this->dataDir = dirname(__FILE__) . '/data';
         
-        try {
-            // Используем строку подключения из переменной окружения DATABASE_URL
-            $this->connection = pg_connect($dbUrl);
-            if (!$this->connection) {
-                throw new Exception("Не удалось подключиться к базе данных: " . pg_last_error());
+        // Создаем директорию, если она не существует
+        if (!is_dir($this->dataDir)) {
+            if (!mkdir($this->dataDir, 0755, true)) {
+                die("Ошибка при создании директории для хранения данных");
             }
-        } catch (Exception $e) {
-            die("Ошибка подключения к базе данных: " . $e->getMessage());
         }
 
-        // Инициализируем базу данных при первом подключении
+        // Инициализируем базу данных при первом запуске
         $this->initDatabase();
     }
     
     /**
-     * Экранирование строки для безопасного использования в SQL запросах
+     * Экранирование строки для безопасного использования
      */
     public function escapeString($string) {
-        return pg_escape_string($this->connection, $string);
+        return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
     }
 
     /**
@@ -45,100 +44,158 @@ class Database {
         }
         return self::$instance;
     }
-
+    
     /**
      * Создаёт необходимые таблицы если они не существуют
      */
     private function initDatabase() {
-        // Создаем таблицу пользователей
-        $query = "CREATE TABLE IF NOT EXISTS users (
-            id SERIAL PRIMARY KEY,
-            email VARCHAR(255) UNIQUE NOT NULL,
-            password VARCHAR(255) NOT NULL,
-            first_name VARCHAR(100) NOT NULL,
-            last_name VARCHAR(100) NOT NULL,
-            phone VARCHAR(20),
-            role VARCHAR(50) NOT NULL DEFAULT 'client',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )";
-        $this->query($query);
-
-        // Создаем таблицу автомобилей
-        $query = "CREATE TABLE IF NOT EXISTS vehicles (
-            id SERIAL PRIMARY KEY,
-            make VARCHAR(100) NOT NULL,
-            model VARCHAR(100) NOT NULL,
-            year INTEGER NOT NULL,
-            engine VARCHAR(50) NOT NULL,
-            power INTEGER NOT NULL,
-            drive_type VARCHAR(50) NOT NULL,
-            transmission VARCHAR(50) NOT NULL,
-            color VARCHAR(50) NOT NULL,
-            interior VARCHAR(100) NOT NULL,
-            features TEXT,
-            image_url TEXT,
-            price NUMERIC(12, 2) NOT NULL,
-            monthly_payment NUMERIC(12, 2) NOT NULL,
-            status VARCHAR(20) DEFAULT 'available',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )";
-        $this->query($query);
-
-        // Создаем таблицу недвижимости
-        $query = "CREATE TABLE IF NOT EXISTS real_estate (
-            id SERIAL PRIMARY KEY,
-            title VARCHAR(255) NOT NULL,
-            type VARCHAR(100) NOT NULL, -- квартира, дом, коммерческая недвижимость и т.д.
-            address TEXT NOT NULL,
-            area NUMERIC(10, 2) NOT NULL, -- площадь в кв.м.
-            rooms INTEGER, -- количество комнат (для жилой недвижимости)
-            floor INTEGER, -- этаж (для квартир)
-            total_floors INTEGER, -- всего этажей в здании
-            build_year INTEGER, -- год постройки
-            description TEXT,
-            features TEXT, -- особенности (парковка, охрана и т.д.)
-            image_url TEXT,
-            price NUMERIC(12, 2) NOT NULL,
-            monthly_payment NUMERIC(12, 2) NOT NULL,
-            status VARCHAR(20) DEFAULT 'available',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )";
-        $this->query($query);
+        // Определяем структуру таблиц в виде ассоциативных массивов
+        $tables = [
+            'users' => [
+                'schema' => [
+                    'id' => 'integer',
+                    'email' => 'string',
+                    'password' => 'string',
+                    'first_name' => 'string',
+                    'last_name' => 'string',
+                    'phone' => 'string',
+                    'role' => 'string',
+                    'created_at' => 'datetime',
+                    'updated_at' => 'datetime'
+                ],
+                'indices' => ['email']
+            ],
+            'vehicles' => [
+                'schema' => [
+                    'id' => 'integer',
+                    'make' => 'string',
+                    'model' => 'string',
+                    'year' => 'integer',
+                    'engine' => 'string',
+                    'power' => 'integer',
+                    'drive_type' => 'string',
+                    'transmission' => 'string',
+                    'color' => 'string',
+                    'interior' => 'string',
+                    'features' => 'string',
+                    'image_url' => 'string',
+                    'price' => 'float',
+                    'monthly_payment' => 'float',
+                    'status' => 'string',
+                    'created_at' => 'datetime',
+                    'updated_at' => 'datetime'
+                ]
+            ],
+            'real_estate' => [
+                'schema' => [
+                    'id' => 'integer',
+                    'title' => 'string',
+                    'type' => 'string',
+                    'address' => 'string',
+                    'area' => 'float',
+                    'rooms' => 'integer',
+                    'floor' => 'integer',
+                    'total_floors' => 'integer',
+                    'build_year' => 'integer',
+                    'description' => 'string',
+                    'features' => 'string',
+                    'image_url' => 'string',
+                    'price' => 'float',
+                    'monthly_payment' => 'float',
+                    'status' => 'string',
+                    'created_at' => 'datetime',
+                    'updated_at' => 'datetime'
+                ]
+            ],
+            'applications' => [
+                'schema' => [
+                    'id' => 'integer',
+                    'user_id' => 'integer',
+                    'vehicle_id' => 'integer',
+                    'real_estate_id' => 'integer',
+                    'manager_id' => 'integer',
+                    'type' => 'string',
+                    'status' => 'string',
+                    'initial_payment' => 'float',
+                    'term_months' => 'integer',
+                    'monthly_payment' => 'float',
+                    'comments' => 'string',
+                    'created_at' => 'datetime',
+                    'updated_at' => 'datetime'
+                ]
+            ]
+        ];
         
-        // Создаем таблицу заявок
-        $query = "CREATE TABLE IF NOT EXISTS applications (
-            id SERIAL PRIMARY KEY,
-            user_id INTEGER REFERENCES users(id),
-            vehicle_id INTEGER REFERENCES vehicles(id) NULL,
-            real_estate_id INTEGER REFERENCES real_estate(id) NULL,
-            manager_id INTEGER REFERENCES users(id) NULL,
-            type VARCHAR(20) NOT NULL DEFAULT 'vehicle', -- тип заявки: vehicle или real_estate
-            status VARCHAR(50) DEFAULT 'new',
-            initial_payment NUMERIC(12, 2) NOT NULL,
-            term_months INTEGER NOT NULL,
-            monthly_payment NUMERIC(12, 2) NOT NULL,
-            comments TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )";
-        $this->query($query);
-
+        // Инициализируем таблицы
+        foreach ($tables as $tableName => $tableConfig) {
+            $this->createTable($tableName, $tableConfig);
+        }
+        
         // Добавляем тестовые данные, если база пустая
         $this->seedDatabaseIfEmpty();
     }
-
+    
+    /**
+     * Создает таблицу в JSON-формате, если она не существует
+     */
+    private function createTable($tableName, $tableConfig) {
+        $tablePath = $this->getTablePath($tableName);
+        
+        // Если файл таблицы не существует, создаем его
+        if (!file_exists($tablePath)) {
+            $tableData = [
+                'schema' => $tableConfig['schema'],
+                'indices' => $tableConfig['indices'] ?? [],
+                'auto_increment' => 1,
+                'records' => []
+            ];
+            
+            $this->saveTableData($tableName, $tableData);
+        }
+        
+        // Загружаем таблицу в память
+        $this->tables[$tableName] = $this->loadTableData($tableName);
+    }
+    
+    /**
+     * Возвращает путь к файлу таблицы
+     */
+    private function getTablePath($tableName) {
+        return $this->dataDir . '/' . $tableName . '.json';
+    }
+    
+    /**
+     * Загружает данные таблицы из JSON-файла
+     */
+    private function loadTableData($tableName) {
+        $tablePath = $this->getTablePath($tableName);
+        
+        if (file_exists($tablePath)) {
+            $jsonData = file_get_contents($tablePath);
+            return json_decode($jsonData, true);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Сохраняет данные таблицы в JSON-файл
+     */
+    private function saveTableData($tableName, $data) {
+        $tablePath = $this->getTablePath($tableName);
+        $jsonData = json_encode($data, JSON_PRETTY_PRINT);
+        
+        return file_put_contents($tablePath, $jsonData);
+    }
+    
     /**
      * Заполнение базы данных тестовыми данными
      */
     private function seedDatabaseIfEmpty() {
         // Проверяем, есть ли пользователи в базе
         $result = $this->query("SELECT COUNT(*) FROM users");
-        $row = pg_fetch_row($result);
         
-        if ($row[0] == 0) {
+        if ($result[0]['count'] == 0) {
             // Добавляем тестовых пользователей
             $password = password_hash('password', PASSWORD_DEFAULT);
             
@@ -343,118 +400,494 @@ class Database {
                     'floor' => 2,
                     'total_floors' => 4,
                     'build_year' => 2015,
-                    'description' => 'Торговое помещение в престижном торговом центре. Большая проходимость, витринные окна, качественная отделка.',
-                    'features' => 'центральное кондиционирование,охрана,система пожаротушения,погрузочная зона,реклама на фасаде',
-                    'image_url' => 'https://images.unsplash.com/photo-1604719312566-8912e9667d9f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-                    'price' => 32000000,
-                    'monthly_payment' => 150000
+                    'description' => 'Торговое помещение в престижном торговом центре. Высокая проходимость, отличное расположение, подходит для бутика или салона.',
+                    'features' => 'центральное кондиционирование,круглосуточный доступ,охрана,парковка,рекламные возможности',
+                    'image_url' => 'https://images.unsplash.com/photo-1581658545657-4a95507e227e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+                    'price' => 16750000,
+                    'monthly_payment' => 88000
                 ]
             ];
-            
+
             foreach ($realEstateObjects as $realEstate) {
                 $this->query("INSERT INTO real_estate (title, type, address, area, rooms, floor, total_floors, build_year, description, features, image_url, price, monthly_payment) 
                 VALUES (
-                    '{$this->escapeString($realEstate['title'])}', 
-                    '{$this->escapeString($realEstate['type'])}', 
-                    '{$this->escapeString($realEstate['address'])}', 
+                    '{$realEstate['title']}', 
+                    '{$realEstate['type']}', 
+                    '{$realEstate['address']}', 
                     {$realEstate['area']}, 
                     {$realEstate['rooms']}, 
                     {$realEstate['floor']}, 
                     {$realEstate['total_floors']}, 
                     {$realEstate['build_year']}, 
-                    '{$this->escapeString($realEstate['description'])}', 
-                    '{$this->escapeString($realEstate['features'])}', 
-                    '{$this->escapeString($realEstate['image_url'])}', 
+                    '{$realEstate['description']}', 
+                    '{$realEstate['features']}', 
+                    '{$realEstate['image_url']}', 
                     {$realEstate['price']}, 
                     {$realEstate['monthly_payment']}
                 )");
             }
 
-            // Добавляем тестовые заявки на автомобили
+            // Добавляем заявки
             $this->query("INSERT INTO applications (user_id, vehicle_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
-                VALUES (4, 1, 'vehicle', 2, 'approved', 1500000, 36, 85000, 'Одобрено без замечаний')");
-            
+                VALUES (4, 1, 'vehicle', 2, 'processing', 1000000, 36, 85000, 'Интересует возможность включения КАСКО в ежемесячный платеж')");
             $this->query("INSERT INTO applications (user_id, vehicle_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
-                VALUES (4, 2, 'vehicle', 2, 'in_progress', 1000000, 24, 70000, 'На рассмотрении')");
-            
-            $this->query("INSERT INTO applications (user_id, vehicle_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
-                VALUES (5, 3, 'vehicle', 3, 'rejected', 800000, 36, 79000, 'Недостаточный доход')");
-            
+                VALUES (5, 3, 'vehicle', 3, 'approved', 1500000, 48, 79000, 'Необходимо оформить документы как можно скорее')");
+            $this->query("INSERT INTO applications (user_id, real_estate_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
+                VALUES (5, 1, 'real_estate', 2, 'approved', 5000000, 120, 120000, 'Требуется юридическая проверка документов объекта')");
             $this->query("INSERT INTO applications (user_id, vehicle_id, type, status, initial_payment, term_months, monthly_payment) 
-                VALUES (5, 4, 'vehicle', 'new', 600000, 24, 45000)");
-                
-            // Добавляем тестовые заявки на недвижимость
-            $this->query("INSERT INTO applications (user_id, real_estate_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
-                VALUES (4, 1, 'real_estate', 2, 'approved', 5000000, 60, 120000, 'Одобрено с комментарием: отличная кредитная история')");
-                
-            $this->query("INSERT INTO applications (user_id, real_estate_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
-                VALUES (5, 2, 'real_estate', 3, 'in_progress', 4000000, 120, 95000, 'Требуются дополнительные документы')");
-                
-            $this->query("INSERT INTO applications (user_id, real_estate_id, type, status, initial_payment, term_months, monthly_payment) 
-                VALUES (5, 3, 'real_estate', 'new', 8000000, 84, 180000)");
+                VALUES (5, 4, 'vehicle', 'new', 800000, 36, 45000)");
         }
     }
-
+    
     /**
-     * Выполнение SQL запроса
+     * Выполнить SQL-подобный запрос
+     * Поддерживает базовые операции SELECT, INSERT, UPDATE, DELETE
      */
     public function query($sql, $params = []) {
         try {
-            if (empty($params)) {
-                $result = pg_query($this->connection, $sql);
-            } else {
-                $result = pg_query_params($this->connection, $sql, $params);
+            // Заменяем параметры в запросе, если они переданы
+            if (!empty($params)) {
+                foreach ($params as $key => $value) {
+                    $sql = str_replace(':' . $key, $this->escapeString($value), $sql);
+                }
             }
             
-            if (!$result) {
-                throw new Exception("Ошибка выполнения запроса: " . pg_last_error($this->connection));
+            // Распознаем тип запроса
+            $sql = trim($sql);
+            
+            if (strpos($sql, 'SELECT') === 0) {
+                return $this->executeSelect($sql);
+            } elseif (strpos($sql, 'INSERT') === 0) {
+                return $this->executeInsert($sql);
+            } elseif (strpos($sql, 'UPDATE') === 0) {
+                return $this->executeUpdate($sql);
+            } elseif (strpos($sql, 'DELETE') === 0) {
+                return $this->executeDelete($sql);
+            } elseif (strpos($sql, 'CREATE TABLE') !== false) {
+                // CREATE TABLE уже обрабатывается в initDatabase
+                return true;
             }
             
-            return $result;
+            throw new Exception("Неподдерживаемый тип SQL-запроса");
         } catch (Exception $e) {
             die("Ошибка запроса: " . $e->getMessage());
         }
     }
-
+    
+    /**
+     * Выполнить SELECT-запрос
+     */
+    private function executeSelect($sql) {
+        // Извлекаем имя таблицы
+        preg_match('/FROM\s+([a-zA-Z0-9_]+)/i', $sql, $matches);
+        $tableName = $matches[1] ?? null;
+        
+        if (!$tableName || !isset($this->tables[$tableName])) {
+            throw new Exception("Таблица не найдена: " . $tableName);
+        }
+        
+        $table = $this->tables[$tableName];
+        $records = $table['records'];
+        
+        // Простой счетчик
+        if (strpos($sql, 'COUNT(*)') !== false) {
+            return [
+                ['count' => count($records)]
+            ];
+        }
+        
+        // Фильтрация по WHERE
+        if (strpos($sql, 'WHERE') !== false) {
+            preg_match('/WHERE\s+(.*?)(\s+ORDER BY|\s+LIMIT|$)/i', $sql, $matches);
+            $whereClause = $matches[1] ?? '';
+            
+            if ($whereClause) {
+                $filteredRecords = array_filter($records, function($record) use ($whereClause) {
+                    return $this->evaluateWhereCondition($record, $whereClause);
+                });
+                $records = array_values($filteredRecords);
+            }
+        }
+        
+        // Сортировка по ORDER BY
+        if (strpos($sql, 'ORDER BY') !== false) {
+            preg_match('/ORDER BY\s+(.*?)(\s+LIMIT|$)/i', $sql, $matches);
+            $orderByClause = $matches[1] ?? '';
+            
+            if ($orderByClause) {
+                $this->sortRecords($records, $orderByClause);
+            }
+        }
+        
+        // Ограничение по LIMIT
+        if (strpos($sql, 'LIMIT') !== false) {
+            preg_match('/LIMIT\s+(\d+)(\s+OFFSET\s+(\d+))?/i', $sql, $matches);
+            $limit = (int)($matches[1] ?? 0);
+            $offset = (int)($matches[3] ?? 0);
+            
+            if ($limit > 0) {
+                $records = array_slice($records, $offset, $limit);
+            }
+        }
+        
+        // Выбор полей (проекция)
+        if (strpos($sql, 'SELECT *') === false) {
+            preg_match('/SELECT\s+(.*?)\s+FROM/i', $sql, $matches);
+            $fieldsStr = $matches[1] ?? '*';
+            
+            if ($fieldsStr !== '*') {
+                $fields = array_map('trim', explode(',', $fieldsStr));
+                
+                $projectedRecords = [];
+                foreach ($records as $record) {
+                    $projectedRecord = [];
+                    foreach ($fields as $field) {
+                        $fieldName = trim($field);
+                        if (isset($record[$fieldName])) {
+                            $projectedRecord[$fieldName] = $record[$fieldName];
+                        }
+                    }
+                    $projectedRecords[] = $projectedRecord;
+                }
+                
+                $records = $projectedRecords;
+            }
+        }
+        
+        return $records;
+    }
+    
+    /**
+     * Выполнить INSERT-запрос
+     */
+    private function executeInsert($sql) {
+        // Извлекаем имя таблицы
+        preg_match('/INSERT INTO\s+([a-zA-Z0-9_]+)/i', $sql, $tableMatches);
+        $tableName = $tableMatches[1] ?? null;
+        
+        if (!$tableName || !isset($this->tables[$tableName])) {
+            throw new Exception("Таблица не найдена: " . $tableName);
+        }
+        
+        // Извлекаем колонки и значения
+        preg_match('/\((.*?)\)\s+VALUES\s+\((.*?)\)/is', $sql, $matches);
+        $columnsStr = $matches[1] ?? '';
+        $valuesStr = $matches[2] ?? '';
+        
+        if (empty($columnsStr) || empty($valuesStr)) {
+            throw new Exception("Неверный формат INSERT запроса");
+        }
+        
+        $columns = array_map('trim', explode(',', $columnsStr));
+        
+        // Разбираем значения, учитывая строки в кавычках
+        $values = [];
+        $valuesStr = trim($valuesStr);
+        $inQuote = false;
+        $currentValue = '';
+        $valuesList = [];
+        
+        for ($i = 0; $i < strlen($valuesStr); $i++) {
+            $char = $valuesStr[$i];
+            
+            if ($char === "'" && ($i === 0 || $valuesStr[$i-1] !== '\\')) {
+                $inQuote = !$inQuote;
+                $currentValue .= $char;
+            } elseif ($char === ',' && !$inQuote) {
+                $valuesList[] = trim($currentValue);
+                $currentValue = '';
+            } else {
+                $currentValue .= $char;
+            }
+        }
+        
+        if (!empty($currentValue)) {
+            $valuesList[] = trim($currentValue);
+        }
+        
+        // Обрабатываем значения
+        foreach ($valuesList as $index => $value) {
+            if (preg_match('/^\'(.*?)\'$/s', $value, $matches)) {
+                // Строковое значение
+                $values[$index] = $matches[1];
+            } elseif (is_numeric($value)) {
+                // Числовое значение
+                $values[$index] = is_int($value + 0) ? (int)$value : (float)$value;
+            } elseif (strtoupper($value) === 'NULL') {
+                // NULL значение
+                $values[$index] = null;
+            } elseif (strtoupper($value) === 'CURRENT_TIMESTAMP') {
+                // Текущая дата/время
+                $values[$index] = date('Y-m-d H:i:s');
+            } else {
+                // Другие значения
+                $values[$index] = $value;
+            }
+        }
+        
+        // Создаем новую запись
+        $record = [];
+        foreach ($columns as $index => $column) {
+            if (isset($values[$index])) {
+                $record[trim($column)] = $values[$index];
+            }
+        }
+        
+        // Добавляем id, если его нет
+        if (!isset($record['id'])) {
+            $record['id'] = $this->tables[$tableName]['auto_increment'];
+            $this->tables[$tableName]['auto_increment']++;
+        }
+        
+        // Добавляем дату создания и обновления, если требуется
+        if (!isset($record['created_at']) && isset($this->tables[$tableName]['schema']['created_at'])) {
+            $record['created_at'] = date('Y-m-d H:i:s');
+        }
+        if (!isset($record['updated_at']) && isset($this->tables[$tableName]['schema']['updated_at'])) {
+            $record['updated_at'] = date('Y-m-d H:i:s');
+        }
+        
+        // Добавляем запись
+        $this->tables[$tableName]['records'][] = $record;
+        
+        // Сохраняем данные таблицы
+        $this->saveTableData($tableName, $this->tables[$tableName]);
+        
+        return true;
+    }
+    
+    /**
+     * Выполнить UPDATE-запрос
+     */
+    private function executeUpdate($sql) {
+        // Извлекаем имя таблицы
+        preg_match('/UPDATE\s+([a-zA-Z0-9_]+)/i', $sql, $tableMatches);
+        $tableName = $tableMatches[1] ?? null;
+        
+        if (!$tableName || !isset($this->tables[$tableName])) {
+            throw new Exception("Таблица не найдена: " . $tableName);
+        }
+        
+        // Извлекаем SET и WHERE части
+        preg_match('/SET\s+(.*?)(\s+WHERE\s+(.*))?$/is', $sql, $matches);
+        $setClause = $matches[1] ?? '';
+        $whereClause = $matches[3] ?? '';
+        
+        if (empty($setClause)) {
+            throw new Exception("Неверный формат UPDATE запроса");
+        }
+        
+        // Парсим SET часть
+        $updates = [];
+        $setParts = explode(',', $setClause);
+        
+        foreach ($setParts as $setPart) {
+            if (preg_match('/([a-zA-Z0-9_]+)\s*=\s*(.+)/i', trim($setPart), $partMatches)) {
+                $field = $partMatches[1];
+                $value = trim($partMatches[2]);
+                
+                // Обрабатываем значение
+                if (preg_match('/^\'(.*?)\'$/s', $value, $valueMatches)) {
+                    $updates[$field] = $valueMatches[1];
+                } elseif (is_numeric($value)) {
+                    $updates[$field] = is_int($value + 0) ? (int)$value : (float)$value;
+                } elseif (strtoupper($value) === 'NULL') {
+                    $updates[$field] = null;
+                } elseif (strtoupper($value) === 'CURRENT_TIMESTAMP') {
+                    $updates[$field] = date('Y-m-d H:i:s');
+                } else {
+                    $updates[$field] = $value;
+                }
+            }
+        }
+        
+        // Обновляем поле updated_at, если оно существует
+        if (isset($this->tables[$tableName]['schema']['updated_at']) && !isset($updates['updated_at'])) {
+            $updates['updated_at'] = date('Y-m-d H:i:s');
+        }
+        
+        // Обновляем записи
+        $affectedRows = 0;
+        $records = &$this->tables[$tableName]['records'];
+        
+        foreach ($records as &$record) {
+            if (empty($whereClause) || $this->evaluateWhereCondition($record, $whereClause)) {
+                foreach ($updates as $field => $value) {
+                    $record[$field] = $value;
+                }
+                $affectedRows++;
+            }
+        }
+        
+        // Сохраняем данные таблицы
+        $this->saveTableData($tableName, $this->tables[$tableName]);
+        
+        return $affectedRows;
+    }
+    
+    /**
+     * Выполнить DELETE-запрос
+     */
+    private function executeDelete($sql) {
+        // Извлекаем имя таблицы
+        preg_match('/DELETE FROM\s+([a-zA-Z0-9_]+)/i', $sql, $tableMatches);
+        $tableName = $tableMatches[1] ?? null;
+        
+        if (!$tableName || !isset($this->tables[$tableName])) {
+            throw new Exception("Таблица не найдена: " . $tableName);
+        }
+        
+        // Извлекаем WHERE часть
+        preg_match('/WHERE\s+(.*)$/is', $sql, $matches);
+        $whereClause = $matches[1] ?? '';
+        
+        // Удаляем записи
+        $affectedRows = 0;
+        $records = &$this->tables[$tableName]['records'];
+        
+        if (empty($whereClause)) {
+            // Удаляем все записи
+            $affectedRows = count($records);
+            $records = [];
+        } else {
+            // Удаляем только записи, соответствующие условию
+            $newRecords = [];
+            
+            foreach ($records as $record) {
+                if (!$this->evaluateWhereCondition($record, $whereClause)) {
+                    $newRecords[] = $record;
+                } else {
+                    $affectedRows++;
+                }
+            }
+            
+            $records = $newRecords;
+        }
+        
+        // Сохраняем данные таблицы
+        $this->saveTableData($tableName, $this->tables[$tableName]);
+        
+        return $affectedRows;
+    }
+    
+    /**
+     * Оценить условие WHERE для записи
+     */
+    private function evaluateWhereCondition($record, $whereClause) {
+        // Простая проверка условия на равенство (id = 1)
+        if (preg_match('/([a-zA-Z0-9_]+)\s*=\s*(.+)/i', $whereClause, $matches)) {
+            $field = $matches[1];
+            $value = trim($matches[2]);
+            
+            // Обрабатываем значение
+            if (preg_match('/^\'(.*?)\'$/s', $value, $valueMatches)) {
+                $compareValue = $valueMatches[1];
+            } elseif (is_numeric($value)) {
+                $compareValue = is_int($value + 0) ? (int)$value : (float)$value;
+            } elseif (strtoupper($value) === 'NULL') {
+                $compareValue = null;
+            } else {
+                $compareValue = $value;
+            }
+            
+            return isset($record[$field]) && $record[$field] == $compareValue;
+        }
+        
+        // По умолчанию возвращаем true, если условие не распознано
+        return true;
+    }
+    
+    /**
+     * Сортировка записей по условию ORDER BY
+     */
+    private function sortRecords(&$records, $orderByClause) {
+        $parts = explode(',', $orderByClause);
+        $sortFields = [];
+        
+        foreach ($parts as $part) {
+            $part = trim($part);
+            
+            if (preg_match('/([a-zA-Z0-9_]+)(?:\s+(ASC|DESC))?/i', $part, $matches)) {
+                $field = $matches[1];
+                $direction = strtoupper($matches[2] ?? 'ASC');
+                
+                $sortFields[] = [
+                    'field' => $field,
+                    'direction' => $direction
+                ];
+            }
+        }
+        
+        if (!empty($sortFields)) {
+            usort($records, function($a, $b) use ($sortFields) {
+                foreach ($sortFields as $sort) {
+                    $field = $sort['field'];
+                    $direction = $sort['direction'];
+                    
+                    if (!isset($a[$field]) && !isset($b[$field])) {
+                        continue;
+                    }
+                    
+                    if (!isset($a[$field])) {
+                        return $direction === 'ASC' ? -1 : 1;
+                    }
+                    
+                    if (!isset($b[$field])) {
+                        return $direction === 'ASC' ? 1 : -1;
+                    }
+                    
+                    if ($a[$field] == $b[$field]) {
+                        continue;
+                    }
+                    
+                    $result = $a[$field] <=> $b[$field];
+                    return $direction === 'ASC' ? $result : -$result;
+                }
+                
+                return 0;
+            });
+        }
+    }
+    
     /**
      * Получить все строки из результата запроса
      */
     public function fetchAll($result) {
-        return pg_fetch_all($result);
+        // Результат уже представлен как массив записей
+        return $result;
     }
-
+    
     /**
      * Получить одну строку из результата запроса
      */
     public function fetchRow($result) {
-        return pg_fetch_assoc($result);
+        // Возвращаем первую запись из результата
+        return isset($result[0]) ? $result[0] : null;
     }
-
+    
     /**
      * Получить количество затронутых строк
      */
     public function affectedRows($result) {
-        return pg_affected_rows($result);
+        // Для INSERT, UPDATE, DELETE возвращается число затронутых строк
+        return is_numeric($result) ? $result : 0;
     }
-
+    
     /**
-     * Получить последний добавленный ID
+     * Получить ID последней вставленной записи
      */
     public function lastInsertId($table, $id_field = 'id') {
-        $result = $this->query("SELECT LASTVAL()");
-        $row = $this->fetchRow($result);
-        return $row['lastval'];
+        // Возвращаем текущее значение auto_increment - 1
+        return isset($this->tables[$table]) ? $this->tables[$table]['auto_increment'] - 1 : 0;
     }
     
     /**
      * Закрыть соединение с базой данных
      */
     public function close() {
-        if ($this->connection) {
-            pg_close($this->connection);
-        }
+        // Для файловой БД ничего не делаем
     }
-
+    
     /**
      * Деструктор класса
      */
@@ -462,4 +895,3 @@ class Database {
         $this->close();
     }
 }
-?>

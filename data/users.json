@@ -1,0 +1,69 @@
+{
+    "schema": {
+        "id": "integer",
+        "email": "string",
+        "password": "string",
+        "first_name": "string",
+        "last_name": "string",
+        "phone": "string",
+        "role": "string",
+        "created_at": "datetime",
+        "updated_at": "datetime"
+    },
+    "indices": [
+        "email"
+    ],
+    "auto_increment": 6,
+    "records": [
+        {
+            "email": "admin@2leasing.ru",
+            "password": "$2y$10$guV8RoeFW4TqIxZMJ986gexM0ruKjyGSHNlZiuF4sLdcVNagmGcL2",
+            "first_name": "\u0410\u043d\u0434\u0440\u0435\u0439",
+            "last_name": "\u0412\u043e\u043b\u043a\u043e\u0432",
+            "phone": "'+7(901",
+            "id": 1,
+            "created_at": "2025-04-20 16:04:21",
+            "updated_at": "2025-04-20 16:04:21"
+        },
+        {
+            "email": "manager1@2leasing.ru",
+            "password": "$2y$10$guV8RoeFW4TqIxZMJ986gexM0ruKjyGSHNlZiuF4sLdcVNagmGcL2",
+            "first_name": "\u0410\u043b\u0435\u043a\u0441\u0435\u0439",
+            "last_name": "\u0421\u043c\u0438\u0440\u043d\u043e\u0432",
+            "phone": "'+7(902",
+            "id": 2,
+            "created_at": "2025-04-20 16:04:21",
+            "updated_at": "2025-04-20 16:04:21"
+        },
+        {
+            "email": "manager2@2leasing.ru",
+            "password": "$2y$10$guV8RoeFW4TqIxZMJ986gexM0ruKjyGSHNlZiuF4sLdcVNagmGcL2",
+            "first_name": "\u0415\u043b\u0435\u043d\u0430",
+            "last_name": "\u041c\u0438\u0445\u0430\u0439\u043b\u043e\u0432\u0430",
+            "phone": "'+7(903",
+            "id": 3,
+            "created_at": "2025-04-20 16:04:21",
+            "updated_at": "2025-04-20 16:04:21"
+        },
+        {
+            "email": "client@2leasing.ru",
+            "password": "$2y$10$guV8RoeFW4TqIxZMJ986gexM0ruKjyGSHNlZiuF4sLdcVNagmGcL2",
+            "first_name": "\u0418\u0432\u0430\u043d",
+            "last_name": "\u041f\u0435\u0442\u0440\u043e\u0432",
+            "phone": "'+7(904",
+            "id": 4,
+            "created_at": "2025-04-20 16:04:21",
+            "updated_at": "2025-04-20 16:04:21"
+        },
+        {
+            "email": "maria@example.com",
+            "password": "$2y$10$guV8RoeFW4TqIxZMJ986gexM0ruKjyGSHNlZiuF4sLdcVNagmGcL2",
+            "first_name": "\u041c\u0430\u0440\u0438\u044f",
+            "last_name": "\u0418\u0432\u0430\u043d\u043e\u0432\u0430",
+            "phone": "'+7(905",
+            "id": 5,
+            "created_at": "2025-04-20 16:04:21",
+            "updated_at": "2025-04-20 16:04:21"
+        }
+    ]
+}
