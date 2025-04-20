@@ -235,18 +235,69 @@ class Users {
         $userId = (int) $userId;
         
         // Проверяем, есть ли заявки у этого пользователя
-        $result = $this->db->query("SELECT id FROM applications WHERE user_id = $userId");
+        $applicationsFile = __DIR__ . '/../data/applications.json';
+        if (file_exists($applicationsFile)) {
+            $applicationsData = file_get_contents($applicationsFile);
+            $applications = json_decode($applicationsData, true);
+            
+            if (isset($applications['records']) && is_array($applications['records'])) {
+                foreach ($applications['records'] as $application) {
+                    if (isset($application['user_id']) && (int)$application['user_id'] === $userId) {
+                        return [
+                            'success' => false,
+                            'message' => 'Невозможно удалить пользователя, так как у него есть заявки'
+                        ];
+                    }
+                }
+            }
+        }
         
-        if (count($result) > 0) {
+        // Удаляем пользователя
+        $jsonFile = __DIR__ . '/../data/users.json';
+        
+        if (!file_exists($jsonFile)) {
             return [
                 'success' => false,
-                'message' => 'Невозможно удалить пользователя, так как у него есть заявки'
+                'message' => 'Файл с пользователями не найден'
             ];
         }
         
-        $result = $this->db->query("DELETE FROM users WHERE id = $userId");
+        $jsonData = file_get_contents($jsonFile);
+        $usersData = json_decode($jsonData, true);
         
-        if ($this->db->affectedRows($result) > 0) {
+        if (!isset($usersData['records']) || !is_array($usersData['records'])) {
+            return [
+                'success' => false,
+                'message' => 'Ошибка структуры данных пользователей'
+            ];
+        }
+        
+        $userFound = false;
+        $newRecords = [];
+        
+        // Фильтруем пользователей, исключая того, которого нужно удалить
+        foreach ($usersData['records'] as $user) {
+            if (isset($user['id']) && (int)$user['id'] === $userId) {
+                $userFound = true;
+            } else {
+                $newRecords[] = $user;
+            }
+        }
+        
+        if (!$userFound) {
+            return [
+                'success' => false,
+                'message' => 'Пользователь не найден'
+            ];
+        }
+        
+        // Обновляем массив пользователей
+        $usersData['records'] = $newRecords;
+        
+        // Сохраняем обновленные данные в файл
+        $result = file_put_contents($jsonFile, json_encode($usersData, JSON_PRETTY_PRINT));
+        
+        if ($result !== false) {
             return [
                 'success' => true,
                 'message' => 'Пользователь успешно удален'
@@ -270,20 +321,34 @@ class Users {
             'admin' => 0
         ];
         
-        $sql = "SELECT role, COUNT(*) as count FROM users GROUP BY role";
-        $result = $this->db->query($sql);
-        $rows = $this->db->fetchAll($result);
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/users.json';
         
-        if ($rows) {
-            foreach ($rows as $row) {
-                $role = $row['role'];
-                $count = $row['count'];
+        if (!file_exists($jsonFile)) {
+            return $counts;
+        }
+        
+        $jsonData = file_get_contents($jsonFile);
+        $userData = json_decode($jsonData, true);
+        
+        if (!isset($userData['records']) || !is_array($userData['records'])) {
+            return $counts;
+        }
+        
+        // Подсчитываем количество пользователей по ролям
+        foreach ($userData['records'] as $user) {
+            if (isset($user['role'])) {
+                $role = $user['role'];
                 
                 if (isset($counts[$role])) {
-                    $counts[$role] = (int) $count;
+                    $counts[$role]++;
                 }
                 
-                $counts['total'] += (int) $count;
+                $counts['total']++;
+            } else {
+                // Если роль не указана, считаем как клиента (по умолчанию)
+                $counts['client']++;
+                $counts['total']++;
             }
         }
         
@@ -294,46 +359,124 @@ class Users {
      * Получить список менеджеров
      */
     public function getManagers() {
-        $sql = "SELECT id, first_name, last_name, email FROM users WHERE role = 'manager' ORDER BY last_name, first_name";
-        $result = $this->db->query($sql);
-        return $this->db->fetchAll($result);
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/users.json';
+        
+        if (!file_exists($jsonFile)) {
+            return [];
+        }
+        
+        $jsonData = file_get_contents($jsonFile);
+        $userData = json_decode($jsonData, true);
+        
+        if (!isset($userData['records']) || !is_array($userData['records'])) {
+            return [];
+        }
+        
+        $managers = [];
+        
+        // Фильтруем пользователей с ролью "manager"
+        foreach ($userData['records'] as $user) {
+            if (isset($user['role']) && $user['role'] === 'manager') {
+                // Добавляем только нужные поля
+                $manager = [
+                    'id' => $user['id'],
+                    'first_name' => $user['first_name'] ?? '',
+                    'last_name' => $user['last_name'] ?? '',
+                    'email' => $user['email'] ?? ''
+                ];
+                
+                $managers[] = $manager;
+            }
+        }
+        
+        // Сортировка по фамилии и имени
+        usort($managers, function($a, $b) {
+            $lastNameA = $a['last_name'] ?? '';
+            $lastNameB = $b['last_name'] ?? '';
+            
+            $firstNameA = $a['first_name'] ?? '';
+            $firstNameB = $b['first_name'] ?? '';
+            
+            if ($lastNameA === $lastNameB) {
+                return $firstNameA <=> $firstNameB;
+            }
+            
+            return $lastNameA <=> $lastNameB;
+        });
+        
+        return $managers;
     }
     
     /**
      * Добавить нового менеджера
      */
     public function createManager($userData) {
-        // Проверяем, не занят ли email
-        $email = $this->db->escapeString($userData['email']);
-        $result = $this->db->query("SELECT id FROM users WHERE email = '$email'");
+        $email = $userData['email'];
         
-        if (count($result) > 0) {
-            return [
-                'success' => false,
-                'message' => 'Email уже зарегистрирован в системе'
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/users.json';
+        
+        // Проверка существования файла и создание пустой структуры, если файла нет
+        if (!file_exists($jsonFile)) {
+            $usersData = [
+                'next_id' => 1,
+                'records' => []
             ];
+        } else {
+            $jsonData = file_get_contents($jsonFile);
+            $usersData = json_decode($jsonData, true);
+            
+            if (!isset($usersData['next_id'])) {
+                $usersData['next_id'] = 1;
+            }
+            
+            if (!isset($usersData['records'])) {
+                $usersData['records'] = [];
+            }
+        }
+        
+        // Проверяем, не занят ли email
+        foreach ($usersData['records'] as $user) {
+            if (isset($user['email']) && $user['email'] === $email) {
+                return [
+                    'success' => false,
+                    'message' => 'Email уже зарегистрирован в системе'
+                ];
+            }
         }
         
         // Хэшируем пароль
         $password = password_hash($userData['password'], PASSWORD_DEFAULT);
         
-        // Подготавливаем данные
-        $firstName = $this->db->escapeString($userData['first_name']);
-        $lastName = $this->db->escapeString($userData['last_name']);
-        $phone = $this->db->escapeString($userData['phone']);
-        $role = 'manager';
+        // Определяем ID для нового менеджера
+        $userId = $usersData['next_id'];
+        $usersData['next_id']++;
         
-        // Добавляем пользователя
-        $result = $this->db->query("
-            INSERT INTO users (email, password, first_name, last_name, phone, role) 
-            VALUES ('$email', '$password', '$firstName', '$lastName', '$phone', '$role')
-        ");
+        // Подготавливаем данные для нового менеджера
+        $newUser = [
+            'id' => $userId,
+            'email' => $email,
+            'password' => $password,
+            'first_name' => $userData['first_name'],
+            'last_name' => $userData['last_name'],
+            'phone' => $userData['phone'],
+            'role' => 'manager', // Новая запись - менеджер
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
         
-        if ($this->db->affectedRows($result) > 0) {
+        // Добавляем пользователя в массив
+        $usersData['records'][] = $newUser;
+        
+        // Сохраняем обновленные данные в файл
+        $result = file_put_contents($jsonFile, json_encode($usersData, JSON_PRETTY_PRINT));
+        
+        if ($result !== false) {
             return [
                 'success' => true,
                 'message' => 'Менеджер успешно создан',
-                'user_id' => $this->db->lastInsertId('users')
+                'user_id' => $userId
             ];
         }
         
