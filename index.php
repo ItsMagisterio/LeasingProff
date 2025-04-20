@@ -134,6 +134,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $error = $result['message'];
                 $page = 'real-estate-item';
+                // Сохраняем ID объекта недвижимости для правильного отображения
+                $_GET['id'] = $_POST['real_estate_id'];
             }
         }
         

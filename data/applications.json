@@ -15,7 +15,7 @@
         "updated_at": "datetime"
     },
     "indices": [],
-    "auto_increment": 6,
+    "auto_increment": 9,
     "records": [
         {
             "user_id": 4,
@@ -83,6 +83,45 @@
             "id": 5,
             "created_at": "2025-04-20 16:54:18",
             "updated_at": "2025-04-20 16:54:18"
+        },
+        {
+            "user_id": 10,
+            "real_estate_id": 6,
+            "type": "real_estate",
+            "status": "new",
+            "initial_payment": 30000000,
+            "term_months": 60,
+            "monthly_payment": 2669334,
+            "comments": "",
+            "id": 6,
+            "created_at": "2025-04-20 16:56:36",
+            "updated_at": "2025-04-20 16:56:36"
+        },
+        {
+            "user_id": 10,
+            "real_estate_id": 6,
+            "type": "real_estate",
+            "status": "new",
+            "initial_payment": 30000000,
+            "term_months": 60,
+            "monthly_payment": 2669334,
+            "comments": "",
+            "id": 7,
+            "created_at": "2025-04-20 16:56:51",
+            "updated_at": "2025-04-20 16:56:51"
+        },
+        {
+            "user_id": 10,
+            "real_estate_id": 6,
+            "type": "real_estate",
+            "status": "new",
+            "initial_payment": 30000000,
+            "term_months": 60,
+            "monthly_payment": 2669334,
+            "comments": "",
+            "id": 8,
+            "created_at": "2025-04-20 16:57:04",
+            "updated_at": "2025-04-20 16:57:04"
         }
     ]
 }
