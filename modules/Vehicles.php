@@ -314,9 +314,12 @@ class Vehicles {
         }
         
         $result = $this->db->query($sql);
-        $row = pg_fetch_row($result);
         
-        return (int) $row[0];
+        if (is_array($result) && isset($result[0]) && isset($result[0]['COUNT(*)'])) {
+            return (int) $result[0]['COUNT(*)'];
+        }
+        
+        return 0;
     }
 }
 ?>

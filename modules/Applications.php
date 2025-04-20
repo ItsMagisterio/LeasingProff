@@ -104,7 +104,7 @@ class Applications {
         
         $result = $this->db->query($sql);
         
-        if (pg_num_rows($result) > 0) {
+        if (count($result) > 0) {
             return $this->db->fetchRow($result);
         }
         
@@ -310,9 +310,12 @@ class Applications {
     public function getUnassignedApplicationsCount() {
         $sql = "SELECT COUNT(*) FROM applications WHERE manager_id IS NULL";
         $result = $this->db->query($sql);
-        $row = pg_fetch_row($result);
         
-        return (int) $row[0];
+        if (is_array($result) && isset($result[0]) && isset($result[0]['COUNT(*)'])) {
+            return (int) $result[0]['COUNT(*)'];
+        }
+        
+        return 0;
     }
     
     /**

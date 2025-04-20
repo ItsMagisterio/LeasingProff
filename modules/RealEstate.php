@@ -75,7 +75,7 @@ class RealEstate {
         $realEstateId = (int) $realEstateId;
         $result = $this->db->query("SELECT * FROM real_estate WHERE id = $realEstateId");
         
-        if (pg_num_rows($result) > 0) {
+        if (count($result) > 0) {
             return $this->db->fetchRow($result);
         }
         
