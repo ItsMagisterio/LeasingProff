@@ -130,7 +130,7 @@ class RealEstate {
         // Проверяем существование объекта
         $result = $this->db->query("SELECT id FROM real_estate WHERE id = $realEstateId");
         
-        if (pg_num_rows($result) === 0) {
+        if (count($result) === 0) {
             return [
                 'success' => false,
                 'message' => 'Объект недвижимости не найден'
@@ -236,7 +236,7 @@ class RealEstate {
         // Проверяем, есть ли заявки на этот объект
         $result = $this->db->query("SELECT id FROM applications WHERE real_estate_id = $realEstateId");
         
-        if (pg_num_rows($result) > 0) {
+        if (count($result) > 0) {
             return [
                 'success' => false,
                 'message' => 'Невозможно удалить объект недвижимости, так как на него есть заявки'
@@ -265,7 +265,7 @@ class RealEstate {
         $result = $this->db->query("SELECT DISTINCT type FROM real_estate ORDER BY type");
         $types = [];
         
-        while ($row = pg_fetch_assoc($result)) {
+        foreach ($result as $row) {
             $types[] = $row['type'];
         }
         
