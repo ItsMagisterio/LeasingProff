@@ -65,10 +65,26 @@ class RealEstate {
      */
     public function getRealEstateById($realEstateId) {
         $realEstateId = (int) $realEstateId;
+        
+        // Прямое чтение из JSON-файла (совместимо с getAllRealEstate)
+        $jsonFile = __DIR__ . '/../data/real_estate.json';
+        if (file_exists($jsonFile)) {
+            $jsonData = file_get_contents($jsonFile);
+            $data = json_decode($jsonData, true);
+            
+            if (isset($data['records']) && is_array($data['records'])) {
+                foreach ($data['records'] as $property) {
+                    if (isset($property['id']) && $property['id'] == $realEstateId) {
+                        return $property;
+                    }
+                }
+            }
+        }
+        
+        // Запасной вариант с использованием SQL-запроса
         $result = $this->db->query("SELECT * FROM real_estate WHERE id = $realEstateId");
-
-        if (count($result) > 0) {
-            return $this->db->fetchRow($result);
+        if (is_array($result) && count($result) > 0) {
+            return $result[0];
         }
 
         return null;
