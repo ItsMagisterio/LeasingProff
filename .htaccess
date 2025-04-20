@@ -1,0 +1,7 @@
+# Установка имени сервера
+ServerName www.лизинг.орг
+
+# Перенаправление с лизинг.орг на www.лизинг.орг
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^лизинг\.орг$ [NC]
+RewriteRule ^(.*)$ http://www.лизинг.орг/$1 [L,R=301]
