@@ -15,7 +15,7 @@
         "updated_at": "datetime"
     },
     "indices": [],
-    "auto_increment": 16,
+    "auto_increment": 17,
     "records": [
         {
             "user_id": 4,
@@ -213,6 +213,19 @@
             "id": 15,
             "created_at": "2025-04-20 17:02:40",
             "updated_at": "2025-04-20 17:02:40"
+        },
+        {
+            "user_id": 10,
+            "real_estate_id": 6,
+            "type": "real_estate",
+            "status": "new",
+            "initial_payment": 30000000,
+            "term_months": 60,
+            "monthly_payment": 2669334,
+            "comments": "",
+            "id": 16,
+            "created_at": "2025-04-20 17:03:28",
+            "updated_at": "2025-04-20 17:03:28"
         }
     ]
 }
