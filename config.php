@@ -1,14 +1,50 @@
 <?php
 /**
- * Конфигурация сайта
+ * Файл конфигурации
+ * 
+ * Содержит настройки сайта и константы
  */
 
-// Настройки сайта
-define('SITE_NAME', 'Лизинг маркетплейс');
-define('SITE_URL', 'http://www.лизинг.орг:5000');
-define('HOST_NAME', 'www.лизинг.орг');
+// Определяем базовый URL сайта
+define('BASE_URL', '/');
 
-// Включаем вывод ошибок (для разработки)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+// Названия статусов заявок
+define('APPLICATION_STATUS', [
+    'new' => 'Новая',
+    'in_progress' => 'На рассмотрении',
+    'approved' => 'Одобрена',
+    'rejected' => 'Отклонена',
+    'signed' => 'Подписана',
+    'completed' => 'Завершена'
+]);
+
+// Пользовательские роли
+define('USER_ROLES', [
+    'client' => 'Клиент',
+    'manager' => 'Менеджер',
+    'admin' => 'Администратор'
+]);
+
+// Настройки сессии
+ini_set('session.gc_maxlifetime', 3600); // 1 час
+session_set_cookie_params(3600); // 1 час
+
+// Обработка ошибок
 error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Запускаем сессию
+session_start();
+
+// Подключаем класс для работы с базой данных
+require_once 'database.php';
+
+// Функция для загрузки модулей
+function autoloadModules($className) {
+    $filename = "modules/{$className}.php";
+    if (file_exists($filename)) {
+        require_once $filename;
+    }
+}
+spl_autoload_register('autoloadModules');
+?>

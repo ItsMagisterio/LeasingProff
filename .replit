@@ -20,10 +20,10 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "PHP Server на www.лизинг.орг"
+args = "PHP Server"
 
 [[workflows.workflow]]
-name = "PHP Server на www.лизинг.орг"
+name = "PHP Server"
 author = "agent"
 
 [workflows.workflow.metadata]
@@ -34,5 +34,5 @@ task = "packager.installForAll"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "./start_server.sh"
+args = "php -S 0.0.0.0:5000"
 waitForPort = 5000
