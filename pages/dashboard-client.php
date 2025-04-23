@@ -7,6 +7,13 @@ $userApplications = $applications->getAllApplications(0, 0, ['user_id' => $curre
 
 // Получаем статистику заявок
 $applicationsStats = $applications->getApplicationsCountByStatus($currentUser['id']);
+
+// Определение ролей пользователей
+$USER_ROLES = [
+    'admin' => 'Администратор',
+    'manager' => 'Менеджер',
+    'client' => 'Клиент'
+];
 ?>
 
 <!-- Панель управления клиента -->
