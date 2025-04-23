@@ -25,8 +25,8 @@ $USER_ROLES = [
             </div>
             <div class="col-md-6 text-md-end">
                 <a href="index.php?page=dashboard-client" class="active">Заявки</a>
-                <a href="#">Профиль</a>
-                <a href="#">Документы</a>
+                <a href="index.php?page=profile">Профиль</a>
+                <a href="index.php?page=documents">Документы</a>
                 <form method="post" class="d-inline">
                     <input type="hidden" name="action" value="logout">
                     <button type="submit" class="btn btn-link text-white p-0 ms-3">Выход</button>
@@ -47,13 +47,13 @@ $USER_ROLES = [
         <div class="col-md-4">
             <div class="dashboard-card">
                 <h5><?= htmlspecialchars($currentUser['first_name'] . ' ' . $currentUser['last_name']) ?></h5>
-                <p class="text-muted"><?= htmlspecialchars(USER_ROLES[$currentUser['role']]) ?></p>
+                <p class="text-muted"><?= htmlspecialchars($USER_ROLES[$currentUser['role']]) ?></p>
                 <hr>
                 <p><i class="fas fa-envelope me-2 text-muted"></i> <?= htmlspecialchars($currentUser['email']) ?></p>
                 <p><i class="fas fa-phone me-2 text-muted"></i> <?= htmlspecialchars($currentUser['phone']) ?></p>
                 <p><i class="fas fa-calendar me-2 text-muted"></i> С нами с <?= date('d.m.Y', strtotime($currentUser['created_at'])) ?></p>
                 <div class="d-grid">
-                    <a href="#" class="btn btn-outline-primary">Редактировать профиль</a>
+                    <a href="index.php?page=profile" class="btn btn-outline-primary">Редактировать профиль</a>
                 </div>
             </div>
             
