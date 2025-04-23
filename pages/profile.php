@@ -48,7 +48,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             <div class="col-md-6 text-md-end">
                 <a href="index.php?page=dashboard-client">Заявки</a>
                 <a href="index.php?page=profile" class="active">Профиль</a>
-                <a href="index.php?page=documents">Документы</a>
+                <?php if ($auth->isAdmin()): ?>
+                <a href="index.php?page=dashboard-admin">Админ-панель</a>
+                <?php endif; ?>
                 <form method="post" class="d-inline">
                     <input type="hidden" name="action" value="logout">
                     <button type="submit" class="btn btn-link text-white p-0 ms-3">Выход</button>
