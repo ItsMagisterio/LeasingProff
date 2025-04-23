@@ -454,6 +454,11 @@ function outputNavigation() {
                     <li class="nav-item">
                         <a class="nav-link' . ($is_home ? ' active' : '') . '" href="index.php" title="Главная страница">Главная</a>
                     </li>
+                    ' . ($auth->isAdmin() ? '
+                    <!-- Пункт Админ-панель -->
+                    <li class="nav-item">
+                        <a class="nav-link' . ($page === 'dashboard-admin' ? ' active' : '') . '" href="index.php?page=dashboard-admin" title="Панель администратора">Админ-панель</a>
+                    </li>' : '') . '
                     <!-- Выпадающее меню Транспорт -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle' . ($is_marketplace ? ' active' : '') . '" href="#" id="transportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Просмотр автомобилей">
@@ -2702,6 +2707,9 @@ switch ($page) {
         break;
     case 'profile':
         includeProfilePage();
+        break;
+    case 'documents':
+        include 'pages/documents.php';
         break;
     case 'applications':
         includeApplicationsPage();
