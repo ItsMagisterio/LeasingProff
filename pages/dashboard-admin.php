@@ -27,10 +27,10 @@ $unassignedApplications = $applications->getUnassignedApplications();
             </div>
             <div class="col-md-6 text-md-end">
                 <a href="index.php?page=dashboard-admin" class="active">Обзор</a>
-                <a href="index.php?page=dashboard-parsers">Парсеры</a>
-                <a href="#">Менеджеры</a>
-                <a href="#">Клиенты</a>
-                <a href="#">Настройки</a>
+                <a href="index.php?page=user-rights">Права пользователей</a>
+                <a href="index.php?page=managers">Менеджеры</a>
+                <a href="index.php?page=dashboard-clients">Клиенты</a>
+                <a href="index.php?page=settings">Настройки</a>
                 <form method="post" class="d-inline">
                     <input type="hidden" name="action" value="logout">
                     <button type="submit" class="btn btn-link text-white p-0 ms-3">Выход</button>

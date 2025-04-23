@@ -1840,74 +1840,7 @@ function includeHomePage() {
     global $vehicles;
     global $realEstate;
     
-    echo '<section class="hero-section">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-7 fade-in">
-                    <h1 class="display-4 fw-bold mb-4">Универсальный<br><span class="text-primary">лизинг</span> для всех</h1>
-                    <p class="lead mb-4">Лизинг недвижимости и транспорта на выгодных условиях с индивидуальным подходом для физических и юридических лиц</p>
-                    <div class="hero-cta mt-5 d-flex flex-wrap gap-3">
-                        <a href="index.php?page=register" class="btn btn-primary btn-lg rounded-pill px-4 py-3 shadow-lg">
-                            <i class="fas fa-rocket me-2"></i> Начать сейчас
-                        </a>
-                        <a href="#calculator" class="btn btn-outline-light btn-lg rounded-pill px-4 py-3">
-                            <i class="fas fa-calculator me-2"></i> Рассчитать лизинг
-                        </a>
-                    </div>
-                    <div class="mt-5 d-flex gap-4">
-                        <div class="text-center">
-                            <h3 class="text-white fw-bold mb-0">10+</h3>
-                            <p class="text-white-50 small mb-0">лет опыта</p>
-                        </div>
-                        <div class="text-center">
-                            <h3 class="text-white fw-bold mb-0">5000+</h3>
-                            <p class="text-white-50 small mb-0">клиентов</p>
-                        </div>
-                        <div class="text-center">
-                            <h3 class="text-white fw-bold mb-0">1000+</h3>
-                            <p class="text-white-50 small mb-0">объектов</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-5 d-none d-lg-block">
-                    <div class="hero-image position-relative mt-5">
-                        <div class="card shadow-lg rounded-3 border-0 p-4 bg-white position-absolute" style="top: 0; right: 0; max-width: 300px;">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
-                                    <i class="fas fa-car"></i>
-                                </div>
-                                <div>
-                                    <h5 class="mb-0">Автомобили</h5>
-                                    <p class="text-muted small mb-0">от 20 000 ₽/мес</p>
-                                </div>
-                            </div>
-                            <div class="progress" style="height: 8px;">
-                                <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <img src="https://www.topgear.com/sites/default/files/2022/07/5%20Mercedes-Benz-EQS-SUV.jpg" alt="Автомобиль в лизинг" class="mt-3 img-fluid rounded" style="height: 120px; object-fit: cover; width: 100%;">
-                        </div>
-                        <div class="card shadow-lg rounded-3 border-0 p-4 bg-white position-absolute" style="bottom: 0; left: 0; max-width: 300px;">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="rounded-circle bg-accent text-white d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
-                                    <i class="fas fa-home"></i>
-                                </div>
-                                <div>
-                                    <h5 class="mb-0">Недвижимость</h5>
-                                    <p class="text-muted small mb-0">от 50 000 ₽/мес</p>
-                                </div>
-                            </div>
-                            <div class="progress" style="height: 8px;">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <img src="https://c4.wallpaperflare.com/wallpaper/94/650/382/5c1cbaf96bcec-wallpaper-preview.jpg" alt="Недвижимость в лизинг" class="mt-3 img-fluid rounded" style="height: 120px; object-fit: cover; width: 100%;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Секция калькулятора лизинга -->
+    echo '<!-- Секция калькулятора лизинга -->
     <section id="calculator" class="py-5 bg-light">
         <div class="container">
             <div class="row justify-content-center">

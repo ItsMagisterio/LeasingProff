@@ -485,5 +485,23 @@ class Users {
             'message' => 'Ошибка при создании менеджера'
         ];
     }
+    
+    /**
+     * Изменить роль пользователя
+     * @param int $userId ID пользователя
+     * @param string $newRole Новая роль ('client', 'manager', 'admin')
+     * @return array Результат операции
+     */
+    public function updateUserRole($userId, $newRole) {
+        if (!in_array($newRole, ['client', 'manager', 'admin'])) {
+            return [
+                'success' => false,
+                'message' => 'Некорректная роль пользователя'
+            ];
+        }
+        
+        // Обновляем поле role в данных пользователя
+        return $this->updateUser($userId, ['role' => $newRole]);
+    }
 }
 ?>

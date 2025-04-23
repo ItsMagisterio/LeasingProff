@@ -371,11 +371,13 @@ function showMatchingRealEstateCompanies(price, downPaymentPercent, term, realEs
 
 // Вспомогательная функция для форматирования валюты
 function formatCurrency(amount) {
+    // Использует ru-RU локаль для форматирования, которая использует пробелы между разрядами
     return new Intl.NumberFormat('ru-RU', {
         style: 'currency',
         currency: 'RUB',
         minimumFractionDigits: 0,
-        maximumFractionDigits: 0
+        maximumFractionDigits: 0,
+        useGrouping: true // Убедимся, что группировка цифр включена (пробелы между разрядами)
     }).format(amount);
 }
 
