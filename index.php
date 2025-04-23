@@ -2708,9 +2708,10 @@ switch ($page) {
     case 'profile':
         includeProfilePage();
         break;
-    case 'documents':
-        include 'pages/documents.php';
-        break;
+    // Удалили обработку документов по запросу пользователя
+    // case 'documents':
+    //     include 'pages/documents.php';
+    //     break;
     case 'applications':
         includeApplicationsPage();
         break;

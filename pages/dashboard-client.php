@@ -26,7 +26,6 @@ $USER_ROLES = [
             <div class="col-md-6 text-md-end">
                 <a href="index.php?page=dashboard-client" class="active">Заявки</a>
                 <a href="index.php?page=profile">Профиль</a>
-                <a href="index.php?page=documents">Документы</a>
                 <form method="post" class="d-inline">
                     <input type="hidden" name="action" value="logout">
                     <button type="submit" class="btn btn-link text-white p-0 ms-3">Выход</button>
