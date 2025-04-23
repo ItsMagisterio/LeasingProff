@@ -1849,14 +1849,14 @@ function includeHomePage() {
                         <div class="card-body p-4">
                             <h2 class="text-center mb-4">Рассчитайте ваш лизинг</h2>
                             
-                            <ul class="nav nav-pills nav-justified mb-4" id="leasingTabs" role="tablist">
+                            <ul class="nav nav-pills nav-justified mb-5" id="leasingTabs" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="vehicle-tab" data-bs-toggle="pill" data-bs-target="#vehicle-calc" type="button" role="tab" aria-controls="vehicle-calc" aria-selected="true">
+                                    <button class="nav-link active rounded-pill px-4 py-3" id="vehicle-tab" data-bs-toggle="pill" data-bs-target="#vehicle-calc" type="button" role="tab" aria-controls="vehicle-calc" aria-selected="true">
                                         <i class="fas fa-car me-2"></i>Транспорт
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="realestate-tab" data-bs-toggle="pill" data-bs-target="#realestate-calc" type="button" role="tab" aria-controls="realestate-calc" aria-selected="false">
+                                    <button class="nav-link rounded-pill px-4 py-3" id="realestate-tab" data-bs-toggle="pill" data-bs-target="#realestate-calc" type="button" role="tab" aria-controls="realestate-calc" aria-selected="false">
                                         <i class="fas fa-home me-2"></i>Недвижимость
                                     </button>
                                 </li>
@@ -2696,6 +2696,9 @@ switch ($page) {
         break;
     case 'user-rights':
         include 'pages/user-rights.php';
+        break;
+    case 'leasing-companies':
+        include 'pages/leasing-companies.php';
         break;
     case 'profile':
         includeProfilePage();
