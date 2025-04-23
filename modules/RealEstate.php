@@ -474,24 +474,45 @@ class RealEstate {
      * Получить диапазон площадей недвижимости
      */
     public function getRealEstateAreaRange() {
-        $result = $this->db->query("SELECT MIN(area) as min, MAX(area) as max FROM real_estate");
-
-        if (count($result) > 0) {
-            $row = $result[0];
-
-            // Проверяем наличие ключей
-            $min = isset($row['min']) ? (float) $row['min'] : 0;
-            $max = isset($row['max']) ? (float) $row['max'] : 500;
-
+        $jsonFile = __DIR__ . '/../data/real_estate.json';
+        
+        // Значения по умолчанию
+        $min = 0;
+        $max = 500;
+        
+        if (!file_exists($jsonFile)) {
             return [
                 'min' => $min,
                 'max' => $max
             ];
         }
-
+        
+        $jsonData = file_get_contents($jsonFile);
+        $data = json_decode($jsonData, true);
+        
+        if (!isset($data['records']) || !is_array($data['records']) || empty($data['records'])) {
+            return [
+                'min' => $min,
+                'max' => $max
+            ];
+        }
+        
+        // Находим минимальную и максимальную площадь
+        $areas = [];
+        foreach ($data['records'] as $property) {
+            if (isset($property['area'])) {
+                $areas[] = (float) $property['area'];
+            }
+        }
+        
+        if (!empty($areas)) {
+            $min = min($areas);
+            $max = max($areas);
+        }
+        
         return [
-            'min' => 0,
-            'max' => 500
+            'min' => (float) $min,
+            'max' => (float) $max
         ];
     }
 
