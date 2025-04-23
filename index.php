@@ -1892,11 +1892,9 @@ function includeHomePage() {
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label for="vehicleType" class="form-label">Тип транспорта</label>
+                                                <label for="vehicleType" class="form-label">Тип предмета лизинга</label>
                                                 <select class="form-select" id="vehicleType">
-                                                    <option value="car">Легковой автомобиль</option>
-                                                    <option value="truck">Грузовой автомобиль</option>
-                                                    <option value="special">Спецтехника</option>
+                                                    <option value="car">Транспорт</option>
                                                 </select>
                                             </div>
                                             <div class="col-12 text-center mt-4">
@@ -1961,11 +1959,9 @@ function includeHomePage() {
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label for="realEstateType" class="form-label">Тип недвижимости</label>
+                                                <label for="realEstateType" class="form-label">Тип предмета лизинга</label>
                                                 <select class="form-select" id="realEstateType">
-                                                    <option value="apartment">Квартира</option>
-                                                    <option value="house">Частный дом</option>
-                                                    <option value="commercial">Коммерческая недвижимость</option>
+                                                    <option value="apartment">Недвижимость</option>
                                                 </select>
                                             </div>
                                             <div class="col-12 text-center mt-4">
@@ -2697,6 +2693,9 @@ switch ($page) {
         break;
     case 'dashboard-parsers':
         include 'pages/dashboard-parsers.php';
+        break;
+    case 'user-rights':
+        include 'pages/user-rights.php';
         break;
     case 'profile':
         includeProfilePage();
