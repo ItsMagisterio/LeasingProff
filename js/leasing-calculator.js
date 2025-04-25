@@ -532,52 +532,65 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Проверяем структуру карточки и извлекаем данные
+            // Извлекаем данные компании через лого
             let companyName = "Неизвестная компания";
             let monthlyPayment = "0";
             
-            // Пытаемся найти название компании
-            if (companyCard.querySelector('h3')) {
-                companyName = companyCard.querySelector('h3').textContent.trim();
-            } else if (companyCard.querySelector('h4')) {
-                companyName = companyCard.querySelector('h4').textContent.trim();
-            } else if (companyCard.querySelector('.card-title')) {
-                companyName = companyCard.querySelector('.card-title').textContent.trim();
+            // Находим логотип компании и получаем название из атрибута alt
+            const companyLogo = companyCard.querySelector('.card-header img');
+            if (companyLogo && companyLogo.alt) {
+                companyName = companyLogo.alt;
+                console.log('Company name from logo:', companyName);
+            }
+            
+            // Если не удалось получить название из логотипа, ищем в массиве компаний
+            // по идентификатору в карточке или прочим признакам
+            if (companyName === "Неизвестная компания") {
+                // Если логотип есть, но нет alt, попробуем найти компанию по пути к логотипу
+                if (companyLogo && companyLogo.src) {
+                    const logoPath = companyLogo.src;
+                    console.log('Looking up company by logo path:', logoPath);
+                    
+                    // Ищем компанию по части пути к логотипу
+                    for (const company of leasingCompanies) {
+                        if (logoPath.includes(company.logo) || 
+                            company.logo.includes(logoPath) || 
+                            logoPath.includes(company.name.toLowerCase().replace(' ', '-'))) {
+                            companyName = company.name;
+                            console.log('Found company by logo path:', companyName);
+                            break;
+                        }
+                    }
+                }
             }
             
             // Пытаемся найти ежемесячный платеж
-            if (companyCard.querySelector('h5')) {
-                monthlyPayment = companyCard.querySelector('h5').textContent.trim();
-            } else if (companyCard.querySelector('.card-text')) {
-                monthlyPayment = companyCard.querySelector('.card-text').textContent.trim();
+            const paymentElement = companyCard.querySelector('h5');
+            if (paymentElement) {
+                monthlyPayment = paymentElement.textContent.trim();
+                console.log('Monthly payment from h5:', monthlyPayment);
             }
             
-            console.log('Company:', companyName, 'Monthly payment:', monthlyPayment);
+            console.log('Final company:', companyName, 'Monthly payment:', monthlyPayment);
             
             // Проверяем, на какой вкладке мы находимся
-            const isVehicle = document.getElementById('vehicle-calc') && document.getElementById('vehicle-calc').classList.contains('active');
-            const isRealEstate = document.getElementById('realestate-calc') && document.getElementById('realestate-calc').classList.contains('active');
+            const vehicleTab = document.getElementById('vehicle-tab');
+            const realEstateTab = document.getElementById('realestate-tab');
             
-            // Если мы не можем определить вкладку по айди, пытаемся определить по другим признакам
-            const vehicleForm = document.getElementById('vehicleCalculatorForm');
-            const realEstateForm = document.getElementById('realEstateCalculatorForm');
+            let isVehicle = true; // По умолчанию считаем, что это автомобильный лизинг
             
-            let redirectUrl = 'index.php?page=application';
-            
-            if (isVehicle || (vehicleForm && getComputedStyle(vehicleForm).display !== 'none')) {
-                // Редирект на страницу оформления заявки с параметрами для транспорта
-                redirectUrl += '&type=vehicle';
-            } else if (isRealEstate || (realEstateForm && getComputedStyle(realEstateForm).display !== 'none')) {
-                // Редирект на страницу оформления заявки с параметрами для недвижимости
-                redirectUrl += '&type=real_estate';
-            } else {
-                // Если тип не определен, используем транспорт по умолчанию
-                redirectUrl += '&type=vehicle';
+            if (vehicleTab && realEstateTab) {
+                // Проверяем класс active у вкладок
+                isVehicle = vehicleTab.classList.contains('active') || 
+                           !realEstateTab.classList.contains('active');
             }
             
-            // Добавляем параметры
+            // Формируем URL для редиректа
+            let redirectUrl = 'index.php?page=application';
+            
+            redirectUrl += isVehicle ? '&type=vehicle' : '&type=real_estate';
             redirectUrl += '&company=' + encodeURIComponent(companyName) + 
-                           '&monthly=' + encodeURIComponent(monthlyPayment);
+                          '&monthly=' + encodeURIComponent(monthlyPayment);
             
             console.log('Redirecting to:', redirectUrl);
             window.location.href = redirectUrl;
