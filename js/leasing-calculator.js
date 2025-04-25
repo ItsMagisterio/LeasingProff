@@ -509,34 +509,78 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Добавляем обработчики для оформления лизинга
     document.addEventListener('click', function(event) {
-        if (event.target.classList.contains('btn-outline-primary') && 
-            event.target.textContent === 'Оформить' && 
-            event.target.closest('.card-footer')) {
-            
+        console.log('Click detected on:', event.target);
+        
+        // Проверяем, является ли целевой элемент кнопкой "Оформить" или ее потомком
+        let targetButton = event.target;
+        
+        // Если клик был на дочернем элементе кнопки, находим саму кнопку
+        if (!targetButton.classList.contains('btn') && !targetButton.classList.contains('btn-outline-primary')) {
+            targetButton = event.target.closest('.btn-outline-primary');
+            if (!targetButton) return; // Если кнопка не найдена, выходим
+        }
+        
+        // Проверяем текст кнопки
+        if (targetButton.textContent.trim() === 'Оформить') {
+            console.log('Оформить button clicked');
             event.preventDefault();
             
             // Получаем данные о компании из родительской карточки
-            const companyCard = event.target.closest('.card');
-            const companyName = companyCard.querySelector('.card-header img').alt;
-            const monthlyPayment = companyCard.querySelector('.card-body h5').textContent;
+            const companyCard = targetButton.closest('.card');
+            if (!companyCard) {
+                console.error('Cannot find parent card');
+                return;
+            }
+            
+            // Проверяем структуру карточки и извлекаем данные
+            let companyName = "Неизвестная компания";
+            let monthlyPayment = "0";
+            
+            // Пытаемся найти название компании
+            if (companyCard.querySelector('h3')) {
+                companyName = companyCard.querySelector('h3').textContent.trim();
+            } else if (companyCard.querySelector('h4')) {
+                companyName = companyCard.querySelector('h4').textContent.trim();
+            } else if (companyCard.querySelector('.card-title')) {
+                companyName = companyCard.querySelector('.card-title').textContent.trim();
+            }
+            
+            // Пытаемся найти ежемесячный платеж
+            if (companyCard.querySelector('h5')) {
+                monthlyPayment = companyCard.querySelector('h5').textContent.trim();
+            } else if (companyCard.querySelector('.card-text')) {
+                monthlyPayment = companyCard.querySelector('.card-text').textContent.trim();
+            }
+            
+            console.log('Company:', companyName, 'Monthly payment:', monthlyPayment);
             
             // Проверяем, на какой вкладке мы находимся
-            const isVehicle = document.getElementById('vehicle-calc').classList.contains('active');
-            const isRealEstate = document.getElementById('realestate-calc').classList.contains('active');
+            const isVehicle = document.getElementById('vehicle-calc') && document.getElementById('vehicle-calc').classList.contains('active');
+            const isRealEstate = document.getElementById('realestate-calc') && document.getElementById('realestate-calc').classList.contains('active');
             
-            if (isVehicle) {
-                // Редирект на страницу оформления заявки с параметрами
-                window.location.href = 'index.php?page=application&type=vehicle&company=' + 
-                    encodeURIComponent(companyName) + '&monthly=' + 
-                    encodeURIComponent(monthlyPayment);
-            } else if (isRealEstate) {
-                // Редирект на страницу оформления заявки с параметрами
-                window.location.href = 'index.php?page=application&type=real_estate&company=' + 
-                    encodeURIComponent(companyName) + '&monthly=' + 
-                    encodeURIComponent(monthlyPayment);
+            // Если мы не можем определить вкладку по айди, пытаемся определить по другим признакам
+            const vehicleForm = document.getElementById('vehicleCalculatorForm');
+            const realEstateForm = document.getElementById('realEstateCalculatorForm');
+            
+            let redirectUrl = 'index.php?page=application';
+            
+            if (isVehicle || (vehicleForm && getComputedStyle(vehicleForm).display !== 'none')) {
+                // Редирект на страницу оформления заявки с параметрами для транспорта
+                redirectUrl += '&type=vehicle';
+            } else if (isRealEstate || (realEstateForm && getComputedStyle(realEstateForm).display !== 'none')) {
+                // Редирект на страницу оформления заявки с параметрами для недвижимости
+                redirectUrl += '&type=real_estate';
             } else {
-                alert('Пожалуйста, выберите тип лизинга и рассчитайте платеж');
+                // Если тип не определен, используем транспорт по умолчанию
+                redirectUrl += '&type=vehicle';
             }
+            
+            // Добавляем параметры
+            redirectUrl += '&company=' + encodeURIComponent(companyName) + 
+                           '&monthly=' + encodeURIComponent(monthlyPayment);
+            
+            console.log('Redirecting to:', redirectUrl);
+            window.location.href = redirectUrl;
         }
     });
     
