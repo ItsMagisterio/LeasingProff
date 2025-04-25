@@ -491,7 +491,56 @@ document.addEventListener('DOMContentLoaded', function() {
     const realEstateDownPayment = document.getElementById('realEstateDownPayment');
     const realEstateDownPaymentRange = document.getElementById('realEstateDownPaymentRange');
     
-    console.log('Поля инициализированы')
+    console.log('Поля инициализированы');
+    
+    // Инициализация форм калькулятора при загрузке
+    if (vehiclePrice && vehiclePriceRange) {
+        updateVehiclePrice();
+    }
+    if (vehicleDownPayment && vehicleDownPaymentRange) {
+        updateVehicleDownPayment();
+    }
+    if (realEstatePrice && realEstatePriceRange) {
+        updateRealEstatePrice();
+    }
+    if (realEstateDownPayment && realEstateDownPaymentRange) {
+        updateRealEstateDownPayment();
+    }
+    
+    // Добавляем обработчики для оформления лизинга
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('btn-outline-primary') && 
+            event.target.textContent === 'Оформить' && 
+            event.target.closest('.card-footer')) {
+            
+            event.preventDefault();
+            
+            // Получаем данные о компании из родительской карточки
+            const companyCard = event.target.closest('.card');
+            const companyName = companyCard.querySelector('.card-header img').alt;
+            const monthlyPayment = companyCard.querySelector('.card-body h5').textContent;
+            
+            // Проверяем, на какой вкладке мы находимся
+            const isVehicle = document.getElementById('vehicle-calc').classList.contains('active');
+            const isRealEstate = document.getElementById('realestate-calc').classList.contains('active');
+            
+            if (isVehicle) {
+                // Редирект на страницу оформления заявки с параметрами
+                window.location.href = 'index.php?page=application&type=vehicle&company=' + 
+                    encodeURIComponent(companyName) + '&monthly=' + 
+                    encodeURIComponent(monthlyPayment);
+            } else if (isRealEstate) {
+                // Редирект на страницу оформления заявки с параметрами
+                window.location.href = 'index.php?page=application&type=real_estate&company=' + 
+                    encodeURIComponent(companyName) + '&monthly=' + 
+                    encodeURIComponent(monthlyPayment);
+            } else {
+                alert('Пожалуйста, выберите тип лизинга и рассчитайте платеж');
+            }
+        }
+    });
     
     // Обработчики событий уже определены в HTML с помощью атрибутов oninput
-});console.log('Debug: Checking calculator.js loading');
+});
+
+console.log('Debug: Checking calculator.js loading');
