@@ -569,53 +569,18 @@ class RealEstate {
      * Получить количество объектов недвижимости
      */
     public function getRealEstateCount($filters = []) {
-        $sql = "SELECT COUNT(*) FROM real_estate WHERE 1=1";
-
-        // Применяем фильтры
-        if (!empty($filters)) {
-            if (isset($filters['type']) && $filters['type']) {
-                $type = $this->db->escapeString($filters['type']);
-                $sql .= " AND type = '$type'";
-            }
-
-            if (isset($filters['min_price']) && $filters['min_price']) {
-                $minPrice = (float) $filters['min_price'];
-                $sql .= " AND price >= $minPrice";
-            }
-
-            if (isset($filters['max_price']) && $filters['max_price']) {
-                $maxPrice = (float) $filters['max_price'];
-                $sql .= " AND price <= $maxPrice";
-            }
-
-            if (isset($filters['min_area']) && $filters['min_area']) {
-                $minArea = (float) $filters['min_area'];
-                $sql .= " AND area >= $minArea";
-            }
-
-            if (isset($filters['max_area']) && $filters['max_area']) {
-                $maxArea = (float) $filters['max_area'];
-                $sql .= " AND area <= $maxArea";
-            }
-
-            if (isset($filters['rooms']) && $filters['rooms']) {
-                $rooms = (int) $filters['rooms'];
-                $sql .= " AND rooms = $rooms";
-            }
-
-            if (isset($filters['status']) && $filters['status']) {
-                $status = $this->db->escapeString($filters['status']);
-                $sql .= " AND status = '$status'";
-            }
-        }
-
-        $result = $this->db->query($sql);
-
-        if (is_array($result) && isset($result[0]) && isset($result[0]['COUNT(*)'])) {
-            return (int) $result[0]['COUNT(*)'];
-        }
-
-        return 0;
+        // Логирование для отладки
+        file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Запрос на getRealEstateCount с фильтрами: " . print_r($filters, true) . "\n", FILE_APPEND);
+        
+        // Используем тот же метод для получения объектов с фильтрами, но без пагинации
+        $properties = $this->getAllRealEstate(0, 0, $filters);
+        
+        // Возвращаем количество полученных объектов
+        $count = count($properties);
+        
+        file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Найдено объектов: " . $count . "\n", FILE_APPEND);
+        
+        return $count;
     }
 
     /**
@@ -627,19 +592,31 @@ class RealEstate {
         if (!in_array($field, $allowedFields)) {
             return [];
         }
-
-        $field = $this->db->escapeString($field);
-        $result = $this->db->query("SELECT DISTINCT $field FROM real_estate ORDER BY $field");
+        
+        // Чтение данных из JSON-файла
+        $jsonFile = __DIR__ . '/../data/real_estate.json';
+        if (!file_exists($jsonFile)) {
+            return [];
+        }
+        
+        $jsonData = file_get_contents($jsonFile);
+        $data = json_decode($jsonData, true);
+        
+        if (!isset($data['records']) || !is_array($data['records'])) {
+            return [];
+        }
+        
+        // Получаем все уникальные значения поля
         $values = [];
-
-        if (!empty($result)) {
-            foreach ($result as $row) {
-                if (isset($row[$field])) {
-                    $values[] = $row[$field];
-                }
+        foreach ($data['records'] as $property) {
+            if (isset($property[$field]) && !in_array($property[$field], $values)) {
+                $values[] = $property[$field];
             }
         }
-
+        
+        // Сортируем значения
+        sort($values);
+        
         return $values;
     }
 }
