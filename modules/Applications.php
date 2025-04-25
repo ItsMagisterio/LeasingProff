@@ -617,6 +617,8 @@ class Applications {
         return count($unassignedApplications);
     }
     
+
+    
     /**
      * Получить неназначенные заявки
      */

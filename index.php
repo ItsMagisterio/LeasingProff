@@ -2782,6 +2782,16 @@ switch ($page) {
     case 'applications':
         includeApplicationsPage();
         break;
+    case 'application-details':
+        if (isset($_GET['id'])) {
+            // Если передан ID заявки, включаем страницу с деталями
+            include_once('pages/application-details.php');
+        } else {
+            // Если ID не передан, перенаправляем на список заявок
+            header('Location: index.php?page=applications');
+            exit;
+        }
+        break;
 
     case 'careers':
         includeCareersPage();

@@ -25,6 +25,8 @@ if ($auth->isLoggedIn()) {
 $applicationType = isset($_GET['type']) ? $_GET['type'] : '';
 $companyName = isset($_GET['company']) ? $_GET['company'] : '';
 $monthlyPayment = isset($_GET['monthly']) ? $_GET['monthly'] : '';
+// Преобразуем ежемесячный платеж из строки с разделителями в числовое значение
+$monthlyPaymentNumeric = preg_replace('/[^0-9]/', '', $monthlyPayment);
 $vehicleId = isset($_GET['vehicle_id']) ? (int)$_GET['vehicle_id'] : 0;
 $realEstateId = isset($_GET['real_estate_id']) ? (int)$_GET['real_estate_id'] : 0;
 
@@ -231,7 +233,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
                                     <label for="monthly_payment" class="form-label">Ежемесячный платеж</label>
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="monthly_payment" name="monthly_payment" 
-                                            value="<?= isset($monthlyPayment) && !empty($monthlyPayment) ? preg_replace('/[^0-9]/', '', $monthlyPayment) : ($isVehicle ? '42300' : '126700') ?>" required>
+                                            value="<?= !empty($monthlyPaymentNumeric) ? $monthlyPaymentNumeric : ($isVehicle ? '42300' : '126700') ?>" required>
                                         <span class="input-group-text">₽</span>
                                     </div>
                                 </div>
