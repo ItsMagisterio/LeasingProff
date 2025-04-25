@@ -1,0 +1,4 @@
+# Hosts file entry for лизинг.орг
+# Add this to your /etc/hosts file or C:\Windows\System32\drivers\etc\hosts file
+
+31.31.197.13    www.лизинг.орг лизинг.орг
