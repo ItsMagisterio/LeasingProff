@@ -404,16 +404,16 @@ $unassignedApplications = $applications->getUnassignedApplications();
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addManagerModal">
                         <i class="fas fa-user-plus me-2"></i> Добавить менеджера
                     </button>
-                    <button class="btn btn-success">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addVehicleModal">
                         <i class="fas fa-car me-2"></i> Добавить автомобиль
                     </button>
-                    <button class="btn btn-info text-white">
+                    <button class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#addRealEstateModal">
                         <i class="fas fa-building me-2"></i> Добавить недвижимость
                     </button>
-                    <button class="btn btn-secondary">
+                    <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exportReportModal">
                         <i class="fas fa-file-export me-2"></i> Экспорт отчета
                     </button>
-                    <button class="btn btn-warning text-dark">
+                    <button class="btn btn-warning text-dark" data-bs-toggle="modal" data-bs-target="#systemSettingsModal">
                         <i class="fas fa-cog me-2"></i> Настройки системы
                     </button>
                 </div>
@@ -463,6 +463,323 @@ $unassignedApplications = $applications->getUnassignedApplications();
                     <div class="d-flex justify-content-between">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
                         <button type="submit" class="btn btn-primary">Добавить менеджера</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для добавления автомобиля -->
+<div class="modal fade" id="addVehicleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавить новый автомобиль</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <input type="hidden" name="action" value="add_vehicle">
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="vehicle_make" class="form-label">Марка</label>
+                            <input type="text" class="form-control" id="vehicle_make" name="make" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="vehicle_model" class="form-label">Модель</label>
+                            <input type="text" class="form-control" id="vehicle_model" name="model" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="vehicle_year" class="form-label">Год выпуска</label>
+                            <input type="number" class="form-control" id="vehicle_year" name="year" min="1900" max="2030" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="vehicle_engine" class="form-label">Двигатель</label>
+                            <input type="text" class="form-control" id="vehicle_engine" name="engine" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="vehicle_power" class="form-label">Мощность (л.с.)</label>
+                            <input type="number" class="form-control" id="vehicle_power" name="power" min="1" max="2000" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="vehicle_drive_type" class="form-label">Привод</label>
+                            <select class="form-select" id="vehicle_drive_type" name="drive_type" required>
+                                <option value="">Выберите тип привода</option>
+                                <option value="front">Передний</option>
+                                <option value="rear">Задний</option>
+                                <option value="all">Полный</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="vehicle_transmission" class="form-label">Коробка передач</label>
+                            <select class="form-select" id="vehicle_transmission" name="transmission" required>
+                                <option value="">Выберите тип КПП</option>
+                                <option value="manual">Механическая</option>
+                                <option value="automatic">Автоматическая</option>
+                                <option value="robot">Робот</option>
+                                <option value="variator">Вариатор</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="vehicle_color" class="form-label">Цвет</label>
+                            <input type="text" class="form-control" id="vehicle_color" name="color" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="vehicle_interior" class="form-label">Тип обивки салона</label>
+                        <input type="text" class="form-control" id="vehicle_interior" name="interior" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="vehicle_features" class="form-label">Особенности и опции</label>
+                        <textarea class="form-control" id="vehicle_features" name="features" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="vehicle_image_url" class="form-label">URL изображения</label>
+                        <input type="url" class="form-control" id="vehicle_image_url" name="image_url" required>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="vehicle_price" class="form-label">Стоимость (₽)</label>
+                            <input type="number" class="form-control" id="vehicle_price" name="price" min="0" step="1000" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="vehicle_monthly_payment" class="form-label">Ежемесячный платеж (₽)</label>
+                            <input type="number" class="form-control" id="vehicle_monthly_payment" name="monthly_payment" min="0" step="100" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="vehicle_status" class="form-label">Статус</label>
+                        <select class="form-select" id="vehicle_status" name="status" required>
+                            <option value="available">Доступен</option>
+                            <option value="reserved">Зарезервирован</option>
+                            <option value="sold">Продан</option>
+                        </select>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-success">Добавить автомобиль</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для добавления недвижимости -->
+<div class="modal fade" id="addRealEstateModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавить объект недвижимости</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <input type="hidden" name="action" value="add_real_estate">
+                    
+                    <div class="mb-3">
+                        <label for="real_estate_title" class="form-label">Название объекта</label>
+                        <input type="text" class="form-control" id="real_estate_title" name="title" required>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="real_estate_type" class="form-label">Тип недвижимости</label>
+                            <select class="form-select" id="real_estate_type" name="type" required>
+                                <option value="">Выберите тип недвижимости</option>
+                                <option value="apartment">Квартира</option>
+                                <option value="house">Дом</option>
+                                <option value="commercial">Коммерческая недвижимость</option>
+                                <option value="land">Земельный участок</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="real_estate_status" class="form-label">Статус</label>
+                            <select class="form-select" id="real_estate_status" name="status" required>
+                                <option value="available">Доступен</option>
+                                <option value="reserved">Зарезервирован</option>
+                                <option value="sold">Продан</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="real_estate_area" class="form-label">Площадь (м²)</label>
+                            <input type="number" class="form-control" id="real_estate_area" name="area" min="1" step="0.1" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="real_estate_rooms" class="form-label">Количество комнат</label>
+                            <input type="number" class="form-control" id="real_estate_rooms" name="rooms" min="0">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="real_estate_floor" class="form-label">Этаж</label>
+                            <input type="number" class="form-control" id="real_estate_floor" name="floor" min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="real_estate_address" class="form-label">Адрес</label>
+                        <input type="text" class="form-control" id="real_estate_address" name="address" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="real_estate_description" class="form-label">Описание</label>
+                        <textarea class="form-control" id="real_estate_description" name="description" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="real_estate_features" class="form-label">Особенности и удобства</label>
+                        <textarea class="form-control" id="real_estate_features" name="features" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="real_estate_image_url" class="form-label">URL изображения</label>
+                        <input type="url" class="form-control" id="real_estate_image_url" name="image_url" required>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="real_estate_price" class="form-label">Стоимость (₽)</label>
+                            <input type="number" class="form-control" id="real_estate_price" name="price" min="0" step="1000" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="real_estate_monthly_payment" class="form-label">Ежемесячный платеж (₽)</label>
+                            <input type="number" class="form-control" id="real_estate_monthly_payment" name="monthly_payment" min="0" step="100" required>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-info text-white">Добавить объект</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для экспорта отчета -->
+<div class="modal fade" id="exportReportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Экспорт отчета</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <input type="hidden" name="action" value="export_report">
+                    
+                    <div class="mb-3">
+                        <label for="report_type" class="form-label">Тип отчета</label>
+                        <select class="form-select" id="report_type" name="report_type" required>
+                            <option value="">Выберите тип отчета</option>
+                            <option value="applications">Заявки</option>
+                            <option value="vehicles">Автомобили</option>
+                            <option value="real_estate">Недвижимость</option>
+                            <option value="users">Пользователи</option>
+                            <option value="managers">Менеджеры</option>
+                        </select>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="date_from" class="form-label">Дата начала</label>
+                            <input type="date" class="form-control" id="date_from" name="date_from" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="date_to" class="form-label">Дата окончания</label>
+                            <input type="date" class="form-control" id="date_to" name="date_to" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="export_format" class="form-label">Формат экспорта</label>
+                        <select class="form-select" id="export_format" name="export_format" required>
+                            <option value="csv">CSV</option>
+                            <option value="excel">Excel</option>
+                            <option value="pdf">PDF</option>
+                        </select>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Экспортировать</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для настроек системы -->
+<div class="modal fade" id="systemSettingsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Настройки системы</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <input type="hidden" name="action" value="update_settings">
+                    
+                    <div class="mb-3">
+                        <label for="site_name" class="form-label">Название сайта</label>
+                        <input type="text" class="form-control" id="site_name" name="site_name" value="лизинг.орг" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="admin_email" class="form-label">Email администратора</label>
+                        <input type="email" class="form-control" id="admin_email" name="admin_email" value="admin@2leasing.ru" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="default_language" class="form-label">Язык по умолчанию</label>
+                        <select class="form-select" id="default_language" name="default_language" required>
+                            <option value="ru" selected>Русский</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="items_per_page" class="form-label">Элементов на странице</label>
+                        <input type="number" class="form-control" id="items_per_page" name="items_per_page" value="10" min="5" max="100" required>
+                    </div>
+                    
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="maintenance_mode" name="maintenance_mode" value="1">
+                        <label class="form-check-label" for="maintenance_mode">Режим обслуживания</label>
+                    </div>
+                    
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="enable_registration" name="enable_registration" value="1" checked>
+                        <label class="form-check-label" for="enable_registration">Разрешить регистрацию</label>
+                    </div>
+                    
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="debug_mode" name="debug_mode" value="1">
+                        <label class="form-check-label" for="debug_mode">Режим отладки</label>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-warning text-dark">Сохранить настройки</button>
                     </div>
                 </form>
             </div>
