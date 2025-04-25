@@ -135,71 +135,26 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log(`Debug: Action field value: ${actionField.value}`);
             }
             
-            // Предотвращаем стандартную отправку формы
-            event.preventDefault();
-            
-            // Используем fetch API для асинхронной отправки формы
-            const formData = new FormData(form);
-            
-            fetch(action, {
-                method: method,
-                body: formData
-            })
-            .then(response => {
-                if (response.ok) {
-                    console.log("Debug: Form submitted successfully");
-                    
-                    // Находим ближайший modal и закрываем его
-                    const modalElement = form.closest('.modal');
-                    if (modalElement) {
+            // Находим ближайший modal
+            const modalElement = form.closest('.modal');
+            if (modalElement) {
+                // Добавим обработчик событию показа страницы после отправки формы
+                window.addEventListener('beforeunload', function(unloadEvent) {
+                    // Закрываем модальное окно перед перезагрузкой страницы
+                    try {
                         const modalInstance = bootstrap.Modal.getInstance(modalElement);
                         if (modalInstance) {
                             modalInstance.hide();
                         }
+                    } catch (error) {
+                        console.error("Debug: Error hiding modal:", error);
                     }
-                    
-                    // Показываем сообщение об успехе
-                    const actionName = actionField ? actionField.value.replace(/_/g, ' ') : 'action';
-                    
-                    // Создаем временный элемент для отображения уведомления
-                    const alertElement = document.createElement('div');
-                    alertElement.className = 'alert alert-success alert-dismissible fade show fixed-top mx-auto mt-3';
-                    alertElement.style.maxWidth = '500px';
-                    alertElement.role = 'alert';
-                    alertElement.innerHTML = `
-                        <strong>Успех!</strong> ${capitalizeFirstLetter(actionName)} выполнено успешно.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    `;
-                    
-                    document.body.appendChild(alertElement);
-                    
-                    // Автоматически закрываем уведомление через 5 секунд
-                    setTimeout(() => {
-                        if (alertElement.parentNode) {
-                            alertElement.remove();
-                        }
-                    }, 5000);
-                    
-                    // Перезагружаем страницу с небольшой задержкой
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-                    
-                } else {
-                    console.error("Debug: Form submission failed");
-                    alert("Произошла ошибка при отправке формы. Пожалуйста, попробуйте снова.");
-                }
-            })
-            .catch(error => {
-                console.error("Debug: Error submitting form:", error);
-                alert("Произошла ошибка при отправке формы. Пожалуйста, попробуйте снова.");
-            });
+                }, { once: true });
+            }
+            
+            // Используем стандартную отправку формы (PHP сам перезагрузит страницу)
+            // НЕТ event.preventDefault() - форма отправится стандартным способом
         });
-        
-        // Вспомогательная функция для капитализации первой буквы
-        function capitalizeFirstLetter(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        }
     });
     
     // Добавим возможность открытия модального окна из URL
