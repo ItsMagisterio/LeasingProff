@@ -759,49 +759,8 @@ $unassignedApplications = $applications->getUnassignedApplications();
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post" action="index.php?page=dashboard-admin" id="settingsForm" onsubmit="return submitSettingsForm(this);">
+                <form method="post" action="index.php?page=dashboard-admin" id="settingsForm">
                     <input type="hidden" name="action" value="update_settings">
-                    
-                    <script>
-                    function submitSettingsForm(form) {
-                        // Отправляем форму асинхронно через fetch API
-                        let formData = new FormData(form);
-                        
-                        // Выводим для отладки данные формы
-                        console.log("Отправка формы настроек...");
-                        for (let entry of formData.entries()) {
-                            console.log(entry[0] + ": " + entry[1]);
-                        }
-                        
-                        fetch(form.action, {
-                            method: 'POST',
-                            body: formData
-                        })
-                        .then(response => {
-                            if (response.ok) {
-                                // Закрываем модальное окно
-                                let modal = document.getElementById('systemSettingsModal');
-                                let bsModal = bootstrap.Modal.getInstance(modal);
-                                bsModal.hide();
-                                
-                                // Показываем сообщение об успехе
-                                alert('Настройки системы успешно обновлены!');
-                                
-                                // Перезагружаем страницу
-                                window.location.reload();
-                            } else {
-                                alert('Ошибка при сохранении настроек!');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Ошибка:', error);
-                            alert('Произошла ошибка при сохранении настроек. Пожалуйста, попробуйте еще раз.');
-                        });
-                        
-                        // Предотвращаем стандартную отправку формы
-                        return false;
-                    }
-                    </script>
                     
                     <div class="mb-3">
                         <label for="site_name" class="form-label">Название сайта</label>

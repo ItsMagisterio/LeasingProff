@@ -298,9 +298,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $enableRegistration = isset($_POST['enable_registration']) ? 1 : 0;
             $debugMode = isset($_POST['debug_mode']) ? 1 : 0;
             
-            // Здесь должна быть логика сохранения настроек в базу данных
-            // В данный момент просто выводим сообщение об успехе
-            $success = 'Настройки системы успешно обновлены';
+            // ВНИМАНИЕ: Здесь должно быть реальное сохранение настроек в базу данных
+            // Сейчас мы только имитируем сохранение и выводим расширенное сообщение
+            
+            // Создаем файл с настройками для демонстрации
+            $settingsFile = __DIR__ . '/data/settings.json';
+            $settingsData = [
+                'site_name' => $siteName,
+                'admin_email' => $adminEmail,
+                'default_language' => $defaultLanguage,
+                'items_per_page' => $itemsPerPage,
+                'maintenance_mode' => $maintenanceMode,
+                'enable_registration' => $enableRegistration,
+                'debug_mode' => $debugMode,
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+            
+            // Создаем директорию data, если она не существует
+            if (!is_dir(__DIR__ . '/data')) {
+                mkdir(__DIR__ . '/data', 0755, true);
+            }
+            
+            // Сохраняем настройки в JSON файл
+            file_put_contents($settingsFile, json_encode($settingsData, JSON_PRETTY_PRINT));
+            
+            // Сообщение об успехе с подробностями
+            $success = 'Настройки системы успешно обновлены:<br>' .
+                      'Название сайта: ' . htmlspecialchars($siteName) . '<br>' .
+                      'Email: ' . htmlspecialchars($adminEmail) . '<br>' .
+                      'Язык: ' . htmlspecialchars($defaultLanguage) . '<br>' .
+                      'Элементов на странице: ' . $itemsPerPage . '<br>' .
+                      'Режим обслуживания: ' . ($maintenanceMode ? 'Вкл' : 'Выкл') . '<br>' .
+                      'Регистрация разрешена: ' . ($enableRegistration ? 'Да' : 'Нет') . '<br>' .
+                      'Режим отладки: ' . ($debugMode ? 'Вкл' : 'Выкл') . '<br>' .
+                      'Время обновления: ' . date('Y-m-d H:i:s');
+                      
             $page = 'dashboard-admin';
         }
     }
