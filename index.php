@@ -603,7 +603,23 @@ function outputFooter() {
                         </a>
                     </div>
                     <p class="text-white-50 mb-4">Комплексные решения для лизинга недвижимости и транспорта на выгодных условиях для физических и юридических лиц по всей России.</p>
-
+                    <div class="d-flex gap-3 mb-3">
+                        <a href="https://facebook.com" target="_blank" class="social-icon" title="Наша страница в Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com" target="_blank" class="social-icon" title="Наш Instagram профиль">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://vk.com" target="_blank" class="social-icon" title="Наша группа ВКонтакте">
+                            <i class="fab fa-vk"></i>
+                        </a>
+                        <a href="https://t.me/лизинг_орг" target="_blank" class="social-icon" title="Наш канал в Telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="https://youtube.com" target="_blank" class="social-icon" title="Наш YouTube канал">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-6">
                     <h5 class="text-white mb-4">Компания</h5>
