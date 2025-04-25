@@ -182,8 +182,8 @@ $unassignedApplications = $applications->getUnassignedApplications();
                                                             <input type="hidden" name="application_id" value="<?= $application['id'] ?>">
                                                             
                                                             <div class="mb-3">
-                                                                <label for="manager_id" class="form-label">Выберите менеджера</label>
-                                                                <select name="manager_id" id="manager_id" class="form-select" required>
+                                                                <label for="manager_id_<?= $application['id'] ?>" class="form-label">Выберите менеджера</label>
+                                                                <select name="manager_id" id="manager_id_<?= $application['id'] ?>" class="form-select" required>
                                                                     <option value="">-- Выберите менеджера --</option>
                                                                     <?php foreach ($managersList as $manager): ?>
                                                                     <option value="<?= $manager['id'] ?>"><?= htmlspecialchars($manager['first_name'] . ' ' . $manager['last_name']) ?></option>
