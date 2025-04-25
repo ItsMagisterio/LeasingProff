@@ -741,6 +741,23 @@ function outputFooter() {
     <!-- Скрипты -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Инициализация всех модальных окон Bootstrap
+        document.addEventListener("DOMContentLoaded", function() {
+            // Инициализируем модальные окна
+            var modalElements = document.querySelectorAll(".modal");
+            modalElements.forEach(function(modalElement) {
+                var modal = new bootstrap.Modal(modalElement);
+                
+                // Добавляем обработчики для кнопок, которые открывают модальные окна
+                var modalTriggers = document.querySelectorAll(\'[data-bs-target="#\' + modalElement.id + \'"]\');
+                modalTriggers.forEach(function(trigger) {
+                    trigger.addEventListener("click", function() {
+                        modal.show();
+                    });
+                });
+            });
+        });
+        
         // Плавная прокрутка к якорям
         document.querySelectorAll(\'a[href^="#"]\').forEach(anchor => {
             anchor.addEventListener(\'click\', function (e) {
