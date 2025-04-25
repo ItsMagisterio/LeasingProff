@@ -62,7 +62,7 @@ const leasingCompanies = [
     {
         id: 4,
         name: 'Газпромбанк Лизинг',
-        logo: 'https://www.gazprombank.ru/local/templates/main/img/logo.svg',
+        logo: '/images/logos/gazprombank-leasing.svg',
         rating: 4.6,
         vehicleRates: {
             car: { minRate: 10.2, maxRate: 13.2 },
@@ -80,7 +80,7 @@ const leasingCompanies = [
     {
         id: 5,
         name: 'Европлан',
-        logo: 'https://europlan.ru/source/icon-green.svg',
+        logo: '/images/logos/europlan.svg',
         rating: 4.5,
         vehicleRates: {
             car: { minRate: 10.5, maxRate: 13.5 },
@@ -94,7 +94,7 @@ const leasingCompanies = [
     {
         id: 6,
         name: 'РЕСО-Лизинг',
-        logo: 'https://www.resoleasing.com/local/templates/.default/img/logo.svg',
+        logo: '/images/logos/reso-leasing.svg',
         rating: 4.4,
         vehicleRates: {
             car: { minRate: 10.8, maxRate: 13.8 },
