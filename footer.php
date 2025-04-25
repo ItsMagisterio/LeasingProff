@@ -4,7 +4,7 @@
                 <div class="col-lg-4">
                     <h5 class="text-white mb-4">О компании</h5>
                     <p class="text-white-50">
-                        2Leasing предлагает выгодные условия лизинга автомобилей и недвижимости для физических и юридических лиц.
+                        лизинг.орг предлагает выгодные условия лизинга автомобилей и недвижимости для физических и юридических лиц.
                     </p>
                 </div>
                 <div class="col-lg-4">
@@ -12,7 +12,7 @@
                     <ul class="list-unstyled text-white-50">
                         <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> Москва, ул. Тверская, 15</li>
                         <li class="mb-2"><i class="fas fa-phone me-2"></i> +7 (495) 123-45-67</li>
-                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@2leasing.ru</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> webmaster@лизинг.орг</li>
                     </ul>
                 </div>
                 <div class="col-lg-4">
@@ -28,10 +28,10 @@
             <hr class="my-4 bg-light">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0 text-white-50">&copy; <?php echo date('Y'); ?> 2Leasing. Все права защищены.</p>
+                    <p class="mb-0 text-white-50">&copy; <?php echo date('Y'); ?> лизинг.орг. Все права защищены.</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <p class="mb-0 text-white-50">Разработано с <i class="fas fa-heart text-danger"></i> компанией 2Leasing</p>
+                    <p class="mb-0 text-white-50">Разработано с <i class="fas fa-heart text-danger"></i> компанией лизинг.орг</p>
                 </div>
             </div>
         </div>
