@@ -125,6 +125,10 @@ $USER_ROLES = [
                                             $statusClass = 'bg-danger';
                                             $statusText = 'Отклонено';
                                             break;
+                                        case 'cancelled':
+                                            $statusClass = 'bg-danger';
+                                            $statusText = 'Отменена';
+                                            break;
                                         case 'signed':
                                             $statusClass = 'bg-info';
                                             $statusText = 'Подписано';
@@ -184,6 +188,10 @@ $USER_ROLES = [
                         break;
                     case 'completed':
                         $progress = 100;
+                        break;
+                    case 'cancelled':
+                    case 'rejected':
+                        $progress = 0; // Для отмененных и отклоненных заявок прогресс 0
                         break;
                 }
             ?>
