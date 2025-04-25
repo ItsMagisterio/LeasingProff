@@ -32,9 +32,12 @@ window.openModal = function(modalId) {
     }
 };
 
+// Добавляем алиас showModal для совместимости
+window.showModal = window.openModal;
+
 // Инициализация после загрузки DOM
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("Modal handler initialized");
+    console.log("Modal handler initialized with showModal alias");
     
     // Проверяем, доступен ли bootstrap
     if (typeof bootstrap === 'undefined') {
