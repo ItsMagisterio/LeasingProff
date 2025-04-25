@@ -41,9 +41,16 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 
 // Обработка форм и AJAX-запросов
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Отладка - записываем полученные данные POST в лог
+    $debugFile = __DIR__ . '/data/debug.log';
+    file_put_contents($debugFile, date('Y-m-d H:i:s') . " - POST Data: " . print_r($_POST, true) . "\n", FILE_APPEND);
+    
     // Операции с пользователями
     if (isset($_POST['action'])) {
         $action = $_POST['action'];
+        
+        // Отладка - записываем действие
+        file_put_contents($debugFile, date('Y-m-d H:i:s') . " - Action: " . $action . "\n", FILE_APPEND);
         
         // Авторизация
         if ($action === 'login') {
@@ -223,7 +230,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         // Добавление нового автомобиля (для менеджера и админа)
-        elseif ($action === 'add_vehicle' && $auth->isManager()) {
+        elseif ($action === 'add_vehicle') {
+            // Отладка - записываем проверку прав
+            file_put_contents($debugFile, date('Y-m-d H:i:s') . " - isManager check: " . ($auth->isManager() ? 'true' : 'false') . "\n", FILE_APPEND);
+            
+            if ($auth->isManager()) {
             $vehicleData = [
                 'make' => $_POST['make'],
                 'model' => $_POST['model'],
@@ -250,10 +261,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = $result['message'];
                 $page = 'add-vehicle';
             }
+            } else {
+                // Если нет прав - записываем это в отладочный файл
+                file_put_contents($debugFile, date('Y-m-d H:i:s') . " - ERROR: No permission to add vehicle\n", FILE_APPEND);
+                $error = 'У вас нет прав для добавления автомобилей';
+                $page = 'dashboard-admin';
+            }
         }
         
         // Добавление нового менеджера (для админа)
-        elseif ($action === 'add_manager' && $auth->isAdmin()) {
+        elseif ($action === 'add_manager') {
+            // Отладка - записываем проверку прав
+            file_put_contents($debugFile, date('Y-m-d H:i:s') . " - isAdmin check: " . ($auth->isAdmin() ? 'true' : 'false') . "\n", FILE_APPEND);
+            
+            if ($auth->isAdmin()) {
             $userData = [
                 'email' => $_POST['email'],
                 'password' => $_POST['password'],
@@ -271,10 +292,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = $result['message'];
                 $page = 'add-manager';
             }
+            } else {
+                // Если нет прав - записываем это в отладочный файл
+                file_put_contents($debugFile, date('Y-m-d H:i:s') . " - ERROR: No permission to add manager\n", FILE_APPEND);
+                $error = 'У вас нет прав для добавления менеджеров';
+                $page = 'dashboard-admin';
+            }
         }
         
         // Добавление нового объекта недвижимости (для менеджера и админа)
-        elseif ($action === 'add_real_estate' && $auth->isManager()) {
+        elseif ($action === 'add_real_estate') {
+            // Отладка - записываем проверку прав
+            file_put_contents($debugFile, date('Y-m-d H:i:s') . " - isManager check for real estate: " . ($auth->isManager() ? 'true' : 'false') . "\n", FILE_APPEND);
+            
+            if ($auth->isManager()) {
             $realEstateData = [
                 'title' => $_POST['title'],
                 'type' => $_POST['type'],
@@ -297,6 +328,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $page = 'real-estate-admin';
             } else {
                 $error = $result['message'];
+                $page = 'dashboard-admin';
+            }
+            } else {
+                // Если нет прав - записываем это в отладочный файл
+                file_put_contents($debugFile, date('Y-m-d H:i:s') . " - ERROR: No permission to add real estate\n", FILE_APPEND);
+                $error = 'У вас нет прав для добавления объектов недвижимости';
                 $page = 'dashboard-admin';
             }
         }
