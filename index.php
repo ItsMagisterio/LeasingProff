@@ -2990,6 +2990,15 @@ switch ($page) {
     case 'manager-applications':
         include 'pages/manager-applications.php';
         break;
+    case 'managers':
+        include 'pages/managers.php';
+        break;
+    case 'dashboard-clients':
+        include 'pages/dashboard-client.php';
+        break;
+    case 'settings':
+        include 'pages/settings.php';
+        break;
     case 'profile':
         includeProfilePage();
         break;
