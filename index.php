@@ -2987,6 +2987,9 @@ switch ($page) {
     case 'leasing-companies':
         include 'pages/leasing-companies.php';
         break;
+    case 'manager-applications':
+        include 'pages/manager-applications.php';
+        break;
     case 'profile':
         includeProfilePage();
         break;
