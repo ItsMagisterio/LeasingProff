@@ -660,6 +660,28 @@ body {
   height: 50px;
 }
 
+/* Стили для кнопки показать/скрыть пароль */
+.password-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.password-toggle:hover {
+  color: var(--primary-color) !important;
+}
+
+.password-toggle:focus {
+  color: var(--primary-color) !important;
+}
+
+.form-floating .password-toggle {
+  margin-top: -10px; /* Корректировка для плавающих меток */
+}
+
 /* Футер */
 .footer {
   background-color: var(--dark-color);

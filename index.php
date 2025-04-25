@@ -268,6 +268,7 @@ function outputHeader($title = 'Лизинг недвижимости и тра�
         <link rel="stylesheet" href="css/custom.css">
         <!-- JavaScript -->
         <script src="js/leasing-calculator.js" defer></script>
+        <script src="js/password-toggle.js" defer></script>
         <style>
             /* Базовые стили прямо в HTML для быстрой загрузки */
             :root {
@@ -2642,15 +2643,21 @@ function includeRegisterPage() {
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-floating mb-3">
+                                    <div class="form-floating mb-3 position-relative">
                                         <input type="password" class="form-control" id="register-password" name="password" placeholder="Пароль" required>
                                         <label for="register-password"><i class="fas fa-lock me-2 text-muted"></i>Пароль</label>
+                                        <button type="button" class="password-toggle btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3 text-muted" data-target="register-password">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-floating mb-3">
+                                    <div class="form-floating mb-3 position-relative">
                                         <input type="password" class="form-control" id="register-confirm-password" name="password_confirm" placeholder="Подтверждение пароля" required>
                                         <label for="register-confirm-password"><i class="fas fa-lock me-2 text-muted"></i>Подтверждение пароля</label>
+                                        <button type="button" class="password-toggle btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3 text-muted" data-target="register-confirm-password">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="col-12">
