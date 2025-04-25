@@ -431,7 +431,7 @@ $unassignedApplications = $applications->getUnassignedApplications();
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post">
+                <form method="post" action="index.php?page=dashboard-admin">
                     <input type="hidden" name="action" value="add_manager">
                     
                     <div class="mb-3">
@@ -479,7 +479,7 @@ $unassignedApplications = $applications->getUnassignedApplications();
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post">
+                <form method="post" action="index.php?page=dashboard-admin">
                     <input type="hidden" name="action" value="add_vehicle">
                     
                     <div class="row mb-3">
@@ -588,7 +588,7 @@ $unassignedApplications = $applications->getUnassignedApplications();
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post">
+                <form method="post" action="index.php?page=dashboard-admin">
                     <input type="hidden" name="action" value="add_real_estate">
                     
                     <div class="mb-3">
@@ -682,7 +682,7 @@ $unassignedApplications = $applications->getUnassignedApplications();
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post">
+                <form method="post" action="index.php?page=dashboard-admin">
                     <input type="hidden" name="action" value="export_report">
                     
                     <div class="mb-3">
@@ -736,7 +736,7 @@ $unassignedApplications = $applications->getUnassignedApplications();
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post">
+                <form method="post" action="index.php?page=dashboard-admin">
                     <input type="hidden" name="action" value="update_settings">
                     
                     <div class="mb-3">
