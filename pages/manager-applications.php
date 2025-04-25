@@ -87,7 +87,16 @@ foreach ($managerApplications as $app) {
                 <h4 class="mb-0">Заявки менеджера: <?= htmlspecialchars($manager['first_name'] . ' ' . $manager['last_name']) ?></h4>
             </div>
             <div class="col-md-6 text-md-end">
-                <a href="index.php?page=dashboard-admin">Вернуться к панели</a>
+                <a href="index.php?page=dashboard-admin" class="<?= $page === 'dashboard-admin' ? 'active' : '' ?>">Обзор</a>
+                <a href="index.php?page=user-rights" class="<?= $page === 'user-rights' ? 'active' : '' ?>">Права пользователей</a>
+                <a href="index.php?page=leasing-companies" class="<?= $page === 'leasing-companies' ? 'active' : '' ?>">Лизинговые компании</a>
+                <a href="index.php?page=managers" class="<?= $page === 'managers' ? 'active' : '' ?>">Менеджеры</a>
+                <a href="index.php?page=dashboard-clients" class="<?= $page === 'dashboard-clients' ? 'active' : '' ?>">Клиенты</a>
+                <a href="index.php?page=settings" class="<?= $page === 'settings' ? 'active' : '' ?>">Настройки</a>
+                <form method="post" class="d-inline">
+                    <input type="hidden" name="action" value="logout">
+                    <button type="submit" class="btn btn-link text-white p-0 ms-3">Выход</button>
+                </form>
             </div>
         </div>
     </div>
