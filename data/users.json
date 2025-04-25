@@ -76,10 +76,10 @@
             "first_name": "\u0411\u043e\u0433\u0434\u0430\u043d",
             "last_name": "\u0411\u043e\u0433\u0434\u0430\u043d",
             "phone": "80333565345",
-            "role": "client",
+            "role": "admin",
             "id": 6,
             "created_at": "2025-04-20 16:06:27",
-            "updated_at": "2025-04-20 16:06:27"
+            "updated_at": "2025-04-25 17:24:41"
         },
         {
             "email": "vavrencukbagdan28@gmail.com",
@@ -98,10 +98,10 @@
             "first_name": "\u0411\u043e\u0433\u0434\u0430\u043d",
             "last_name": "Andrey",
             "phone": "90333565345",
-            "role": "manager",
+            "role": "client",
             "id": 8,
             "created_at": "2025-04-20 16:48:29",
-            "updated_at": "2025-04-25 17:22:56"
+            "updated_at": "2025-04-25 17:24:22"
         },
         {
             "email": "vaavrencukbogdan28@gmail.com",

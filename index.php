@@ -235,32 +235,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents($debugFile, date('Y-m-d H:i:s') . " - isManager check: " . ($auth->isManager() ? 'true' : 'false') . "\n", FILE_APPEND);
             
             if ($auth->isManager()) {
-            $vehicleData = [
-                'make' => $_POST['make'],
-                'model' => $_POST['model'],
-                'year' => (int) $_POST['year'],
-                'engine' => $_POST['engine'],
-                'power' => (int) $_POST['power'],
-                'drive_type' => $_POST['drive_type'],
-                'transmission' => $_POST['transmission'],
-                'color' => $_POST['color'],
-                'interior' => $_POST['interior'],
-                'features' => $_POST['features'],
-                'image_url' => $_POST['image_url'],
-                'price' => (float) $_POST['price'],
-                'monthly_payment' => (float) $_POST['monthly_payment'],
-                'status' => $_POST['status'] ?? 'available'
-            ];
-            
-            $result = $vehicles->addVehicle($vehicleData);
-            
-            if ($result['success']) {
-                $success = 'Автомобиль успешно добавлен';
-                $page = 'vehicles-admin';
-            } else {
-                $error = $result['message'];
-                $page = 'add-vehicle';
-            }
+                $vehicleData = [
+                    'make' => $_POST['make'],
+                    'model' => $_POST['model'],
+                    'year' => (int) $_POST['year'],
+                    'engine' => $_POST['engine'],
+                    'power' => (int) $_POST['power'],
+                    'drive_type' => $_POST['drive_type'],
+                    'transmission' => $_POST['transmission'],
+                    'color' => $_POST['color'],
+                    'interior' => $_POST['interior'],
+                    'features' => $_POST['features'],
+                    'image_url' => $_POST['image_url'],
+                    'price' => (float) $_POST['price'],
+                    'monthly_payment' => (float) $_POST['monthly_payment'],
+                    'status' => $_POST['status'] ?? 'available'
+                ];
+                
+                // Добавляем отладку
+                file_put_contents($debugFile, date('Y-m-d H:i:s') . " - Добавление автомобиля с данными: " . print_r($vehicleData, true) . "\n", FILE_APPEND);
+                
+                $result = $vehicles->addVehicle($vehicleData);
+                
+                // Запись результата в лог
+                file_put_contents($debugFile, date('Y-m-d H:i:s') . " - Результат добавления автомобиля: " . print_r($result, true) . "\n", FILE_APPEND);
+                
+                if ($result['success']) {
+                    $success = 'Автомобиль успешно добавлен';
+                } else {
+                    $error = $result['message'];
+                }
+                
+                // Важно: оставаемся на той же странице
+                $page = 'dashboard-admin';
             } else {
                 // Если нет прав - записываем это в отладочный файл
                 file_put_contents($debugFile, date('Y-m-d H:i:s') . " - ERROR: No permission to add vehicle\n", FILE_APPEND);
@@ -313,30 +320,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents($debugFile, date('Y-m-d H:i:s') . " - isManager check for real estate: " . ($auth->isManager() ? 'true' : 'false') . "\n", FILE_APPEND);
             
             if ($auth->isManager()) {
-            $realEstateData = [
-                'title' => $_POST['title'],
-                'type' => $_POST['type'],
-                'status' => $_POST['status'],
-                'area' => (float) $_POST['area'],
-                'rooms' => isset($_POST['rooms']) ? (int) $_POST['rooms'] : 0,
-                'floor' => isset($_POST['floor']) ? (int) $_POST['floor'] : 0,
-                'address' => $_POST['address'],
-                'description' => $_POST['description'] ?? '',
-                'features' => $_POST['features'] ?? '',
-                'image_url' => $_POST['image_url'],
-                'price' => (float) $_POST['price'],
-                'monthly_payment' => (float) $_POST['monthly_payment']
-            ];
-            
-            $result = $realEstate->addRealEstate($realEstateData);
-            
-            if ($result['success']) {
-                $success = 'Объект недвижимости успешно добавлен';
-                $page = 'real-estate-admin';
-            } else {
-                $error = $result['message'];
+                $realEstateData = [
+                    'title' => $_POST['title'],
+                    'type' => $_POST['type'],
+                    'status' => $_POST['status'],
+                    'area' => (float) $_POST['area'],
+                    'rooms' => isset($_POST['rooms']) ? (int) $_POST['rooms'] : 0,
+                    'floor' => isset($_POST['floor']) ? (int) $_POST['floor'] : 0,
+                    'address' => $_POST['address'],
+                    'description' => $_POST['description'] ?? '',
+                    'features' => $_POST['features'] ?? '',
+                    'image_url' => $_POST['image_url'],
+                    'price' => (float) $_POST['price'],
+                    'monthly_payment' => (float) $_POST['monthly_payment']
+                ];
+                
+                // Добавляем отладку
+                file_put_contents($debugFile, date('Y-m-d H:i:s') . " - Добавление недвижимости с данными: " . print_r($realEstateData, true) . "\n", FILE_APPEND);
+                
+                $result = $realEstate->addRealEstate($realEstateData);
+                
+                // Запись результата в лог
+                file_put_contents($debugFile, date('Y-m-d H:i:s') . " - Результат добавления недвижимости: " . print_r($result, true) . "\n", FILE_APPEND);
+                
+                if ($result['success']) {
+                    $success = 'Объект недвижимости успешно добавлен';
+                } else {
+                    $error = $result['message'];
+                }
+                
+                // Важно: оставаемся на той же странице
                 $page = 'dashboard-admin';
-            }
             } else {
                 // Если нет прав - записываем это в отладочный файл
                 file_put_contents($debugFile, date('Y-m-d H:i:s') . " - ERROR: No permission to add real estate\n", FILE_APPEND);

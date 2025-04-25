@@ -4,7 +4,7 @@
     "default_language": "ru",
     "items_per_page": 10,
     "maintenance_mode": 0,
-    "enable_registration": 1,
+    "enable_registration": 0,
     "debug_mode": 0,
-    "updated_at": "2025-04-25 17:08:12"
+    "updated_at": "2025-04-25 17:26:11"
 }

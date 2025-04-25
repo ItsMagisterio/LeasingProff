@@ -94,6 +94,15 @@ class RealEstate {
      * Добавить новый объект недвижимости
      */
     public function addRealEstate($realEstateData) {
+        // Логирование входных данных
+        file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Данные для добавления недвижимости: " . print_r($realEstateData, true) . "\n", FILE_APPEND);
+
+        // Создаем директорию data, если она не существует
+        $dataDir = __DIR__ . '/../data';
+        if (!is_dir($dataDir)) {
+            mkdir($dataDir, 0755, true);
+        }
+        
         // Чтение JSON-файла
         $jsonFile = __DIR__ . '/../data/real_estate.json';
         
@@ -108,13 +117,17 @@ class RealEstate {
             $jsonData = file_get_contents($jsonFile);
             $data = json_decode($jsonData, true);
             
-            // Инициализируем структуру, если она отсутствует
-            if (!isset($data['next_id'])) {
-                $data['next_id'] = 1;
-            }
-            
-            if (!isset($data['records'])) {
-                $data['records'] = [];
+            // Инициализируем структуру, если она отсутствует или повреждена
+            if (!is_array($data)) {
+                $data = ['next_id' => 1, 'records' => []];
+            } else {
+                if (!isset($data['next_id'])) {
+                    $data['next_id'] = 1;
+                }
+                
+                if (!isset($data['records']) || !is_array($data['records'])) {
+                    $data['records'] = [];
+                }
             }
         }
         
@@ -122,26 +135,33 @@ class RealEstate {
         $realEstateId = $data['next_id'];
         $data['next_id']++;
         
-        // Создаем новый объект недвижимости
+        // Создаем новый объект недвижимости с обработкой отсутствующих полей
         $newRealEstate = [
             'id' => $realEstateId,
-            'title' => $realEstateData['title'],
-            'type' => $realEstateData['type'],
-            'address' => $realEstateData['address'],
-            'area' => (float) $realEstateData['area'],
-            'rooms' => (int) $realEstateData['rooms'],
-            'floor' => (int) $realEstateData['floor'],
-            'total_floors' => (int) $realEstateData['total_floors'],
-            'build_year' => (int) $realEstateData['build_year'],
-            'description' => $realEstateData['description'],
-            'features' => $realEstateData['features'],
-            'image_url' => $realEstateData['image_url'],
-            'price' => (float) $realEstateData['price'],
-            'monthly_payment' => (float) $realEstateData['monthly_payment'],
+            'title' => $realEstateData['title'] ?? '',
+            'type' => $realEstateData['type'] ?? '',
             'status' => $realEstateData['status'] ?? 'available',
+            'address' => $realEstateData['address'] ?? '',
+            'area' => (float) ($realEstateData['area'] ?? 0),
+            'rooms' => (int) ($realEstateData['rooms'] ?? 0),
+            'floor' => (int) ($realEstateData['floor'] ?? 0),
+            'description' => $realEstateData['description'] ?? '',
+            'features' => $realEstateData['features'] ?? '',
+            'image_url' => $realEstateData['image_url'] ?? '',
+            'price' => (float) ($realEstateData['price'] ?? 0),
+            'monthly_payment' => (float) ($realEstateData['monthly_payment'] ?? 0),
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
+        
+        // Добавляем дополнительные поля, если они есть
+        if (isset($realEstateData['total_floors'])) {
+            $newRealEstate['total_floors'] = (int) $realEstateData['total_floors'];
+        }
+        
+        if (isset($realEstateData['build_year'])) {
+            $newRealEstate['build_year'] = (int) $realEstateData['build_year'];
+        }
         
         // Добавляем объект в массив
         $data['records'][] = $newRealEstate;
