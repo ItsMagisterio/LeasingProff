@@ -460,7 +460,14 @@ class Applications {
     /**
      * Получить количество заявок по статусам
      */
-    public function getApplicationsCountByStatus($userId = null) {
+    /**
+     * Получить статистику заявок по статусам с учетом периода
+     * @param string|null $startDate Начальная дата периода (формат Y-m-d)
+     * @param string|null $endDate Конечная дата периода (формат Y-m-d)
+     * @param int|null $userId ID пользователя (если нужна статистика только по конкретному пользователю)
+     * @return array Массив с количеством заявок по каждому статусу
+     */
+    public function getApplicationsCountByStatus($startDate = null, $endDate = null, $userId = null) {
         $counts = [
             'total' => 0,
             'new' => 0,
@@ -468,11 +475,16 @@ class Applications {
             'approved' => 0,
             'rejected' => 0,
             'signed' => 0,
-            'completed' => 0
+            'completed' => 0,
+            'cancelled' => 0
         ];
         
         // Чтение из JSON-файла
         $jsonFile = __DIR__ . '/../data/applications.json';
+        
+        // Преобразуем даты в timestamp для сравнения
+        $startTimestamp = $startDate ? strtotime($startDate) : null;
+        $endTimestamp = $endDate ? strtotime($endDate . ' 23:59:59') : null; // До конца дня
         
         if (!file_exists($jsonFile)) {
             return $counts;
@@ -495,8 +507,19 @@ class Applications {
             });
         }
         
-        // Подсчитываем количество заявок по статусам
+        // Подсчитываем количество заявок по статусам с учетом периода
         foreach ($applications as $app) {
+            // Проверяем, входит ли заявка в указанный период
+            if ($startTimestamp || $endTimestamp) {
+                $appTimestamp = isset($app['created_at']) ? strtotime($app['created_at']) : 0;
+                
+                // Если заявка не входит в указанный период, пропускаем её
+                if (($startTimestamp && $appTimestamp < $startTimestamp) || 
+                    ($endTimestamp && $appTimestamp > $endTimestamp)) {
+                    continue;
+                }
+            }
+            
             if (isset($app['status'])) {
                 $status = $app['status'];
                 
@@ -512,12 +535,19 @@ class Applications {
     }
     
     /**
-     * Получить количество заявок по менеджерам
+     * Получить количество заявок по менеджерам с учетом периода
+     * @param string|null $startDate Начальная дата периода (формат Y-m-d)
+     * @param string|null $endDate Конечная дата периода (формат Y-m-d)
+     * @return array Массив с количеством заявок по каждому менеджеру
      */
-    public function getApplicationsCountByManager() {
+    public function getApplicationsCountByManager($startDate = null, $endDate = null) {
         // Чтение из JSON-файла
         $jsonFile = __DIR__ . '/../data/applications.json';
         $usersFile = __DIR__ . '/../data/users.json';
+        
+        // Преобразуем даты в timestamp для сравнения
+        $startTimestamp = $startDate ? strtotime($startDate) : null;
+        $endTimestamp = $endDate ? strtotime($endDate . ' 23:59:59') : null; // До конца дня
         
         $managerStats = [];
         
@@ -559,8 +589,19 @@ class Applications {
             return array_values($managers);
         }
         
-        // Обрабатываем заявки
+        // Обрабатываем заявки с учетом периода
         foreach ($appData['records'] as $app) {
+            // Проверяем, входит ли заявка в указанный период
+            if ($startTimestamp || $endTimestamp) {
+                $appTimestamp = isset($app['created_at']) ? strtotime($app['created_at']) : 0;
+                
+                // Если заявка не входит в указанный период, пропускаем её
+                if (($startTimestamp && $appTimestamp < $startTimestamp) || 
+                    ($endTimestamp && $appTimestamp > $endTimestamp)) {
+                    continue;
+                }
+            }
+            
             if (isset($app['manager_id']) && isset($managers[$app['manager_id']])) {
                 $managers[$app['manager_id']]['total']++;
                 
@@ -717,6 +758,130 @@ class Applications {
         }
         
         return array_values($unassignedApplications);
+    }
+    
+    /**
+     * Получить заявки конкретного менеджера с учетом периода
+     * @param int $managerId ID менеджера
+     * @param string|null $startDate Начальная дата периода (формат Y-m-d)
+     * @param string|null $endDate Конечная дата периода (формат Y-m-d)
+     * @return array Массив с заявками менеджера
+     */
+    public function getApplicationsByManager($managerId, $startDate = null, $endDate = null) {
+        // Проверяем ID менеджера
+        if (!$managerId) {
+            return [];
+        }
+        
+        // Чтение из JSON-файла
+        $jsonFile = __DIR__ . '/../data/applications.json';
+        $usersFile = __DIR__ . '/../data/users.json';
+        $vehiclesFile = __DIR__ . '/../data/vehicles.json';
+        $realEstateFile = __DIR__ . '/../data/real_estate.json';
+        
+        // Преобразуем даты в timestamp для сравнения
+        $startTimestamp = $startDate ? strtotime($startDate) : null;
+        $endTimestamp = $endDate ? strtotime($endDate . ' 23:59:59') : null; // До конца дня
+        
+        if (!file_exists($jsonFile)) {
+            return [];
+        }
+        
+        $jsonData = file_get_contents($jsonFile);
+        $appData = json_decode($jsonData, true);
+        
+        if (!isset($appData['records']) || !is_array($appData['records'])) {
+            return [];
+        }
+        
+        // Фильтруем заявки по менеджеру и периоду
+        $managerApplications = array_filter($appData['records'], function($app) use ($managerId, $startTimestamp, $endTimestamp) {
+            // Проверяем, принадлежит ли заявка менеджеру
+            if (!isset($app['manager_id']) || (int)$app['manager_id'] !== (int)$managerId) {
+                return false;
+            }
+            
+            // Проверяем, входит ли заявка в указанный период
+            if ($startTimestamp || $endTimestamp) {
+                $appTimestamp = isset($app['created_at']) ? strtotime($app['created_at']) : 0;
+                
+                // Если заявка не входит в указанный период, пропускаем её
+                if (($startTimestamp && $appTimestamp < $startTimestamp) || 
+                    ($endTimestamp && $appTimestamp > $endTimestamp)) {
+                    return false;
+                }
+            }
+            
+            return true;
+        });
+        
+        // Сортировка по дате создания (новые в начале)
+        usort($managerApplications, function($a, $b) {
+            return strtotime($b['created_at']) - strtotime($a['created_at']);
+        });
+        
+        // Загружаем данные пользователей, транспорта и недвижимости
+        $users = [];
+        if (file_exists($usersFile)) {
+            $userData = json_decode(file_get_contents($usersFile), true);
+            if (isset($userData['records']) && is_array($userData['records'])) {
+                foreach ($userData['records'] as $user) {
+                    if (isset($user['id'])) {
+                        $users[$user['id']] = $user;
+                    }
+                }
+            }
+        }
+        
+        $vehicles = [];
+        if (file_exists($vehiclesFile)) {
+            $vehicleData = json_decode(file_get_contents($vehiclesFile), true);
+            if (isset($vehicleData['records']) && is_array($vehicleData['records'])) {
+                foreach ($vehicleData['records'] as $vehicle) {
+                    if (isset($vehicle['id'])) {
+                        $vehicles[$vehicle['id']] = $vehicle;
+                    }
+                }
+            }
+        }
+        
+        $realEstates = [];
+        if (file_exists($realEstateFile)) {
+            $reData = json_decode(file_get_contents($realEstateFile), true);
+            if (isset($reData['records']) && is_array($reData['records'])) {
+                foreach ($reData['records'] as $re) {
+                    if (isset($re['id'])) {
+                        $realEstates[$re['id']] = $re;
+                    }
+                }
+            }
+        }
+        
+        // Добавляем дополнительные поля из связанных таблиц
+        foreach ($managerApplications as &$app) {
+            // Добавляем данные о пользователе
+            if (isset($app['user_id']) && isset($users[$app['user_id']])) {
+                $user = $users[$app['user_id']];
+                $app['client_first_name'] = $user['first_name'] ?? '';
+                $app['client_last_name'] = $user['last_name'] ?? '';
+            }
+            
+            // Добавляем данные о транспорте
+            if (isset($app['vehicle_id']) && isset($vehicles[$app['vehicle_id']])) {
+                $vehicle = $vehicles[$app['vehicle_id']];
+                $app['vehicle_make'] = $vehicle['make'] ?? '';
+                $app['vehicle_model'] = $vehicle['model'] ?? '';
+            }
+            
+            // Добавляем данные о недвижимости
+            if (isset($app['real_estate_id']) && isset($realEstates[$app['real_estate_id']])) {
+                $re = $realEstates[$app['real_estate_id']];
+                $app['real_estate_title'] = $re['title'] ?? '';
+                $app['real_estate_type'] = $re['type'] ?? '';
+            }
+        }
+        
+        return array_values($managerApplications);
     }
 }
 ?>
