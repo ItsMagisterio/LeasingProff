@@ -1038,15 +1038,30 @@ function includeProfilePage() {
                                     
                                     <div class="col-md-6">
                                         <label for="currentPassword" class="form-label">Текущий пароль</label>
-                                        <input type="password" class="form-control" id="currentPassword" name="currentPassword">
+                                        <div class="position-relative">
+                                            <input type="password" class="form-control" id="currentPassword" name="currentPassword">
+                                            <button type="button" class="password-toggle btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3 text-muted" data-target="currentPassword">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="newPassword" class="form-label">Новый пароль</label>
-                                        <input type="password" class="form-control" id="newPassword" name="newPassword">
+                                        <div class="position-relative">
+                                            <input type="password" class="form-control" id="newPassword" name="newPassword">
+                                            <button type="button" class="password-toggle btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3 text-muted" data-target="newPassword">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="confirmPassword" class="form-label">Подтверждение пароля</label>
-                                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                                        <div class="position-relative">
+                                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                                            <button type="button" class="password-toggle btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3 text-muted" data-target="confirmPassword">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                     
                                     <div class="col-12 mt-4">
