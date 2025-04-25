@@ -20,6 +20,21 @@ $unassignedApplications = $applications->getUnassignedApplications();
 
 <!-- Панель управления администратора -->
 <div class="container user-dashboard">
+    <!-- Вывод сообщений об успехе и ошибках -->
+    <?php if (isset($success)): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <?php echo htmlspecialchars($success); ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+    <?php endif; ?>
+    
+    <?php if (isset($error)): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?php echo htmlspecialchars($error); ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+    <?php endif; ?>
+    
     <div class="dashboard-nav">
         <div class="row align-items-center">
             <div class="col-md-6">
@@ -40,13 +55,7 @@ $unassignedApplications = $applications->getUnassignedApplications();
         </div>
     </div>
     
-    <?php if (isset($success)): ?>
-        <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
-    <?php endif; ?>
-    
-    <?php if (isset($error)): ?>
-        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
-    <?php endif; ?>
+    <!-- Уже добавили вывод сообщений в верхней части страницы -->
     
     <div class="row g-4">
         <div class="col-md-3">
@@ -177,7 +186,7 @@ $unassignedApplications = $applications->getUnassignedApplications();
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form method="post">
+                                                        <form method="post" action="index.php?page=dashboard-admin">
                                                             <input type="hidden" name="action" value="assign_manager">
                                                             <input type="hidden" name="application_id" value="<?= $application['id'] ?>">
                                                             

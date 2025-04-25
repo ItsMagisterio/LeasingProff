@@ -289,7 +289,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Обновление настроек системы (для админа)
         elseif ($action === 'update_settings' && $auth->isAdmin()) {
-            // Здесь будет логика обновления настроек системы
+            // Получаем данные из формы
+            $siteName = $_POST['site_name'] ?? 'лизинг.орг';
+            $adminEmail = $_POST['admin_email'] ?? 'admin@2leasing.ru';
+            $defaultLanguage = $_POST['default_language'] ?? 'ru';
+            $itemsPerPage = (int)($_POST['items_per_page'] ?? 10);
+            $maintenanceMode = isset($_POST['maintenance_mode']) ? 1 : 0;
+            $enableRegistration = isset($_POST['enable_registration']) ? 1 : 0;
+            $debugMode = isset($_POST['debug_mode']) ? 1 : 0;
+            
+            // Здесь должна быть логика сохранения настроек в базу данных
             // В данный момент просто выводим сообщение об успехе
             $success = 'Настройки системы успешно обновлены';
             $page = 'dashboard-admin';

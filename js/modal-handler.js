@@ -3,99 +3,118 @@
  * Обеспечивает корректную работу всех модальных окон и обработку действий
  */
 
-// Функция для прямой инициализации модального окна по ID
-function openModal(modalId) {
+console.log("Debug: Modal handler script loaded");
+
+// Глобальная функция для открытия модального окна, которая будет доступна из любого места
+window.openModal = function(modalId) {
+    console.log("Debug: Trying to open modal:", modalId);
     const modalElement = document.getElementById(modalId);
-    if (modalElement) {
-        // Проверяем, что Bootstrap доступен
-        if (typeof bootstrap !== 'undefined') {
-            const modal = new bootstrap.Modal(modalElement);
-            modal.show();
-            return true;
-        } else {
-            console.error('Bootstrap не загружен. Модальное окно не может быть открыто.');
-            return false;
-        }
-    } else {
-        console.error('Модальное окно не найдено: ' + modalId);
+    
+    if (!modalElement) {
+        console.error("Debug: Modal element not found:", modalId);
         return false;
     }
-}
+    
+    try {
+        if (typeof bootstrap === 'undefined') {
+            console.error("Debug: Bootstrap is not defined!");
+            return false;
+        }
+        
+        console.log("Debug: Creating new Bootstrap Modal instance");
+        const modalInstance = new bootstrap.Modal(modalElement);
+        console.log("Debug: Showing modal");
+        modalInstance.show();
+        return true;
+    } catch (error) {
+        console.error("Debug: Error opening modal:", error);
+        return false;
+    }
+};
 
 // Инициализация после загрузки DOM
 document.addEventListener("DOMContentLoaded", function() {
     console.log("Modal handler initialized");
     
-    // Находим все модальные окна и создаем для них экземпляры Modal
+    // Проверяем, доступен ли bootstrap
+    if (typeof bootstrap === 'undefined') {
+        console.error("Debug: Bootstrap not loaded! Check if the script is included before modal-handler.js");
+        return;
+    }
+    
+    // При использовании стандартного data-bs-toggle="modal" Bootstrap сам обрабатывает модальные окна
+    // Мы не будем мешать стандартной функциональности Bootstrap
+    
+    // Находим все модальные окна
     const modalElements = document.querySelectorAll('.modal');
+    console.log("Debug: Found", modalElements.length, "modal elements");
     
-    if (modalElements.length > 0) {
-        console.log("Found", modalElements.length, "modal windows");
-    } else {
-        console.warn("No modal windows found on the page");
-    }
+    // Добавим отладочный вывод для всех модальных окон
+    modalElements.forEach((modal, index) => {
+        console.log(`Debug: Modal ${index + 1} - ID: ${modal.id}`);
+        
+        // Отслеживаем события открытия и закрытия для отладки
+        modal.addEventListener('show.bs.modal', function(event) {
+            console.log(`Debug: Modal ${modal.id} is about to be shown`);
+        });
+        
+        modal.addEventListener('shown.bs.modal', function(event) {
+            console.log(`Debug: Modal ${modal.id} is now visible`);
+        });
+        
+        modal.addEventListener('hide.bs.modal', function(event) {
+            console.log(`Debug: Modal ${modal.id} is about to be hidden`);
+        });
+        
+        modal.addEventListener('hidden.bs.modal', function(event) {
+            console.log(`Debug: Modal ${modal.id} is now hidden`);
+        });
+    });
     
-    // Находим все кнопки, которые должны открывать модальные окна
+    // Находим все кнопки, которые открывают модальные окна
     const modalTriggers = document.querySelectorAll('[data-bs-toggle="modal"]');
+    console.log("Debug: Found", modalTriggers.length, "modal triggers");
     
-    if (modalTriggers.length > 0) {
-        console.log("Found", modalTriggers.length, "modal triggers");
+    modalTriggers.forEach((button, index) => {
+        const targetSelector = button.getAttribute('data-bs-target');
+        console.log(`Debug: Trigger ${index + 1} - Target: ${targetSelector}, Text: ${button.textContent.trim()}`);
         
-        modalTriggers.forEach(function(button) {
-            const targetId = button.getAttribute('data-bs-target');
-            console.log("Modal trigger:", button.textContent.trim(), "for target:", targetId);
-            
-            // Удаляем стандартный обработчик (если есть)
-            button.removeAttribute('data-bs-toggle');
-            
-            // Добавляем свой обработчик клика
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                console.log("Button clicked for modal:", targetId);
-                
-                // Получаем ID модального окна из атрибута data-bs-target
-                const modalId = targetId.substring(1); // Убираем # в начале
-                
-                // Открываем модальное окно
-                openModal(modalId);
-            });
+        // Мы не будем переопределять стандартное поведение, но добавим дополнительное логирование
+        button.addEventListener('click', function(event) {
+            console.log(`Debug: Modal trigger clicked for ${targetSelector}`);
+            // Не отменяем событие по умолчанию, чтобы Bootstrap мог обработать клик
         });
-    } else {
-        console.warn("No modal triggers found on the page");
-    }
+    });
     
-    // Добавляем обработку отправки форм модальных окон
+    // Находим все формы в модальных окнах
     const modalForms = document.querySelectorAll('.modal form');
+    console.log("Debug: Found", modalForms.length, "forms in modals");
     
-    if (modalForms.length > 0) {
-        console.log("Found", modalForms.length, "forms in modals");
+    modalForms.forEach((form, index) => {
+        const action = form.getAttribute('action') || 'No action specified';
+        const method = form.getAttribute('method') || 'GET';
+        console.log(`Debug: Form ${index + 1} - Action: ${action}, Method: ${method}`);
         
-        modalForms.forEach(function(form) {
-            console.log("Form action:", form.getAttribute('action') || 'Default action');
+        // Добавим отладочную информацию при отправке формы
+        form.addEventListener('submit', function(event) {
+            console.log(`Debug: Form is being submitted - Action: ${action}, Method: ${method}`);
             
-            form.addEventListener('submit', function(e) {
-                console.log("Form is being submitted");
-                
-                // Значение поля action для обработки на сервере
-                const actionField = form.querySelector('input[name="action"]');
-                if (actionField) {
-                    console.log("Action value:", actionField.value);
-                }
-                
-                // Форма будет отправлена стандартным способом
-            });
+            // Получим значение поля action для отладки
+            const actionField = form.querySelector('input[name="action"]');
+            if (actionField) {
+                console.log(`Debug: Action field value: ${actionField.value}`);
+            }
+            
+            // Форма будет отправлена стандартным способом
         });
-    } else {
-        console.warn("No forms found in modals");
-    }
-
+    });
+    
     // Добавим возможность открытия модального окна из URL
     const urlParams = new URLSearchParams(window.location.search);
     const openModalParam = urlParams.get('open_modal');
     
     if (openModalParam) {
-        console.log("Opening modal from URL parameter:", openModalParam);
-        openModal(openModalParam);
+        console.log("Debug: Opening modal from URL parameter:", openModalParam);
+        window.openModal(openModalParam);
     }
 });
