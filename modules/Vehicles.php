@@ -444,30 +444,102 @@ class Vehicles {
     }
     
     /**
-     * Удалить автомобиль
+     * Удалить автомобиль (мягкое или полное удаление)
      */
     public function deleteVehicle($vehicleId) {
         $vehicleId = (int) $vehicleId;
         
-        // Проверяем, есть ли заявки на этот автомобиль
-        $result = $this->db->query("SELECT id FROM applications WHERE vehicle_id = $vehicleId");
+        // Логирование
+        file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Запрос на удаление автомобиля ID: " . $vehicleId . "\n", FILE_APPEND);
         
-        if (count($result) > 0) {
+        // Проверяем, есть ли заявки на этот автомобиль
+        $applicationsFile = __DIR__ . '/../data/applications.json';
+        $hasApplications = false;
+        
+        if (file_exists($applicationsFile)) {
+            $applicationsData = file_get_contents($applicationsFile);
+            $applications = json_decode($applicationsData, true);
+            
+            if (isset($applications['records']) && is_array($applications['records'])) {
+                foreach ($applications['records'] as $application) {
+                    if (isset($application['vehicle_id']) && (int)$application['vehicle_id'] === $vehicleId) {
+                        $hasApplications = true;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // Чтение JSON-файла автомобилей
+        $jsonFile = __DIR__ . '/../data/vehicles.json';
+        
+        if (!file_exists($jsonFile)) {
+            file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Файл vehicles.json не найден\n", FILE_APPEND);
             return [
                 'success' => false,
-                'message' => 'Невозможно удалить автомобиль, так как на него есть заявки'
+                'message' => 'Файл с автомобилями не найден'
             ];
         }
         
-        $result = $this->db->query("DELETE FROM vehicles WHERE id = $vehicleId");
+        $jsonData = file_get_contents($jsonFile);
+        $data = json_decode($jsonData, true);
         
-        if ($this->db->affectedRows($result) > 0) {
+        if (!isset($data['records']) || !is_array($data['records'])) {
+            file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Некорректная структура данных в vehicles.json\n", FILE_APPEND);
+            return [
+                'success' => false,
+                'message' => 'Ошибка структуры данных автомобилей'
+            ];
+        }
+        
+        $vehicleFound = false;
+        
+        if ($hasApplications) {
+            // Мягкое удаление - устанавливаем статус deleted
+            foreach ($data['records'] as &$vehicle) {
+                if (isset($vehicle['id']) && (int)$vehicle['id'] === $vehicleId) {
+                    $vehicleFound = true;
+                    $vehicle['status'] = 'deleted';
+                    $vehicle['updated_at'] = date('Y-m-d H:i:s');
+                    break;
+                }
+            }
+        } else {
+            // Полное удаление - удаляем запись из массива
+            $newRecords = [];
+            foreach ($data['records'] as $vehicle) {
+                if (isset($vehicle['id']) && (int)$vehicle['id'] === $vehicleId) {
+                    $vehicleFound = true;
+                } else {
+                    $newRecords[] = $vehicle;
+                }
+            }
+            
+            if ($vehicleFound) {
+                $data['records'] = $newRecords;
+            }
+        }
+        
+        if (!$vehicleFound) {
+            file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Автомобиль с ID " . $vehicleId . " не найден\n", FILE_APPEND);
+            return [
+                'success' => false,
+                'message' => 'Автомобиль не найден'
+            ];
+        }
+        
+        // Сохраняем обновленные данные в файл
+        $result = file_put_contents($jsonFile, json_encode($data, JSON_PRETTY_PRINT));
+        
+        if ($result !== false) {
+            file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Автомобиль успешно удален (метод: " . ($hasApplications ? 'мягкое удаление' : 'полное удаление') . ")\n", FILE_APPEND);
             return [
                 'success' => true,
                 'message' => 'Автомобиль успешно удален'
             ];
         }
         
+        file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Ошибка при удалении автомобиля\n", FILE_APPEND);
         return [
             'success' => false,
             'message' => 'Ошибка при удалении автомобиля'
@@ -478,16 +550,37 @@ class Vehicles {
      * Получить список марок автомобилей
      */
     public function getVehicleMakes() {
-        $result = $this->db->query("SELECT DISTINCT make FROM vehicles ORDER BY make");
+        // Логирование для отладки
+        file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Запрос на получение списка марок автомобилей\n", FILE_APPEND);
+        
+        // Чтение JSON-файла
+        $jsonFile = __DIR__ . '/../data/vehicles.json';
         $makes = [];
         
-        if (!empty($result)) {
-            foreach ($result as $row) {
-                if (isset($row['make'])) {
-                    $makes[] = $row['make'];
-                }
+        if (!file_exists($jsonFile)) {
+            file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Файл vehicles.json не найден\n", FILE_APPEND);
+            return $makes;
+        }
+        
+        $jsonData = file_get_contents($jsonFile);
+        $data = json_decode($jsonData, true);
+        
+        if (!isset($data['records']) || !is_array($data['records'])) {
+            file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Некорректная структура данных в vehicles.json\n", FILE_APPEND);
+            return $makes;
+        }
+        
+        // Извлекаем все уникальные марки
+        foreach ($data['records'] as $vehicle) {
+            if (isset($vehicle['make']) && !in_array($vehicle['make'], $makes) && (!isset($vehicle['status']) || $vehicle['status'] !== 'deleted')) {
+                $makes[] = $vehicle['make'];
             }
         }
+        
+        // Сортировка марок по алфавиту
+        sort($makes);
+        
+        file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Найдено марок: " . count($makes) . "\n", FILE_APPEND);
         
         return $makes;
     }
@@ -496,17 +589,39 @@ class Vehicles {
      * Получить список моделей для марки
      */
     public function getModelsByMake($make) {
-        $make = $this->db->escapeString($make);
-        $result = $this->db->query("SELECT DISTINCT model FROM vehicles WHERE make = '$make' ORDER BY model");
+        // Логирование для отладки
+        file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Запрос на получение моделей для марки: " . $make . "\n", FILE_APPEND);
+        
+        // Чтение JSON-файла
+        $jsonFile = __DIR__ . '/../data/vehicles.json';
         $models = [];
         
-        if (!empty($result)) {
-            foreach ($result as $row) {
-                if (isset($row['model'])) {
-                    $models[] = $row['model'];
-                }
+        if (!file_exists($jsonFile)) {
+            file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Файл vehicles.json не найден\n", FILE_APPEND);
+            return $models;
+        }
+        
+        $jsonData = file_get_contents($jsonFile);
+        $data = json_decode($jsonData, true);
+        
+        if (!isset($data['records']) || !is_array($data['records'])) {
+            file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Некорректная структура данных в vehicles.json\n", FILE_APPEND);
+            return $models;
+        }
+        
+        // Извлекаем все уникальные модели для данной марки
+        foreach ($data['records'] as $vehicle) {
+            if (isset($vehicle['make']) && $vehicle['make'] === $make && 
+                isset($vehicle['model']) && !in_array($vehicle['model'], $models) && 
+                (!isset($vehicle['status']) || $vehicle['status'] !== 'deleted')) {
+                $models[] = $vehicle['model'];
             }
         }
+        
+        // Сортировка моделей по алфавиту
+        sort($models);
+        
+        file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Найдено моделей: " . count($models) . "\n", FILE_APPEND);
         
         return $models;
     }
@@ -515,43 +630,18 @@ class Vehicles {
      * Получить количество автомобилей
      */
     public function getVehiclesCount($filters = []) {
-        $sql = "SELECT COUNT(*) FROM vehicles WHERE 1=1";
+        // Логирование для отладки
+        file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Запрос на getVehiclesCount с фильтрами: " . print_r($filters, true) . "\n", FILE_APPEND);
         
-        // Применяем фильтры
-        if (!empty($filters)) {
-            if (isset($filters['make']) && $filters['make']) {
-                $make = $this->db->escapeString($filters['make']);
-                $sql .= " AND make = '$make'";
-            }
-            
-            if (isset($filters['model']) && $filters['model']) {
-                $model = $this->db->escapeString($filters['model']);
-                $sql .= " AND model = '$model'";
-            }
-            
-            if (isset($filters['min_price']) && $filters['min_price']) {
-                $minPrice = (float) $filters['min_price'];
-                $sql .= " AND price >= $minPrice";
-            }
-            
-            if (isset($filters['max_price']) && $filters['max_price']) {
-                $maxPrice = (float) $filters['max_price'];
-                $sql .= " AND price <= $maxPrice";
-            }
-            
-            if (isset($filters['status']) && $filters['status']) {
-                $status = $this->db->escapeString($filters['status']);
-                $sql .= " AND status = '$status'";
-            }
-        }
+        // Используем тот же метод для получения автомобилей с фильтрами, но без пагинации
+        $vehicles = $this->getAllVehicles(0, 0, $filters);
         
-        $result = $this->db->query($sql);
+        // Возвращаем количество полученных автомобилей
+        $count = count($vehicles);
         
-        if (is_array($result) && isset($result[0]) && isset($result[0]['COUNT(*)'])) {
-            return (int) $result[0]['COUNT(*)'];
-        }
+        file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Найдено автомобилей: " . $count . "\n", FILE_APPEND);
         
-        return 0;
+        return $count;
     }
 }
 ?>
