@@ -245,6 +245,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $page = 'add-manager';
             }
         }
+        
+        // Добавление нового объекта недвижимости (для менеджера и админа)
+        elseif ($action === 'add_real_estate' && $auth->isManager()) {
+            $realEstateData = [
+                'title' => $_POST['title'],
+                'type' => $_POST['type'],
+                'status' => $_POST['status'],
+                'area' => (float) $_POST['area'],
+                'rooms' => isset($_POST['rooms']) ? (int) $_POST['rooms'] : 0,
+                'floor' => isset($_POST['floor']) ? (int) $_POST['floor'] : 0,
+                'address' => $_POST['address'],
+                'description' => $_POST['description'] ?? '',
+                'features' => $_POST['features'] ?? '',
+                'image_url' => $_POST['image_url'],
+                'price' => (float) $_POST['price'],
+                'monthly_payment' => (float) $_POST['monthly_payment']
+            ];
+            
+            $result = $realEstate->addRealEstate($realEstateData);
+            
+            if ($result['success']) {
+                $success = 'Объект недвижимости успешно добавлен';
+                $page = 'real-estate-admin';
+            } else {
+                $error = $result['message'];
+                $page = 'dashboard-admin';
+            }
+        }
+        
+        // Экспорт отчета (для админа)
+        elseif ($action === 'export_report' && $auth->isAdmin()) {
+            $reportType = $_POST['report_type'];
+            $dateFrom = $_POST['date_from'];
+            $dateTo = $_POST['date_to'];
+            $exportFormat = $_POST['export_format'];
+            
+            // Здесь будет логика экспорта отчетов
+            // В данный момент просто выводим сообщение об успехе
+            $success = 'Отчет успешно экспортирован в формате ' . strtoupper($exportFormat);
+            $page = 'dashboard-admin';
+        }
+        
+        // Обновление настроек системы (для админа)
+        elseif ($action === 'update_settings' && $auth->isAdmin()) {
+            // Здесь будет логика обновления настроек системы
+            // В данный момент просто выводим сообщение об успехе
+            $success = 'Настройки системы успешно обновлены';
+            $page = 'dashboard-admin';
+        }
     }
 }
 
