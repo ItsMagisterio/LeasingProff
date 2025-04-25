@@ -2,6 +2,33 @@
 // Подключаем конфигурацию
 require_once 'config.php';
 
+// Функция для загрузки настроек сайта
+function loadSettings() {
+    $settingsFile = __DIR__ . '/data/settings.json';
+    $defaultSettings = [
+        'site_name' => 'лизинг.орг',
+        'admin_email' => 'admin@2leasing.ru',
+        'default_language' => 'ru',
+        'items_per_page' => 10,
+        'maintenance_mode' => 0,
+        'enable_registration' => 1,
+        'debug_mode' => 0
+    ];
+    
+    if (file_exists($settingsFile)) {
+        $settingsJson = file_get_contents($settingsFile);
+        $settings = json_decode($settingsJson, true);
+        if (is_array($settings)) {
+            return array_merge($defaultSettings, $settings);
+        }
+    }
+    
+    return $defaultSettings;
+}
+
+// Загружаем настройки сайта
+$settings = loadSettings();
+
 // Инициализируем классы для работы с данными
 $auth = new Auth();
 $vehicles = new Vehicles();
@@ -340,12 +367,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // HTML заголовок
 function outputHeader($title = 'Лизинг недвижимости и транспорта') {
+    global $settings;
+    
+    // Получаем название сайта из настроек
+    $siteName = $settings['site_name'] ?? 'лизинг.орг';
+    $language = $settings['default_language'] ?? 'ru';
+    
     echo '<!DOCTYPE html>
-    <html lang="ru">
+    <html lang="' . $language . '">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>' . htmlspecialchars($title) . ' | лизинг.орг</title>
+        <title>' . htmlspecialchars($title) . ' | ' . htmlspecialchars($siteName) . '</title>
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Font Awesome -->
@@ -546,7 +579,10 @@ function outputHeader($title = 'Лизинг недвижимости и тра�
 
 // Навигационная панель
 function outputNavigation() {
-    global $auth, $page;
+    global $auth, $page, $settings;
+    
+    // Получаем название сайта из настроек
+    $siteName = $settings['site_name'] ?? 'лизинг.орг';
     
     // Для определения активного пункта меню
     $is_home = $page === 'home' || empty($page);
@@ -557,7 +593,7 @@ function outputNavigation() {
         <div class="container">
             <!-- Логотип - переход на главную страницу -->
             <a class="navbar-brand" href="index.php" title="Вернуться на главную страницу">
-                лизинг.орг
+                ' . htmlspecialchars($siteName) . '
             </a>
             <!-- Кнопка мобильного меню -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Переключить навигацию">
@@ -682,8 +718,11 @@ function outputNavigation() {
 
 // Подвал
 function outputFooter() {
-    global $page;
+    global $page, $settings;
     $is_home = $page === 'home' || empty($page);
+    
+    // Получаем название сайта из настроек
+    $siteName = $settings['site_name'] ?? 'лизинг.орг';
     
     echo '<footer class="footer mt-auto py-5">
         <div class="container">
@@ -691,7 +730,7 @@ function outputFooter() {
                 <div class="col-lg-4 col-md-6">
                     <div class="mb-4">
                         <a href="index.php" class="text-decoration-none">
-                            <h4 class="text-white">лизинг.орг</h4>
+                            <h4 class="text-white">' . htmlspecialchars($siteName) . '</h4>
                         </a>
                     </div>
                     <p class="text-white-50 mb-4">Комплексные решения для лизинга недвижимости и транспорта на выгодных условиях для физических и юридических лиц по всей России.</p>
@@ -773,7 +812,7 @@ function outputFooter() {
                     </a>
                 </div>
                 <div class="col-md-5 text-md-end">
-                    <p class="text-white-50 mb-0 small">&copy; ' . date('Y') . ' лизинг.орг. Все права защищены.</p>
+                    <p class="text-white-50 mb-0 small">&copy; ' . date('Y') . ' ' . htmlspecialchars($siteName) . '. Все права защищены.</p>
                 </div>
             </div>
         </div>
