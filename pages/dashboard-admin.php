@@ -68,7 +68,6 @@ $unassignedApplications = $applications->getUnassignedApplications();
                 <a href="index.php?page=leasing-companies">Лизинговые компании</a>
                 <a href="index.php?page=managers">Менеджеры</a>
                 <a href="index.php?page=dashboard-clients">Клиенты</a>
-                <a href="index.php?page=settings">Настройки</a>
                 <form method="post" class="d-inline">
                     <input type="hidden" name="action" value="logout">
                     <button type="submit" class="btn btn-link text-white p-0 ms-3">Выход</button>

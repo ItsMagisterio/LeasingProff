@@ -92,7 +92,6 @@ foreach ($managerApplications as $app) {
                 <a href="index.php?page=leasing-companies" class="<?= $page === 'leasing-companies' ? 'active' : '' ?>">Лизинговые компании</a>
                 <a href="index.php?page=managers" class="<?= $page === 'managers' ? 'active' : '' ?>">Менеджеры</a>
                 <a href="index.php?page=dashboard-clients" class="<?= $page === 'dashboard-clients' ? 'active' : '' ?>">Клиенты</a>
-                <a href="index.php?page=settings" class="<?= $page === 'settings' ? 'active' : '' ?>">Настройки</a>
                 <form method="post" class="d-inline">
                     <input type="hidden" name="action" value="logout">
                     <button type="submit" class="btn btn-link text-white p-0 ms-3">Выход</button>

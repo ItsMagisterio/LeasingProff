@@ -34,7 +34,6 @@ $managersList = $users->getManagers();
                 <a href="index.php?page=leasing-companies" class="<?= $page === 'leasing-companies' ? 'active' : '' ?>">Лизинговые компании</a>
                 <a href="index.php?page=managers" class="<?= $page === 'managers' ? 'active' : '' ?>">Менеджеры</a>
                 <a href="index.php?page=dashboard-clients" class="<?= $page === 'dashboard-clients' ? 'active' : '' ?>">Клиенты</a>
-                <a href="index.php?page=settings" class="<?= $page === 'settings' ? 'active' : '' ?>">Настройки</a>
                 <form method="post" class="d-inline">
                     <input type="hidden" name="action" value="logout">
                     <button type="submit" class="btn btn-link text-white p-0 ms-3">Выход</button>
@@ -73,9 +72,9 @@ $managersList = $users->getManagers();
                         <td><?= htmlspecialchars($manager['last_name']) ?></td>
                         <td><?= htmlspecialchars($manager['email']) ?></td>
                         <td><?= htmlspecialchars($manager['phone'] ?? 'Не указан') ?></td>
-                        <td><?= date('d.m.Y', strtotime($manager['created_at'])) ?></td>
+                        <td><?= isset($manager['created_at']) ? date('d.m.Y', strtotime($manager['created_at'])) : 'Не указана' ?></td>
                         <td>
-                            <?php if ($manager['is_active']): ?>
+                            <?php if (isset($manager['is_active']) && $manager['is_active']): ?>
                                 <span class="badge bg-success">Активен</span>
                             <?php else: ?>
                                 <span class="badge bg-danger">Заблокирован</span>
@@ -87,11 +86,11 @@ $managersList = $users->getManagers();
                                 <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editManagerModal_<?= $manager['id'] ?>">
                                     Изменить
                                 </button>
-                                <form method="post" class="d-inline" onsubmit="return confirm('Вы уверены, что хотите <?= $manager['is_active'] ? 'заблокировать' : 'активировать' ?> этого менеджера?');">
-                                    <input type="hidden" name="action" value="<?= $manager['is_active'] ? 'block_manager' : 'activate_manager' ?>">
+                                <form method="post" class="d-inline" onsubmit="return confirm('Вы уверены, что хотите <?= (isset($manager['is_active']) && $manager['is_active']) ? 'заблокировать' : 'активировать' ?> этого менеджера?');">
+                                    <input type="hidden" name="action" value="<?= (isset($manager['is_active']) && $manager['is_active']) ? 'block_manager' : 'activate_manager' ?>">
                                     <input type="hidden" name="manager_id" value="<?= $manager['id'] ?>">
-                                    <button type="submit" class="btn btn-outline-<?= $manager['is_active'] ? 'danger' : 'success' ?>">
-                                        <?= $manager['is_active'] ? 'Блокировать' : 'Активировать' ?>
+                                    <button type="submit" class="btn btn-outline-<?= (isset($manager['is_active']) && $manager['is_active']) ? 'danger' : 'success' ?>">
+                                        <?= (isset($manager['is_active']) && $manager['is_active']) ? 'Блокировать' : 'Активировать' ?>
                                     </button>
                                 </form>
                             </div>

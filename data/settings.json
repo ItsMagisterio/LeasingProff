@@ -1,10 +1,10 @@
 {
-    "site_name": "\u043b\u0438\u0437\u0438\u043d\u0433.\u043e\u0440\u0433",
+    "site_name": "\u043b\u04381\u0437\u0438\u043d\u0433.\u043e\u0440\u0433",
     "admin_email": "admin@2leasing.ru",
     "default_language": "ru",
     "items_per_page": 10,
     "maintenance_mode": 0,
     "enable_registration": 0,
     "debug_mode": 0,
-    "updated_at": "2025-04-25 17:26:11"
+    "updated_at": "2025-04-25 18:01:25"
 }

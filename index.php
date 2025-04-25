@@ -2996,9 +2996,6 @@ switch ($page) {
     case 'dashboard-clients':
         include 'pages/dashboard-client.php';
         break;
-    case 'settings':
-        include 'pages/settings.php';
-        break;
     case 'profile':
         includeProfilePage();
         break;
