@@ -269,6 +269,7 @@ function outputHeader($title = 'Лизинг недвижимости и тра�
         <!-- JavaScript -->
         <script src="js/leasing-calculator.js" defer></script>
         <script src="js/password-toggle.js" defer></script>
+        <script src="js/auto-resize-textarea.js" defer></script>
         <style>
             /* Базовые стили прямо в HTML для быстрой загрузки */
             :root {
