@@ -2486,23 +2486,7 @@ function includeHomePage() {
                                     <p class="mb-0 text-muted">Пн-Пт: 9:00 - 20:00<br>Сб: 10:00 - 18:00<br>Вс: выходной</p>
                                 </div>
                             </div>
-                            <div class="mt-4 pt-3 border-top">
-                                <h5 class="mb-3">Мы в социальных сетях</h5>
-                                <div class="d-flex gap-3">
-                                    <a href="#" class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
-                                        <i class="fab fa-facebook-f"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
-                                        <i class="fab fa-instagram"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
-                                        <i class="fab fa-vk"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
-                                        <i class="fab fa-telegram"></i>
-                                    </a>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
