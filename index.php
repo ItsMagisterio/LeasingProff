@@ -1943,7 +1943,7 @@ function includeHomePage() {
                                                 <label for="realEstatePrice" class="form-label">Стоимость объекта (₽)</label>
                                                 <input type="range" class="form-range" id="realEstatePriceRange" min="2000000" max="50000000" step="1000000" value="10000000" oninput="updateRealEstatePrice()">
                                                 <div class="input-group">
-                                                    <input type="number" class="form-control" id="realEstatePrice" value="10000000" min="2000000" max="50000000" oninput="updateRealEstatePriceRange()">
+                                                    <input type="text" class="form-control" id="realEstatePrice" value="10 000 000" min="2000000" max="50000000" oninput="updateRealEstatePriceRange()">
                                                     <span class="input-group-text">₽</span>
                                                 </div>
                                             </div>

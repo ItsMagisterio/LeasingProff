@@ -181,8 +181,8 @@ function updateRealEstatePrice() {
     const realEstatePrice = document.getElementById('realEstatePrice');
     
     if (realEstatePriceRange && realEstatePrice) {
-        // Для полей input type="number" нельзя использовать пробелы в value
-        realEstatePrice.value = realEstatePriceRange.value;
+        // Для полей input type="text" можно использовать пробелы в value
+        realEstatePrice.value = formatNumberWithSpaces(realEstatePriceRange.value);
     }
 }
 
@@ -191,7 +191,7 @@ function updateRealEstatePriceRange() {
     const realEstatePrice = document.getElementById('realEstatePrice');
     
     if (realEstatePriceRange && realEstatePrice) {
-        realEstatePriceRange.value = realEstatePrice.value;
+        realEstatePriceRange.value = removeSpacesFromNumber(realEstatePrice.value);
     }
 }
 
