@@ -2,14 +2,36 @@
 // Получаем данные текущего пользователя
 $currentUser = $auth->getCurrentUser();
 
+// Определяем период для статистики
+$period = isset($_GET['period']) ? $_GET['period'] : 'day';
+
+// Вычисляем даты для периода
+$today = date('Y-m-d');
+$startDate = $today; // По умолчанию - сегодня
+$endDate = $today;
+
+switch ($period) {
+    case 'week':
+        // Неделя назад от текущей даты
+        $startDate = date('Y-m-d', strtotime('-7 days'));
+        break;
+    case 'month':
+        // Месяц назад от текущей даты
+        $startDate = date('Y-m-d', strtotime('-30 days'));
+        break;
+    default:
+        // Сегодня (оставляем как есть)
+        break;
+}
+
 // Получаем статистику пользователей
 $usersStats = $users->getUsersCountByRole();
 
-// Получаем статистику заявок
-$applicationsStats = $applications->getApplicationsCountByStatus();
+// Получаем статистику заявок с учетом периода
+$applicationsStats = $applications->getApplicationsCountByStatus($startDate, $endDate);
 
-// Получаем распределение заявок по менеджерам
-$managersApplications = $applications->getApplicationsCountByManager();
+// Получаем распределение заявок по менеджерам с учетом периода
+$managersApplications = $applications->getApplicationsCountByManager($startDate, $endDate);
 
 // Получаем список менеджеров
 $managersList = $users->getManagers();
@@ -102,9 +124,9 @@ $unassignedApplications = $applications->getUnassignedApplications();
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="mb-0">Распределение заявок</h5>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-primary">Сегодня</button>
-                        <button type="button" class="btn btn-sm btn-primary">Неделя</button>
-                        <button type="button" class="btn btn-sm btn-outline-primary">Месяц</button>
+                        <a href="index.php?page=dashboard-admin&period=day" class="btn btn-sm <?= (!isset($_GET['period']) || $_GET['period'] === 'day') ? 'btn-primary' : 'btn-outline-primary' ?>">Сегодня</a>
+                        <a href="index.php?page=dashboard-admin&period=week" class="btn btn-sm <?= (isset($_GET['period']) && $_GET['period'] === 'week') ? 'btn-primary' : 'btn-outline-primary' ?>">Неделя</a>
+                        <a href="index.php?page=dashboard-admin&period=month" class="btn btn-sm <?= (isset($_GET['period']) && $_GET['period'] === 'month') ? 'btn-primary' : 'btn-outline-primary' ?>">Месяц</a>
                     </div>
                 </div>
                 
@@ -131,7 +153,9 @@ $unassignedApplications = $applications->getUnassignedApplications();
                                     <td><?= (int)$manager['in_progress'] ?></td>
                                     <td><?= (int)$manager['approved'] ?></td>
                                     <td><?= (int)$manager['rejected'] ?></td>
-                                    <td><button class="btn btn-sm btn-primary">Подробнее</button></td>
+                                    <td>
+                                        <a href="index.php?page=manager-applications&manager_id=<?= $manager['id'] ?>" class="btn btn-sm btn-primary">Подробнее</a>
+                                    </td>
                                 </tr>
                                 <?php endforeach; ?>
                             </tbody>
