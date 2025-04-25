@@ -199,7 +199,17 @@ class Auth {
             return false;
         }
         
-        return $_SESSION['user_role'] === $role;
+        // Проверяем базовое сравнение ролей
+        if ($_SESSION['user_role'] === $role) {
+            return true;
+        }
+        
+        // Дополнительная проверка: админ может делать всё, что может менеджер
+        if ($_SESSION['user_role'] === 'admin' && $role === 'manager') {
+            return true;
+        }
+        
+        return false;
     }
     
     /**
