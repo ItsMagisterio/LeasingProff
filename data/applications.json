@@ -15,7 +15,7 @@
         "updated_at": "datetime"
     },
     "indices": [],
-    "auto_increment": 25,
+    "auto_increment": 26,
     "records": [
         {
             "user_id": 4,
@@ -347,6 +347,19 @@
             "created_at": "2025-04-25 16:36:54",
             "updated_at": "2025-04-25 16:36:54",
             "vehicle_id": 1
+        },
+        {
+            "id": 25,
+            "user_id": 6,
+            "status": "new",
+            "type": "real_estate",
+            "initial_payment": 5000000,
+            "term_months": 60,
+            "monthly_payment": 444889,
+            "comments": "",
+            "created_at": "2025-04-25 17:36:20",
+            "updated_at": "2025-04-25 17:36:20",
+            "real_estate_id": 1
         }
     ],
     "next_id": 18
