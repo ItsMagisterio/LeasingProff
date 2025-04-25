@@ -874,13 +874,17 @@ function includeProfilePage() {
 
 // Страница заявок пользователя
 function includeApplicationsPage() {
-    global $auth;
+    global $auth, $applications;
     
     // Перенаправление на страницу входа, если пользователь не авторизован
     if (!$auth->isLoggedIn()) {
         header('Location: index.php?page=login');
         exit;
     }
+    
+    // Получаем заявки текущего пользователя
+    $userId = $auth->getUserId();
+    $userApplications = $applications->getAllApplications(0, 0, ['user_id' => $userId]);
     
     echo '<section class="py-5 bg-light">
         <div class="container">
@@ -913,44 +917,103 @@ function includeApplicationsPage() {
                                             <th scope="col">Действия</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>15.04.2025</td>
-                                            <td>Транспорт</td>
-                                            <td>BMW X5 2023</td>
-                                            <td>5 800 000 ₽</td>
-                                            <td><span class="badge bg-success">Одобрена</span></td>
-                                            <td>
-                                                <button type="button" class="btn btn-sm btn-outline-primary me-1" title="Просмотреть"><i class="fas fa-eye"></i></button>
-                                                <button type="button" class="btn btn-sm btn-outline-secondary" title="Скачать документы"><i class="fas fa-download"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>10.04.2025</td>
-                                            <td>Недвижимость</td>
-                                            <td>Квартира, 65 м²</td>
-                                            <td>12 500 000 ₽</td>
-                                            <td><span class="badge bg-warning text-dark">В обработке</span></td>
-                                            <td>
-                                                <button type="button" class="btn btn-sm btn-outline-primary me-1" title="Просмотреть"><i class="fas fa-eye"></i></button>
-                                                <button type="button" class="btn btn-sm btn-outline-danger" title="Отменить"><i class="fas fa-times"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>05.03.2025</td>
-                                            <td>Транспорт</td>
-                                            <td>Toyota Camry 2022</td>
-                                            <td>3 200 000 ₽</td>
-                                            <td><span class="badge bg-danger">Отклонена</span></td>
-                                            <td>
-                                                <button type="button" class="btn btn-sm btn-outline-primary me-1" title="Просмотреть"><i class="fas fa-eye"></i></button>
-                                                <button type="button" class="btn btn-sm btn-outline-success" title="Повторить заявку"><i class="fas fa-redo"></i></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                    <tbody>';
+    
+    // Если заявок у пользователя нет, показываем информационное сообщение
+    if (empty($userApplications)) {
+        echo '<tr>
+            <td colspan="7" class="text-center py-4">
+                <p class="text-muted mb-0">У вас пока нет заявок на лизинг.</p>
+                <p class="mt-2">
+                    <a href="index.php" class="btn btn-sm btn-primary">Рассчитать лизинг</a>
+                </p>
+            </td>
+        </tr>';
+    } else {
+        // Выводим список заявок пользователя
+        foreach ($userApplications as $index => $app) {
+            $appId = $app['id'];
+            $appDate = date('d.m.Y', strtotime($app['created_at']));
+            $appType = $app['type'] === 'vehicle' ? 'Транспорт' : 'Недвижимость';
+            
+            // Определяем название объекта в зависимости от типа
+            $objectName = '';
+            if ($app['type'] === 'vehicle') {
+                if (isset($app['vehicle_make']) && isset($app['vehicle_model'])) {
+                    $objectName = $app['vehicle_make'] . ' ' . $app['vehicle_model'];
+                } else {
+                    $objectName = 'Транспортное средство';
+                }
+                $price = isset($app['vehicle_price']) ? number_format($app['vehicle_price'], 0, '.', ' ') . ' ₽' : '-';
+            } else {
+                if (isset($app['real_estate_title'])) {
+                    $objectName = $app['real_estate_title'];
+                } else {
+                    $objectName = 'Объект недвижимости';
+                }
+                $price = isset($app['real_estate_price']) ? number_format($app['real_estate_price'], 0, '.', ' ') . ' ₽' : '-';
+            }
+            
+            // Определяем статус заявки и соответствующий класс бейджа
+            $status = $app['status'] ?? 'new';
+            $statusText = '';
+            $statusClass = '';
+            
+            switch ($status) {
+                case 'new':
+                    $statusText = 'Новая';
+                    $statusClass = 'bg-primary';
+                    break;
+                case 'in_progress':
+                    $statusText = 'На рассмотрении';
+                    $statusClass = 'bg-warning text-dark';
+                    break;
+                case 'approved':
+                    $statusText = 'Одобрена';
+                    $statusClass = 'bg-success';
+                    break;
+                case 'rejected':
+                    $statusText = 'Отклонена';
+                    $statusClass = 'bg-danger';
+                    break;
+                case 'signed':
+                    $statusText = 'Подписана';
+                    $statusClass = 'bg-info';
+                    break;
+                case 'completed':
+                    $statusText = 'Завершена';
+                    $statusClass = 'bg-secondary';
+                    break;
+                default:
+                    $statusText = 'Новая';
+                    $statusClass = 'bg-primary';
+            }
+            
+            echo '<tr>
+                <th scope="row">' . ($index + 1) . '</th>
+                <td>' . $appDate . '</td>
+                <td>' . $appType . '</td>
+                <td>' . htmlspecialchars($objectName) . '</td>
+                <td>' . $price . '</td>
+                <td><span class="badge ' . $statusClass . '">' . $statusText . '</span></td>
+                <td>
+                    <a href="index.php?page=application-details&id=' . $appId . '" class="btn btn-sm btn-outline-primary me-1" title="Просмотреть"><i class="fas fa-eye"></i></a>';
+            
+            // Дополнительные кнопки в зависимости от статуса
+            if ($status === 'approved' || $status === 'signed' || $status === 'completed') {
+                echo '<button type="button" class="btn btn-sm btn-outline-secondary" title="Скачать документы"><i class="fas fa-download"></i></button>';
+            } elseif ($status === 'new' || $status === 'in_progress') {
+                echo '<button type="button" class="btn btn-sm btn-outline-danger" title="Отменить"><i class="fas fa-times"></i></button>';
+            } elseif ($status === 'rejected') {
+                echo '<button type="button" class="btn btn-sm btn-outline-success" title="Повторить заявку"><i class="fas fa-redo"></i></button>';
+            }
+            
+            echo '</td>
+            </tr>';
+        }
+    }
+    
+    echo '</tbody>
                                 </table>
                             </div>
                             

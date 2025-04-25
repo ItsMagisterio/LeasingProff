@@ -108,13 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
                 'type' => 'vehicle'
             ];
             
-            // Для демо-версии имитируем успешное создание заявки
-            //$result = $applications->createApplication($applicationData);
-            $result = array(
-                'success' => true,
-                'application_id' => rand(10000, 99999),
-                'message' => 'Заявка успешно создана'
-            );
+            // Сохраняем заявку в системе
+            $result = $applications->createApplication($applicationData);
             
         } elseif ($isRealEstate) {
             $applicationData = [
@@ -130,13 +125,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
                 'type' => 'real_estate'
             ];
             
-            // Для демо-версии имитируем успешное создание заявки
-            //$result = $applications->createApplication($applicationData);
-            $result = array(
-                'success' => true,
-                'application_id' => rand(10000, 99999),
-                'message' => 'Заявка успешно создана'
-            );
+            // Сохраняем заявку в системе
+            $result = $applications->createApplication($applicationData);
         }
         
         if (isset($result) && $result['success']) {
@@ -281,92 +271,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
                         </form>
                     </div>
                 </div>
-                
-                <div class="text-center mt-4">
-                    <a href="<?= $isVehicle ? 'index.php?page=marketplace' : 'index.php?page=real-estate' ?>" class="btn btn-outline-primary">
-                        <i class="fas fa-arrow-left me-2"></i>Вернуться к списку <?= $isVehicle ? 'транспорта' : 'недвижимости' ?>
-                    </a>
-                </div>
             <?php endif; ?>
         </div>
     </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Функция расчета ежемесячного платежа
-    function calculateMonthlyPayment() {
-        const objectPrice = parseFloat(document.getElementById('object_price').value) || 0;
-        const initialPayment = parseFloat(document.getElementById('initial_payment').value) || 0;
-        const termMonths = parseInt(document.getElementById('term_months').value) || 0;
-        const objectType = document.getElementById('object_type').value;
-        
-        if (objectPrice <= 0 || initialPayment <= 0 || termMonths <= 0 || !objectType) {
-            return; // Недостаточно данных для расчета
-        }
-        
-        // Убеждаемся, что первоначальный взнос в пределах допустимого диапазона
-        const downPaymentPercent = (initialPayment / objectPrice) * 100;
-        const isVehicle = <?= $isVehicle ? 'true' : 'false' ?>;
-        
-        if ((isVehicle && (downPaymentPercent < 10 || downPaymentPercent > 49)) ||
-            (!isVehicle && (downPaymentPercent < 20 || downPaymentPercent > 70))) {
-            return; // Первоначальный взнос выходит за пределы допустимого диапазона
-        }
-        
-        // Рассчитываем базовую ставку в зависимости от типа объекта
-        let baseRate;
-        if (isVehicle) {
-            if (objectType === 'car') baseRate = 11.0;
-            else if (objectType === 'truck') baseRate = 12.0;
-            else if (objectType === 'special') baseRate = 13.0;
-            else baseRate = 11.5;
-        } else {
-            if (objectType === 'apartment') baseRate = 12.5;
-            else if (objectType === 'house') baseRate = 13.0;
-            else if (objectType === 'commercial') baseRate = 14.0;
-            else baseRate = 13.0;
-        }
-        
-        // Расчет ежемесячного платежа
-        const loanAmount = objectPrice - initialPayment;
-        const monthlyRate = baseRate / 100 / 12;
-        const monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, termMonths)) / (Math.pow(1 + monthlyRate, termMonths) - 1);
-        
-        // Обновляем поле ежемесячного платежа
-        document.getElementById('monthly_payment').value = Math.round(monthlyPayment);
-    }
-    
-    // Добавляем слушатели событий для расчета
-    document.getElementById('object_price').addEventListener('input', calculateMonthlyPayment);
-    document.getElementById('initial_payment').addEventListener('input', calculateMonthlyPayment);
-    document.getElementById('term_months').addEventListener('input', calculateMonthlyPayment);
-    document.getElementById('object_type').addEventListener('change', calculateMonthlyPayment);
-    
-    // Валидация первоначального взноса относительно стоимости объекта
-    document.getElementById('initial_payment').addEventListener('blur', function() {
-        const objectPrice = parseFloat(document.getElementById('object_price').value) || 0;
-        const initialPayment = parseFloat(this.value) || 0;
-        
-        if (objectPrice <= 0) return;
-        
-        const downPaymentPercent = (initialPayment / objectPrice) * 100;
-        const isVehicle = <?= $isVehicle ? 'true' : 'false' ?>;
-        
-        let minPercent = isVehicle ? 10 : 20;
-        let maxPercent = isVehicle ? 49 : 70;
-        
-        if (downPaymentPercent < minPercent) {
-            this.value = Math.ceil(objectPrice * minPercent / 100);
-            alert(`Первоначальный взнос не может быть меньше ${minPercent}% от стоимости объекта`);
-        } else if (downPaymentPercent > maxPercent) {
-            this.value = Math.floor(objectPrice * maxPercent / 100);
-            alert(`Первоначальный взнос не может быть больше ${maxPercent}% от стоимости объекта`);
-        }
-        
-        calculateMonthlyPayment();
-    });
-});
-</script>
-
-<?php outputFooter(); ?>
