@@ -144,8 +144,10 @@ $USER_ROLES = [
                                     <td>
                                         <?php if ($application['type'] === 'real_estate' && !empty($application['real_estate_title'])): ?>
                                             <?= htmlspecialchars($application['real_estate_title']) ?>
-                                        <?php else: ?>
+                                        <?php elseif (isset($application['vehicle_make']) && isset($application['vehicle_model'])): ?>
                                             <?= htmlspecialchars($application['vehicle_make'] . ' ' . $application['vehicle_model']) ?>
+                                        <?php else: ?>
+                                            <?= $application['type'] === 'vehicle' ? 'Транспортное средство' : 'Объект лизинга' ?>
                                         <?php endif; ?>
                                     </td>
                                     <td><?= date('d.m.Y', strtotime($application['created_at'])) ?></td>
