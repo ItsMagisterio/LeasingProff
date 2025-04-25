@@ -76,41 +76,69 @@ class Vehicles {
      * Добавить новый автомобиль
      */
     public function addVehicle($vehicleData) {
-        $make = $this->db->escapeString($vehicleData['make']);
-        $model = $this->db->escapeString($vehicleData['model']);
-        $year = (int) $vehicleData['year'];
-        $engine = $this->db->escapeString($vehicleData['engine']);
-        $power = (int) $vehicleData['power'];
-        $driveType = $this->db->escapeString($vehicleData['drive_type']);
-        $transmission = $this->db->escapeString($vehicleData['transmission']);
-        $color = $this->db->escapeString($vehicleData['color']);
-        $interior = $this->db->escapeString($vehicleData['interior']);
-        $features = $this->db->escapeString($vehicleData['features']);
-        $imageUrl = $this->db->escapeString($vehicleData['image_url']);
-        $price = (float) $vehicleData['price'];
-        $monthlyPayment = (float) $vehicleData['monthly_payment'];
-        $status = $this->db->escapeString($vehicleData['status'] ?? 'available');
+        // Логирование входных данных
+        file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Данные для добавления автомобиля: " . print_r($vehicleData, true) . "\n", FILE_APPEND);
         
-        $sql = "INSERT INTO vehicles 
-                (make, model, year, engine, power, drive_type, transmission, color, interior, features, 
-                 image_url, price, monthly_payment, status)
-                VALUES 
-                ('$make', '$model', $year, '$engine', $power, '$driveType', '$transmission', 
-                 '$color', '$interior', '$features', '$imageUrl', $price, $monthlyPayment, '$status')";
-        
-        $result = $this->db->query($sql);
-        
-        if ($this->db->affectedRows($result) > 0) {
+        try {
+            // Проверка и безопасное получение данных с значениями по умолчанию
+            $make = $this->db->escapeString($vehicleData['make'] ?? '');
+            $model = $this->db->escapeString($vehicleData['model'] ?? '');
+            $year = (int) ($vehicleData['year'] ?? 0);
+            $engine = $this->db->escapeString($vehicleData['engine'] ?? '');
+            $power = (int) ($vehicleData['power'] ?? 0);
+            $driveType = $this->db->escapeString($vehicleData['drive_type'] ?? '');
+            $transmission = $this->db->escapeString($vehicleData['transmission'] ?? '');
+            $color = $this->db->escapeString($vehicleData['color'] ?? '');
+            $interior = $this->db->escapeString($vehicleData['interior'] ?? '');
+            $features = $this->db->escapeString($vehicleData['features'] ?? '');
+            $imageUrl = $this->db->escapeString($vehicleData['image_url'] ?? '');
+            $price = (float) ($vehicleData['price'] ?? 0);
+            $monthlyPayment = (float) ($vehicleData['monthly_payment'] ?? 0);
+            $status = $this->db->escapeString($vehicleData['status'] ?? 'available');
+            
+            $sql = "INSERT INTO vehicles 
+                    (make, model, year, engine, power, drive_type, transmission, color, interior, features, 
+                    image_url, price, monthly_payment, status, created_at, updated_at)
+                    VALUES 
+                    ('$make', '$model', $year, '$engine', $power, '$driveType', '$transmission', 
+                    '$color', '$interior', '$features', '$imageUrl', $price, $monthlyPayment, '$status',
+                    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+            
+            // Записываем SQL запрос в лог
+            file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - SQL запрос: " . $sql . "\n", FILE_APPEND);
+            
+            $result = $this->db->query($sql);
+            
+            // Записываем результат запроса в лог
+            file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Результат запроса: " . print_r($result, true) . "\n", FILE_APPEND);
+            
+            if ($this->db->affectedRows($result) > 0) {
+                $vehicleId = $this->db->lastInsertId('vehicles');
+                file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Автомобиль успешно добавлен, ID: " . $vehicleId . "\n", FILE_APPEND);
+                
+                return [
+                    'success' => true,
+                    'vehicle_id' => $vehicleId
+                ];
+            }
+            
+            // Если здесь, значит запрос прошел, но строки не затронуты
+            file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Ошибка: строки не затронуты\n", FILE_APPEND);
+            
             return [
-                'success' => true,
-                'vehicle_id' => $this->db->lastInsertId('vehicles')
+                'success' => false,
+                'message' => 'Ошибка при добавлении автомобиля: строки не затронуты'
+            ];
+            
+        } catch (Exception $e) {
+            // Логирование исключения
+            file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Исключение: " . $e->getMessage() . "\n", FILE_APPEND);
+            
+            return [
+                'success' => false,
+                'message' => 'Ошибка при добавлении автомобиля: ' . $e->getMessage()
             ];
         }
-        
-        return [
-            'success' => false,
-            'message' => 'Ошибка при добавлении автомобиля'
-        ];
     }
     
     /**
