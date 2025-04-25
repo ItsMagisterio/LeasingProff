@@ -154,7 +154,7 @@ $unassignedApplications = $applications->getUnassignedApplications();
                                     <td><?= (int)$manager['approved'] ?></td>
                                     <td><?= (int)$manager['rejected'] ?></td>
                                     <td>
-                                        <a href="index.php?page=manager-applications&manager_id=<?= $manager['id'] ?>" class="btn btn-sm btn-primary">Подробнее</a>
+                                        <a href="index.php?page=manager-applications&manager_id=<?= $manager['manager_id'] ?>" class="btn btn-sm btn-primary">Подробнее</a>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>
@@ -219,7 +219,7 @@ $unassignedApplications = $applications->getUnassignedApplications();
                                                                 <select name="manager_id" id="manager_id_<?= $application['id'] ?>" class="form-select" required>
                                                                     <option value="">-- Выберите менеджера --</option>
                                                                     <?php foreach ($managersList as $manager): ?>
-                                                                    <option value="<?= $manager['id'] ?>"><?= htmlspecialchars($manager['first_name'] . ' ' . $manager['last_name']) ?></option>
+                                                                    <option value="<?= isset($manager['id']) ? $manager['id'] : $manager['manager_id'] ?>"><?= htmlspecialchars($manager['first_name'] . ' ' . $manager['last_name']) ?></option>
                                                                     <?php endforeach; ?>
                                                                 </select>
                                                             </div>
