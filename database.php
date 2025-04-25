@@ -438,9 +438,32 @@ class Database {
             // Сохраняем данные автомобилей в JSON
             file_put_contents($this->dataDir . '/vehicles.json', json_encode($vehiclesData, JSON_PRETTY_PRINT));
 
+            // Создаем и заполняем данные объектов недвижимости
+            $realEstateData = [
+                'schema' => [
+                    'id' => ['type' => 'INTEGER', 'primary' => true, 'auto_increment' => true],
+                    'title' => ['type' => 'TEXT'],
+                    'type' => ['type' => 'TEXT'],
+                    'address' => ['type' => 'TEXT'],
+                    'area' => ['type' => 'FLOAT'],
+                    'rooms' => ['type' => 'INTEGER'],
+                    'floor' => ['type' => 'INTEGER'],
+                    'total_floors' => ['type' => 'INTEGER'],
+                    'build_year' => ['type' => 'INTEGER'],
+                    'description' => ['type' => 'TEXT'],
+                    'features' => ['type' => 'TEXT'],
+                    'image_url' => ['type' => 'TEXT'],
+                    'price' => ['type' => 'INTEGER'],
+                    'monthly_payment' => ['type' => 'INTEGER'],
+                    'created_at' => ['type' => 'DATETIME']
+                ],
+                'records' => []
+            ];
+            
             // Добавляем объекты недвижимости
             $realEstateObjects = [
                 [
+                    'id' => 1,
                     'title' => 'Современная квартира в центре',
                     'type' => 'apartment',
                     'address' => 'Москва, ул. Тверская, 15',
@@ -453,9 +476,11 @@ class Database {
                     'features' => 'подземный паркинг,охрана,видеонаблюдение,лифт,консьерж',
                     'image_url' => 'https://images.unsplash.com/photo-1622015663319-fa394f0e1b81?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
                     'price' => 25000000,
-                    'monthly_payment' => 120000
+                    'monthly_payment' => 120000,
+                    'created_at' => $timestamp
                 ],
                 [
+                    'id' => 2,
                     'title' => 'Коттедж в загородном поселке',
                     'type' => 'house',
                     'address' => 'Московская область, пос. Лесной, ул. Сосновая, 8',
@@ -468,9 +493,11 @@ class Database {
                     'features' => 'участок 12 соток,гараж,баня,камин,теплые полы,газовое отопление',
                     'image_url' => 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
                     'price' => 18500000,
-                    'monthly_payment' => 95000
+                    'monthly_payment' => 95000,
+                    'created_at' => $timestamp
                 ],
                 [
+                    'id' => 3,
                     'title' => 'Офисное помещение в бизнес-центре',
                     'type' => 'commercial',
                     'address' => 'Москва, Пресненская наб., 12, Башня "Федерация"',
@@ -483,9 +510,11 @@ class Database {
                     'features' => 'отдельный вход,система контроля доступа,конференц-зал,парковка,высокоскоростной интернет',
                     'image_url' => 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
                     'price' => 42000000,
-                    'monthly_payment' => 180000
+                    'monthly_payment' => 180000,
+                    'created_at' => $timestamp
                 ],
                 [
+                    'id' => 4,
                     'title' => 'Студия в новостройке',
                     'type' => 'apartment',
                     'address' => 'Санкт-Петербург, ул. Невская, 25',
@@ -498,9 +527,11 @@ class Database {
                     'features' => 'охраняемая территория,детская площадка,фитнес-центр,парковка,видеонаблюдение',
                     'image_url' => 'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
                     'price' => 6800000,
-                    'monthly_payment' => 38000
+                    'monthly_payment' => 38000,
+                    'created_at' => $timestamp
                 ],
                 [
+                    'id' => 5,
                     'title' => 'Торговое помещение в ТЦ',
                     'type' => 'commercial',
                     'address' => 'Москва, Кутузовский пр-т, 57, ТЦ "Времена года"',
@@ -513,38 +544,100 @@ class Database {
                     'features' => 'центральное кондиционирование,круглосуточный доступ,охрана,парковка,рекламные возможности',
                     'image_url' => 'https://images.unsplash.com/photo-1581658545657-4a95507e227e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
                     'price' => 16750000,
-                    'monthly_payment' => 88000
+                    'monthly_payment' => 88000,
+                    'created_at' => $timestamp
                 ]
             ];
 
             foreach ($realEstateObjects as $realEstate) {
-                $this->query("INSERT INTO real_estate (title, type, address, area, rooms, floor, total_floors, build_year, description, features, image_url, price, monthly_payment) 
-                VALUES (
-                    '{$realEstate['title']}', 
-                    '{$realEstate['type']}', 
-                    '{$realEstate['address']}', 
-                    {$realEstate['area']}, 
-                    {$realEstate['rooms']}, 
-                    {$realEstate['floor']}, 
-                    {$realEstate['total_floors']}, 
-                    {$realEstate['build_year']}, 
-                    '{$realEstate['description']}', 
-                    '{$realEstate['features']}', 
-                    '{$realEstate['image_url']}', 
-                    {$realEstate['price']}, 
-                    {$realEstate['monthly_payment']}
-                )");
+                $realEstateData['records'][] = $realEstate;
             }
-
+            
+            // Сохраняем данные объектов недвижимости в JSON
+            file_put_contents($this->dataDir . '/real_estate.json', json_encode($realEstateData, JSON_PRETTY_PRINT));
+            
+            // Создаем и заполняем данные заявок
+            $applicationsData = [
+                'schema' => [
+                    'id' => ['type' => 'INTEGER', 'primary' => true, 'auto_increment' => true],
+                    'user_id' => ['type' => 'INTEGER'],
+                    'vehicle_id' => ['type' => 'INTEGER', 'nullable' => true],
+                    'real_estate_id' => ['type' => 'INTEGER', 'nullable' => true],
+                    'type' => ['type' => 'TEXT'],
+                    'manager_id' => ['type' => 'INTEGER', 'nullable' => true],
+                    'status' => ['type' => 'TEXT', 'default' => 'new'],
+                    'initial_payment' => ['type' => 'INTEGER'],
+                    'term_months' => ['type' => 'INTEGER'],
+                    'monthly_payment' => ['type' => 'INTEGER'],
+                    'comments' => ['type' => 'TEXT', 'nullable' => true],
+                    'created_at' => ['type' => 'DATETIME']
+                ],
+                'records' => []
+            ];
+            
             // Добавляем заявки
-            $this->query("INSERT INTO applications (user_id, vehicle_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
-                VALUES (4, 1, 'vehicle', 2, 'processing', 1000000, 36, 85000, 'Интересует возможность включения КАСКО в ежемесячный платеж')");
-            $this->query("INSERT INTO applications (user_id, vehicle_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
-                VALUES (5, 3, 'vehicle', 3, 'approved', 1500000, 48, 79000, 'Необходимо оформить документы как можно скорее')");
-            $this->query("INSERT INTO applications (user_id, real_estate_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
-                VALUES (5, 1, 'real_estate', 2, 'approved', 5000000, 120, 120000, 'Требуется юридическая проверка документов объекта')");
-            $this->query("INSERT INTO applications (user_id, vehicle_id, type, status, initial_payment, term_months, monthly_payment) 
-                VALUES (5, 4, 'vehicle', 'new', 800000, 36, 45000)");
+            $applicationsData['records'][] = [
+                'id' => 1,
+                'user_id' => 4,
+                'vehicle_id' => 1,
+                'real_estate_id' => null,
+                'type' => 'vehicle',
+                'manager_id' => 2,
+                'status' => 'processing',
+                'initial_payment' => 1000000,
+                'term_months' => 36,
+                'monthly_payment' => 85000,
+                'comments' => 'Интересует возможность включения КАСКО в ежемесячный платеж',
+                'created_at' => $timestamp
+            ];
+            
+            $applicationsData['records'][] = [
+                'id' => 2,
+                'user_id' => 5,
+                'vehicle_id' => 3,
+                'real_estate_id' => null,
+                'type' => 'vehicle',
+                'manager_id' => 3,
+                'status' => 'approved',
+                'initial_payment' => 1500000,
+                'term_months' => 48,
+                'monthly_payment' => 79000,
+                'comments' => 'Необходимо оформить документы как можно скорее',
+                'created_at' => $timestamp
+            ];
+            
+            $applicationsData['records'][] = [
+                'id' => 3,
+                'user_id' => 5,
+                'vehicle_id' => null,
+                'real_estate_id' => 1,
+                'type' => 'real_estate',
+                'manager_id' => 2,
+                'status' => 'approved',
+                'initial_payment' => 5000000,
+                'term_months' => 120,
+                'monthly_payment' => 120000,
+                'comments' => 'Требуется юридическая проверка документов объекта',
+                'created_at' => $timestamp
+            ];
+            
+            $applicationsData['records'][] = [
+                'id' => 4,
+                'user_id' => 5,
+                'vehicle_id' => 4,
+                'real_estate_id' => null,
+                'type' => 'vehicle',
+                'manager_id' => null,
+                'status' => 'new',
+                'initial_payment' => 800000,
+                'term_months' => 36,
+                'monthly_payment' => 45000,
+                'comments' => null,
+                'created_at' => $timestamp
+            ];
+            
+            // Сохраняем данные заявок в JSON
+            file_put_contents($this->dataDir . '/applications.json', json_encode($applicationsData, JSON_PRETTY_PRINT));
         }
     }
     
