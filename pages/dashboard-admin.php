@@ -410,19 +410,19 @@ $unassignedApplications = $applications->getUnassignedApplications();
             <div class="dashboard-card mt-4">
                 <h5>Быстрые действия</h5>
                 <div class="d-grid gap-2">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addManagerModal">
+                    <button class="btn btn-primary modal-open-btn" data-target="addManagerModal">
                         <i class="fas fa-user-plus me-2"></i> Добавить менеджера
                     </button>
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addVehicleModal">
+                    <button class="btn btn-success modal-open-btn" data-target="addVehicleModal">
                         <i class="fas fa-car me-2"></i> Добавить автомобиль
                     </button>
-                    <button class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#addRealEstateModal">
+                    <button class="btn btn-info text-white modal-open-btn" data-target="addRealEstateModal">
                         <i class="fas fa-building me-2"></i> Добавить недвижимость
                     </button>
-                    <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exportReportModal">
+                    <button class="btn btn-secondary modal-open-btn" data-target="exportReportModal">
                         <i class="fas fa-file-export me-2"></i> Экспорт отчета
                     </button>
-                    <button class="btn btn-warning text-dark" data-bs-toggle="modal" data-bs-target="#systemSettingsModal">
+                    <button class="btn btn-warning text-dark modal-open-btn" data-target="systemSettingsModal">
                         <i class="fas fa-cog me-2"></i> Настройки системы
                     </button>
                 </div>
