@@ -275,8 +275,13 @@ class Applications {
         }
         
         // Определяем ID для новой заявки
-        $newId = $appData['next_id'];
-        $appData['next_id']++;
+        if (isset($appData['auto_increment'])) {
+            $newId = $appData['auto_increment'];
+            $appData['auto_increment']++;
+        } else {
+            $newId = $appData['next_id'];
+            $appData['next_id']++;
+        }
         
         // Создаем новую заявку
         $newApplication = [

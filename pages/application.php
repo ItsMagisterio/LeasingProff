@@ -5,15 +5,21 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Для демонстрационных целей отключаем проверку авторизации
-// и создаем тестового пользователя
-$currentUser = array(
-    'id' => 1,
-    'name' => 'Тестовый пользователь',
-    'email' => 'test@example.com',
-    'phone' => '+7 (999) 123-45-67',
-    'role' => 'client'
-);
+// Для демонстрационных целей мы используем текущего пользователя из системы авторизации
+// или создаем тестового пользователя, если авторизации нет
+if ($auth->isLoggedIn()) {
+    $currentUser = $auth->getCurrentUser();
+} else {
+    // Создаем тестового пользователя
+    $currentUser = array(
+        'id' => 1,
+        'first_name' => 'Тестовый',
+        'last_name' => 'Пользователь',
+        'email' => 'test@example.com',
+        'phone' => '+7 (999) 123-45-67',
+        'role' => 'client'
+    );
+}
 
 // Определяем тип заявки
 $applicationType = isset($_GET['type']) ? $_GET['type'] : '';
@@ -148,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
                             <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
                         </div>
                         <h2 class="mb-3">Ваша заявка успешно отправлена!</h2>
-                        <p class="lead mb-4">Номер заявки: <strong><?= isset($result['application_id']) ? $result['application_id'] : rand(10000, 99999) ?></strong></p>
+                        <p class="lead mb-4">Номер заявки: <strong><?= isset($result['application_id']) ? $result['application_id'] : 'Новая' ?></strong></p>
                         <p class="mb-4">Наш менеджер свяжется с вами в ближайшее время для уточнения деталей и дальнейших шагов оформления лизинга.</p>
                         <div class="row justify-content-center mt-4">
                             <div class="col-md-6">
