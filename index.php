@@ -740,34 +740,8 @@ function outputFooter() {
     
     <!-- Скрипты -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/modal-handler.js"></script>
     <script>
-        // Инициализация всех модальных окон Bootstrap
-        document.addEventListener("DOMContentLoaded", function() {
-            console.log("DOM fully loaded - initializing modals");
-            
-            // Прямая привязка кнопок к модальным окнам
-            document.querySelectorAll(\'[data-bs-toggle="modal"]\').forEach(function(button) {
-                console.log("Found modal trigger button:", button.textContent.trim());
-                
-                button.addEventListener(\'click\', function(event) {
-                    event.preventDefault();
-                    console.log("Button clicked");
-                    
-                    var targetModalId = this.getAttribute(\'data-bs-target\');
-                    console.log("Target modal:", targetModalId);
-                    
-                    var modalElement = document.querySelector(targetModalId);
-                    if (modalElement) {
-                        console.log("Modal element found:", targetModalId);
-                        var modal = new bootstrap.Modal(modalElement);
-                        modal.show();
-                    } else {
-                        console.error("Modal element not found:", targetModalId);
-                    }
-                });
-            });
-        });
-        
         // Плавная прокрутка к якорям
         document.querySelectorAll(\'a[href^="#"]\').forEach(anchor => {
             anchor.addEventListener(\'click\', function (e) {
