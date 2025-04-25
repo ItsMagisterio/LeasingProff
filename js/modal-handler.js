@@ -125,9 +125,26 @@ document.addEventListener("DOMContentLoaded", function() {
         const method = form.getAttribute('method') || 'GET';
         console.log(`Debug: Form ${index + 1} - Action: ${action}, Method: ${method}`);
         
-        // Обработка отправки формы
+        // Проверяем и исправляем атрибуты формы
+        if (!form.action || form.action === 'javascript:void(0)' || form.action === '#' || form.action.includes('[object HTMLInputElement]')) {
+            form.action = 'index.php?page=dashboard-admin';
+            console.log(`Debug: Corrected form action to: ${form.action}`);
+        }
+        
+        if (!form.method || form.method.toLowerCase() !== 'post') {
+            form.method = 'post';
+            console.log(`Debug: Corrected form method to: post`);
+        }
+        
+        // Если форма имеет атрибут onsubmit, удаляем его
+        if (form.hasAttribute('onsubmit')) {
+            console.log(`Debug: Removing onsubmit attribute from form`);
+            form.removeAttribute('onsubmit');
+        }
+        
+        // Для отладки - отслеживаем отправку формы, но НЕ вмешиваемся в процесс
         form.addEventListener('submit', function(event) {
-            console.log(`Debug: Form is being submitted - Action: ${action}, Method: ${method}`);
+            console.log(`Debug: Form is being submitted - Action: ${form.action}, Method: ${form.method}`);
             
             // Получим значение поля action для отладки
             const actionField = form.querySelector('input[name="action"]');
@@ -135,24 +152,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log(`Debug: Action field value: ${actionField.value}`);
             }
             
-            // Находим ближайший modal
-            const modalElement = form.closest('.modal');
-            if (modalElement) {
-                // Добавим обработчик событию показа страницы после отправки формы
-                window.addEventListener('beforeunload', function(unloadEvent) {
-                    // Закрываем модальное окно перед перезагрузкой страницы
-                    try {
-                        const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                        if (modalInstance) {
-                            modalInstance.hide();
-                        }
-                    } catch (error) {
-                        console.error("Debug: Error hiding modal:", error);
-                    }
-                }, { once: true });
-            }
-            
-            // Используем стандартную отправку формы (PHP сам перезагрузит страницу)
+            // Больше НИКАКОГО вмешательства в отправку формы!
             // НЕТ event.preventDefault() - форма отправится стандартным способом
         });
     });

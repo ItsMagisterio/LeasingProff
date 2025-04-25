@@ -430,11 +430,32 @@ $unassignedApplications = $applications->getUnassignedApplications();
                 <script>
                 function showModal(modalId) {
                     // Используем нативный JavaScript для прямого управления модальными окнами
+                    console.log("Opening modal:", modalId);
                     const modal = document.getElementById(modalId);
                     if (modal) {
                         // Используем Bootstrap 5 API для создания и показа модального окна
                         const bsModal = new bootstrap.Modal(modal);
                         bsModal.show();
+                        
+                        // Находим форму внутри модального окна и сбрасываем все обработчики
+                        const form = modal.querySelector('form');
+                        if (form) {
+                            console.log("Found form in modal:", form.action);
+                            
+                            // Удаляем все обработчики onsubmit
+                            if (form.hasAttribute('onsubmit')) {
+                                form.removeAttribute('onsubmit');
+                                console.log("Removed onsubmit attribute from form");
+                            }
+                            
+                            // Убеждаемся, что action и method установлены правильно
+                            if (!form.action) {
+                                form.action = 'index.php?page=dashboard-admin';
+                            }
+                            if (!form.method) {
+                                form.method = 'post';
+                            }
+                        }
                     } else {
                         console.error('Модальное окно с ID ' + modalId + ' не найдено');
                     }
