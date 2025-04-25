@@ -2993,6 +2993,9 @@ switch ($page) {
     case 'managers':
         include 'pages/managers.php';
         break;
+    case 'clients':
+        include 'pages/clients.php';
+        break;
     case 'profile':
         includeProfilePage();
         break;

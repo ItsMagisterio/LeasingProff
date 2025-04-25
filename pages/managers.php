@@ -33,7 +33,7 @@ $managersList = $users->getManagers();
                 <a href="index.php?page=user-rights" class="<?= $page === 'user-rights' ? 'active' : '' ?>">Права пользователей</a>
                 <a href="index.php?page=leasing-companies" class="<?= $page === 'leasing-companies' ? 'active' : '' ?>">Лизинговые компании</a>
                 <a href="index.php?page=managers" class="<?= $page === 'managers' ? 'active' : '' ?>">Менеджеры</a>
-                <a href="index.php?page=dashboard-client" class="<?= $page === 'dashboard-client' ? 'active' : '' ?>">Клиенты</a>
+                <a href="index.php?page=clients" class="<?= $page === 'clients' ? 'active' : '' ?>">Клиенты</a>
                 <form method="post" class="d-inline">
                     <input type="hidden" name="action" value="logout">
                     <button type="submit" class="btn btn-link text-white p-0 ms-3">Выход</button>

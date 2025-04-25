@@ -503,5 +503,42 @@ class Users {
         // Обновляем поле role в данных пользователя
         return $this->updateUser($userId, ['role' => $newRole]);
     }
+    
+    /**
+     * Получить список всех пользователей с определенной ролью
+     * @param string $role Роль пользователей ('client', 'manager', 'admin')
+     * @return array Массив пользователей с указанной ролью
+     */
+    public function getUsersByRole($role) {
+        // Проверка валидности роли
+        if (!in_array($role, ['client', 'manager', 'admin'])) {
+            return [];
+        }
+        
+        // Используем существующий метод getAllUsers с фильтрацией по роли
+        return $this->getAllUsers($role);
+    }
+    
+    /**
+     * Обновить статус пользователя (активный/неактивный)
+     * @param int $userId ID пользователя
+     * @param int $status Новый статус (1 - активен, 0 - заблокирован)
+     * @return array Результат операции
+     */
+    public function updateUserStatus($userId, $status) {
+        $userId = (int) $userId;
+        $status = (int) $status;
+        
+        // Проверка валидности статуса
+        if ($status !== 0 && $status !== 1) {
+            return [
+                'success' => false,
+                'message' => 'Некорректный статус пользователя'
+            ];
+        }
+        
+        // Обновляем поле is_active в данных пользователя
+        return $this->updateUser($userId, ['is_active' => $status]);
+    }
 }
 ?>
