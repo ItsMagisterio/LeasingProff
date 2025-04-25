@@ -19,36 +19,7 @@ if (isset($_SESSION['message'])) {
     unset($_SESSION['message']);
 }
 
-// Обработка действий с клиентами
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    $action = $_POST['action'];
-    
-    // Блокировка/Разблокировка клиента
-    if ($action === 'toggle_client_status' && isset($_POST['client_id'])) {
-        $clientId = $_POST['client_id'];
-        $client = $users->getUserById($clientId);
-        
-        if ($client && $client['role'] === 'client') {
-            $newStatus = isset($client['is_active']) && $client['is_active'] ? 0 : 1;
-            $success = $users->updateUserStatus($clientId, $newStatus);
-            
-            if ($success) {
-                $_SESSION['message'] = [
-                    'type' => 'success',
-                    'text' => 'Статус клиента успешно изменен'
-                ];
-            } else {
-                $_SESSION['message'] = [
-                    'type' => 'danger',
-                    'text' => 'Ошибка при изменении статуса клиента'
-                ];
-            }
-        }
-        echo '<script>window.location.href = "index.php?page=clients";</script>';
-        echo '<div class="alert alert-success">Перенаправление...</div>';
-        exit;
-    }
-}
+// Все действия с клиентами через кнопку "Активировать/Блокировать" были удалены по запросу пользователя
 ?>
 
 <div class="container-fluid dashboard my-4">
@@ -125,13 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                         <td>
                             <div class="btn-group btn-group-sm">
                                 <a href="index.php?page=application-details&client_id=<?= $client['id'] ?>" class="btn btn-outline-primary">Заявки</a>
-                                <form method="post" class="d-inline" onsubmit="return confirm('Вы уверены, что хотите <?= (isset($client['is_active']) && $client['is_active']) ? 'заблокировать' : 'активировать' ?> этого клиента?');">
-                                    <input type="hidden" name="action" value="toggle_client_status">
-                                    <input type="hidden" name="client_id" value="<?= $client['id'] ?>">
-                                    <button type="submit" class="btn btn-outline-<?= (isset($client['is_active']) && $client['is_active']) ? 'danger' : 'success' ?>">
-                                        <?= (isset($client['is_active']) && $client['is_active']) ? 'Блокировать' : 'Активировать' ?>
-                                    </button>
-                                </form>
                             </div>
                         </td>
                     </tr>
