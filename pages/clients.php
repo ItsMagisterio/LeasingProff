@@ -1,8 +1,9 @@
 <?php
 // Проверка авторизации и уровня доступа
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    // Если пользователь не админ - перенаправляем на главную
-    header('Location: index.php');
+    // Если пользователь не админ - используем JavaScript для редиректа
+    echo '<script>window.location.href = "index.php";</script>';
+    echo '<div class="alert alert-danger">У вас нет доступа к этой странице. Перенаправление...</div>';
     exit;
 }
 
@@ -43,7 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 ];
             }
         }
-        header('Location: index.php?page=clients');
+        echo '<script>window.location.href = "index.php?page=clients";</script>';
+        echo '<div class="alert alert-success">Перенаправление...</div>';
         exit;
     }
 }
