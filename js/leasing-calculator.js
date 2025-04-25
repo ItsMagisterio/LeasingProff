@@ -310,6 +310,10 @@ function showMatchingVehicleCompanies(price, downPaymentPercent, term, vehicleTy
     const companiesContainer = document.querySelector('#vehicleCompanies .row');
     companiesContainer.innerHTML = '';
     
+    // Получаем vehicle_id из URL, если он там есть
+    const urlParams = new URLSearchParams(window.location.search);
+    const vehicleId = urlParams.get('id') || 0;
+    
     let matchingCompanies = leasingCompanies.filter(company => {
         // Проверяем, что компания предлагает лизинг транспорта выбранного типа
         if (!company.vehicleRates || !company.vehicleRates[vehicleType]) {
@@ -368,7 +372,7 @@ function showMatchingVehicleCompanies(price, downPaymentPercent, term, vehicleTy
                     <p class="text-center text-muted mb-0">в месяц</p>
                 </div>
                 <div class="card-footer bg-white border-0 text-center py-3">
-                    <a href="index.php?page=application&type=vehicle&company=${encodeURIComponent(company.name)}&monthly=${encodeURIComponent(formattedPayment)}" class="btn btn-outline-primary rounded-pill px-4">Оформить</a>
+                    <a href="index.php?page=application&type=vehicle&company=${encodeURIComponent(company.name)}&monthly=${encodeURIComponent(formattedPayment)}&vehicle_id=${vehicleId}" class="btn btn-outline-primary rounded-pill px-4">Оформить</a>
                 </div>
             </div>
         `;
@@ -381,6 +385,10 @@ function showMatchingVehicleCompanies(price, downPaymentPercent, term, vehicleTy
 function showMatchingRealEstateCompanies(price, downPaymentPercent, term, realEstateType, monthlyPayment) {
     const companiesContainer = document.querySelector('#realEstateCompanies .row');
     companiesContainer.innerHTML = '';
+    
+    // Получаем real_estate_id из URL, если он там есть
+    const urlParams = new URLSearchParams(window.location.search);
+    const realEstateId = urlParams.get('id') || 0;
     
     let matchingCompanies = leasingCompanies.filter(company => {
         // Проверяем, что компания предлагает лизинг недвижимости выбранного типа
@@ -440,7 +448,7 @@ function showMatchingRealEstateCompanies(price, downPaymentPercent, term, realEs
                     <p class="text-center text-muted mb-0">в месяц</p>
                 </div>
                 <div class="card-footer bg-white border-0 text-center py-3">
-                    <a href="index.php?page=application&type=real_estate&company=${encodeURIComponent(company.name)}&monthly=${encodeURIComponent(formattedPayment)}" class="btn btn-outline-primary rounded-pill px-4">Оформить</a>
+                    <a href="index.php?page=application&type=real_estate&company=${encodeURIComponent(company.name)}&monthly=${encodeURIComponent(formattedPayment)}&real_estate_id=${realEstateId}" class="btn btn-outline-primary rounded-pill px-4">Оформить</a>
                 </div>
             </div>
         `;
