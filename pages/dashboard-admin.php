@@ -158,7 +158,7 @@ $unassignedApplications = $applications->getUnassignedApplications();
                                             <?= htmlspecialchars($application['real_estate_title']) ?> 
                                             <span class="badge bg-info">Недвижимость</span>
                                         <?php else: ?>
-                                            <?= htmlspecialchars($application['vehicle_make'] . ' ' . $application['vehicle_model']) ?>
+                                            <?= htmlspecialchars((isset($application['vehicle_make']) ? $application['vehicle_make'] : 'Не указано') . ' ' . (isset($application['vehicle_model']) ? $application['vehicle_model'] : '')) ?>
                                             <span class="badge bg-secondary">Авто</span>
                                         <?php endif; ?>
                                     </td>
