@@ -107,21 +107,35 @@ const leasingCompanies = [
     }
 ];
 
+// Вспомогательная функция для форматирования чисел с пробелами
+function formatNumberWithSpaces(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+// Обратная функция для удаления пробелов из числа
+function removeSpacesFromNumber(numberString) {
+    return numberString.toString().replace(/\s/g, "");
+}
+
 // Функции для калькулятора транспорта
 function updateVehiclePrice() {
-    document.getElementById('vehiclePrice').value = document.getElementById('vehiclePriceRange').value;
+    const value = document.getElementById('vehiclePriceRange').value;
+    document.getElementById('vehiclePrice').value = formatNumberWithSpaces(value);
 }
 
 function updateVehiclePriceRange() {
-    document.getElementById('vehiclePriceRange').value = document.getElementById('vehiclePrice').value;
+    const value = removeSpacesFromNumber(document.getElementById('vehiclePrice').value);
+    document.getElementById('vehiclePriceRange').value = value;
 }
 
 function updateVehicleDownPayment() {
-    document.getElementById('vehicleDownPayment').value = document.getElementById('vehicleDownPaymentRange').value;
+    const value = document.getElementById('vehicleDownPaymentRange').value;
+    document.getElementById('vehicleDownPayment').value = formatNumberWithSpaces(value);
 }
 
 function updateVehicleDownPaymentRange() {
-    document.getElementById('vehicleDownPaymentRange').value = document.getElementById('vehicleDownPayment').value;
+    const value = removeSpacesFromNumber(document.getElementById('vehicleDownPayment').value);
+    document.getElementById('vehicleDownPaymentRange').value = value;
 }
 
 function updateVehicleTerm() {
@@ -134,19 +148,23 @@ function updateVehicleTermRange() {
 
 // Функции для калькулятора недвижимости
 function updateRealEstatePrice() {
-    document.getElementById('realEstatePrice').value = document.getElementById('realEstatePriceRange').value;
+    const value = document.getElementById('realEstatePriceRange').value;
+    document.getElementById('realEstatePrice').value = formatNumberWithSpaces(value);
 }
 
 function updateRealEstatePriceRange() {
-    document.getElementById('realEstatePriceRange').value = document.getElementById('realEstatePrice').value;
+    const value = removeSpacesFromNumber(document.getElementById('realEstatePrice').value);
+    document.getElementById('realEstatePriceRange').value = value;
 }
 
 function updateRealEstateDownPayment() {
-    document.getElementById('realEstateDownPayment').value = document.getElementById('realEstateDownPaymentRange').value;
+    const value = document.getElementById('realEstateDownPaymentRange').value;
+    document.getElementById('realEstateDownPayment').value = formatNumberWithSpaces(value);
 }
 
 function updateRealEstateDownPaymentRange() {
-    document.getElementById('realEstateDownPaymentRange').value = document.getElementById('realEstateDownPayment').value;
+    const value = removeSpacesFromNumber(document.getElementById('realEstateDownPayment').value);
+    document.getElementById('realEstateDownPaymentRange').value = value;
 }
 
 function updateRealEstateTerm() {
@@ -159,8 +177,8 @@ function updateRealEstateTermRange() {
 
 // Функция расчета лизинга транспорта
 function calculateVehicleLeasing() {
-    const price = parseFloat(document.getElementById('vehiclePrice').value);
-    const downPaymentPercent = parseFloat(document.getElementById('vehicleDownPayment').value);
+    const price = parseFloat(removeSpacesFromNumber(document.getElementById('vehiclePrice').value));
+    const downPaymentPercent = parseFloat(removeSpacesFromNumber(document.getElementById('vehicleDownPayment').value));
     const term = parseInt(document.getElementById('vehicleTerm').value);
     const vehicleType = document.getElementById('vehicleType').value;
     
@@ -196,8 +214,8 @@ function calculateVehicleLeasing() {
 
 // Функция расчета лизинга недвижимости
 function calculateRealEstateLeasing() {
-    const price = parseFloat(document.getElementById('realEstatePrice').value);
-    const downPaymentPercent = parseFloat(document.getElementById('realEstateDownPayment').value);
+    const price = parseFloat(removeSpacesFromNumber(document.getElementById('realEstatePrice').value));
+    const downPaymentPercent = parseFloat(removeSpacesFromNumber(document.getElementById('realEstateDownPayment').value));
     const term = parseInt(document.getElementById('realEstateTerm').value);
     const realEstateType = document.getElementById('realEstateType').value;
     
@@ -402,3 +420,26 @@ function getStarRating(rating) {
     
     return stars;
 }
+
+// Инициализация форматирования полей ввода при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    // Форматирование полей ввода для транспорта
+    const vehiclePrice = document.getElementById('vehiclePrice');
+    const vehicleDownPayment = document.getElementById('vehicleDownPayment');
+    if (vehiclePrice) {
+        vehiclePrice.value = formatNumberWithSpaces(vehiclePrice.value);
+    }
+    if (vehicleDownPayment) {
+        vehicleDownPayment.value = formatNumberWithSpaces(vehicleDownPayment.value);
+    }
+    
+    // Форматирование полей ввода для недвижимости
+    const realEstatePrice = document.getElementById('realEstatePrice');
+    const realEstateDownPayment = document.getElementById('realEstateDownPayment');
+    if (realEstatePrice) {
+        realEstatePrice.value = formatNumberWithSpaces(realEstatePrice.value);
+    }
+    if (realEstateDownPayment) {
+        realEstateDownPayment.value = formatNumberWithSpaces(realEstateDownPayment.value);
+    }
+});
