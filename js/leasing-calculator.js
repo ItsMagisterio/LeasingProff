@@ -125,7 +125,8 @@ function updateVehiclePrice() {
     const vehiclePrice = document.getElementById('vehiclePrice');
     
     if (vehiclePriceRange && vehiclePrice) {
-        vehiclePrice.value = formatNumberWithSpaces(vehiclePriceRange.value);
+        // Для полей input type="number" нельзя использовать пробелы в value
+        vehiclePrice.value = vehiclePriceRange.value;
     }
 }
 
@@ -134,7 +135,7 @@ function updateVehiclePriceRange() {
     const vehiclePrice = document.getElementById('vehiclePrice');
     
     if (vehiclePriceRange && vehiclePrice) {
-        vehiclePriceRange.value = removeSpacesFromNumber(vehiclePrice.value);
+        vehiclePriceRange.value = vehiclePrice.value;
     }
 }
 
@@ -143,7 +144,7 @@ function updateVehicleDownPayment() {
     const vehicleDownPayment = document.getElementById('vehicleDownPayment');
     
     if (vehicleDownPaymentRange && vehicleDownPayment) {
-        vehicleDownPayment.value = formatNumberWithSpaces(vehicleDownPaymentRange.value);
+        vehicleDownPayment.value = vehicleDownPaymentRange.value;
     }
 }
 
@@ -152,7 +153,7 @@ function updateVehicleDownPaymentRange() {
     const vehicleDownPayment = document.getElementById('vehicleDownPayment');
     
     if (vehicleDownPaymentRange && vehicleDownPayment) {
-        vehicleDownPaymentRange.value = removeSpacesFromNumber(vehicleDownPayment.value);
+        vehicleDownPaymentRange.value = vehicleDownPayment.value;
     }
 }
 
@@ -180,7 +181,8 @@ function updateRealEstatePrice() {
     const realEstatePrice = document.getElementById('realEstatePrice');
     
     if (realEstatePriceRange && realEstatePrice) {
-        realEstatePrice.value = formatNumberWithSpaces(realEstatePriceRange.value);
+        // Для полей input type="number" нельзя использовать пробелы в value
+        realEstatePrice.value = realEstatePriceRange.value;
     }
 }
 
@@ -189,7 +191,7 @@ function updateRealEstatePriceRange() {
     const realEstatePrice = document.getElementById('realEstatePrice');
     
     if (realEstatePriceRange && realEstatePrice) {
-        realEstatePriceRange.value = removeSpacesFromNumber(realEstatePrice.value);
+        realEstatePriceRange.value = realEstatePrice.value;
     }
 }
 
@@ -198,7 +200,7 @@ function updateRealEstateDownPayment() {
     const realEstateDownPayment = document.getElementById('realEstateDownPayment');
     
     if (realEstateDownPaymentRange && realEstateDownPayment) {
-        realEstateDownPayment.value = formatNumberWithSpaces(realEstateDownPaymentRange.value);
+        realEstateDownPayment.value = realEstateDownPaymentRange.value;
     }
 }
 
@@ -207,7 +209,7 @@ function updateRealEstateDownPaymentRange() {
     const realEstateDownPayment = document.getElementById('realEstateDownPayment');
     
     if (realEstateDownPaymentRange && realEstateDownPayment) {
-        realEstateDownPaymentRange.value = removeSpacesFromNumber(realEstateDownPayment.value);
+        realEstateDownPaymentRange.value = realEstateDownPayment.value;
     }
 }
 
@@ -479,51 +481,17 @@ function getStarRating(rating) {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM fully loaded - initializing calculator');
     
-    // Инициализация калькулятора транспорта
+    // Получаем все поля ввода
     const vehiclePrice = document.getElementById('vehiclePrice');
     const vehiclePriceRange = document.getElementById('vehiclePriceRange');
     const vehicleDownPayment = document.getElementById('vehicleDownPayment');
     const vehicleDownPaymentRange = document.getElementById('vehicleDownPaymentRange');
-    
-    if (vehiclePrice && vehiclePriceRange) {
-        // Устанавливаем начальные значения
-        vehiclePrice.value = formatNumberWithSpaces(vehiclePriceRange.value);
-        
-        // Добавляем обработчики событий
-        vehiclePriceRange.addEventListener('input', updateVehiclePrice);
-        vehiclePrice.addEventListener('input', updateVehiclePriceRange);
-    }
-    
-    if (vehicleDownPayment && vehicleDownPaymentRange) {
-        // Устанавливаем начальные значения
-        vehicleDownPayment.value = formatNumberWithSpaces(vehicleDownPaymentRange.value);
-        
-        // Добавляем обработчики событий
-        vehicleDownPaymentRange.addEventListener('input', updateVehicleDownPayment);
-        vehicleDownPayment.addEventListener('input', updateVehicleDownPaymentRange);
-    }
-    
-    // Инициализация калькулятора недвижимости
     const realEstatePrice = document.getElementById('realEstatePrice');
     const realEstatePriceRange = document.getElementById('realEstatePriceRange');
     const realEstateDownPayment = document.getElementById('realEstateDownPayment');
     const realEstateDownPaymentRange = document.getElementById('realEstateDownPaymentRange');
     
-    if (realEstatePrice && realEstatePriceRange) {
-        // Устанавливаем начальные значения
-        realEstatePrice.value = formatNumberWithSpaces(realEstatePriceRange.value);
-        
-        // Добавляем обработчики событий
-        realEstatePriceRange.addEventListener('input', updateRealEstatePrice);
-        realEstatePrice.addEventListener('input', updateRealEstatePriceRange);
-    }
+    console.log('Поля инициализированы')
     
-    if (realEstateDownPayment && realEstateDownPaymentRange) {
-        // Устанавливаем начальные значения
-        realEstateDownPayment.value = formatNumberWithSpaces(realEstateDownPaymentRange.value);
-        
-        // Добавляем обработчики событий
-        realEstateDownPaymentRange.addEventListener('input', updateRealEstateDownPayment);
-        realEstateDownPayment.addEventListener('input', updateRealEstateDownPaymentRange);
-    }
+    // Обработчики событий уже определены в HTML с помощью атрибутов oninput
 });console.log('Debug: Checking calculator.js loading');
