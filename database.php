@@ -201,17 +201,17 @@ class Database {
             
             // Администратор
             $this->query("INSERT INTO users (email, password, first_name, last_name, phone, role) 
-                VALUES ('admin@2leasing.ru', '$password', 'Андрей', 'Волков', '+7(901)123-4567', 'admin')");
+                VALUES ('admin@лизинг.орг', '$password', 'Андрей', 'Волков', '+7(901)123-4567', 'admin')");
             
             // Менеджеры
             $this->query("INSERT INTO users (email, password, first_name, last_name, phone, role) 
-                VALUES ('manager1@2leasing.ru', '$password', 'Алексей', 'Смирнов', '+7(902)123-4567', 'manager')");
+                VALUES ('manager1@лизинг.орг', '$password', 'Алексей', 'Смирнов', '+7(902)123-4567', 'manager')");
             $this->query("INSERT INTO users (email, password, first_name, last_name, phone, role) 
-                VALUES ('manager2@2leasing.ru', '$password', 'Елена', 'Михайлова', '+7(903)123-4567', 'manager')");
+                VALUES ('manager2@лизинг.орг', '$password', 'Елена', 'Михайлова', '+7(903)123-4567', 'manager')");
             
             // Клиенты
             $this->query("INSERT INTO users (email, password, first_name, last_name, phone, role) 
-                VALUES ('client@2leasing.ru', '$password', 'Иван', 'Петров', '+7(904)123-4567', 'client')");
+                VALUES ('client@лизинг.орг', '$password', 'Иван', 'Петров', '+7(904)123-4567', 'client')");
             $this->query("INSERT INTO users (email, password, first_name, last_name, phone, role) 
                 VALUES ('maria@example.com', '$password', 'Мария', 'Иванова', '+7(905)123-4567', 'client')");
 

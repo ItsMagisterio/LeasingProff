@@ -79,7 +79,7 @@ outputHeader($pageTitle);
                                 <div>
                                     <h5 class="h6 mb-1">Email</h5>
                                     <p class="mb-0">
-                                        <a href="mailto:info@2leasing.ru" class="text-decoration-none">info@2leasing.ru</a>
+                                        <a href="mailto:webmaster@лизинг.орг" class="text-decoration-none">webmaster@лизинг.орг</a>
                                     </p>
                                 </div>
                             </div>

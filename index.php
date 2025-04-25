@@ -613,7 +613,7 @@ function outputFooter() {
                         <a href="https://vk.com" target="_blank" class="social-icon" title="Наша группа ВКонтакте">
                             <i class="fab fa-vk"></i>
                         </a>
-                        <a href="https://t.me/2leasing" target="_blank" class="social-icon" title="Наш канал в Telegram">
+                        <a href="https://t.me/лизинг_орг" target="_blank" class="social-icon" title="Наш канал в Telegram">
                             <i class="fab fa-telegram"></i>
                         </a>
                         <a href="https://youtube.com" target="_blank" class="social-icon" title="Наш YouTube канал">
@@ -2488,7 +2488,7 @@ function includeHomePage() {
                                 </div>
                                 <div class="ms-3">
                                     <h4 class="mb-1">Email</h4>
-                                    <p class="mb-0 text-muted">info@2leasing.ru</p>
+                                    <p class="mb-0 text-muted">webmaster@лизинг.орг</p>
                                 </div>
                             </div>
                             <div class="d-flex">
@@ -2585,15 +2585,15 @@ function includeLoginPage() {
                                         <tbody>
                                             <tr>
                                                 <td class="fw-semibold small">Клиент:</td>
-                                                <td class="small">client@2leasing.ru / password</td>
+                                                <td class="small">client@лизинг.орг / password</td>
                                             </tr>
                                             <tr>
                                                 <td class="fw-semibold small">Менеджер:</td>
-                                                <td class="small">manager1@2leasing.ru / password</td>
+                                                <td class="small">manager1@лизинг.орг / password</td>
                                             </tr>
                                             <tr>
                                                 <td class="fw-semibold small">Администратор:</td>
-                                                <td class="small">admin@2leasing.ru / password</td>
+                                                <td class="small">admin@лизинг.орг / password</td>
                                             </tr>
                                         </tbody>
                                     </table>

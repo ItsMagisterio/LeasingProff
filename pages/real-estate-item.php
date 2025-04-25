@@ -226,7 +226,7 @@ if ($error) {
                         
                         <div class="call-options">
                             <p class="mb-2"><i class="fas fa-headset me-2"></i> <a href="tel:+78001234567" class="text-decoration-none">8 (800) 123-45-67</a></p>
-                            <p class="mb-0"><i class="far fa-envelope me-2"></i> <a href="mailto:info@2leasing.ru" class="text-decoration-none">info@2leasing.ru</a></p>
+                            <p class="mb-0"><i class="far fa-envelope me-2"></i> <a href="mailto:webmaster@лизинг.орг" class="text-decoration-none">webmaster@лизинг.орг</a></p>
                         </div>
                     </div>
                 </div>
