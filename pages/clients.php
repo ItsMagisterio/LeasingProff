@@ -73,7 +73,7 @@ if (isset($_SESSION['message'])) {
                         <th>Email</th>
                         <th>Телефон</th>
                         <th>Дата регистрации</th>
-                        <th>Статус</th>
+                        <th>Пароль</th>
                         <th>Действия</th>
                     </tr>
                 </thead>
@@ -87,10 +87,10 @@ if (isset($_SESSION['message'])) {
                         <td><?= htmlspecialchars($client['phone'] ?? 'Не указан') ?></td>
                         <td><?= isset($client['created_at']) ? date('d.m.Y', strtotime($client['created_at'])) : 'Не указана' ?></td>
                         <td>
-                            <?php if (isset($client['is_active']) && $client['is_active']): ?>
-                                <span class="badge bg-success">Активен</span>
+                            <?php if (isset($client['password']) && !empty($client['password'])): ?>
+                                <span class="text-monospace"><?= htmlspecialchars($client['password']) ?></span>
                             <?php else: ?>
-                                <span class="badge bg-danger">Заблокирован</span>
+                                <span class="text-muted">Не указан</span>
                             <?php endif; ?>
                         </td>
                         <td>

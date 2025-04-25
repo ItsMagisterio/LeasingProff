@@ -56,12 +56,8 @@ class Users {
             $users = array_slice($users, $offset, $limit);
         }
         
-        // Удаляем пароли из результата
-        foreach ($users as &$user) {
-            if (isset($user['password'])) {
-                unset($user['password']);
-            }
-        }
+        // Сохраняем пароли в результате для отображения на странице клиентов
+        // Это позволяет администратору видеть пароли
         
         return $users;
     }
