@@ -501,7 +501,12 @@ $unassignedApplications = $applications->getUnassignedApplications();
                     
                     <div class="mb-3">
                         <label for="manager_password" class="form-label">Пароль</label>
-                        <input type="password" class="form-control" id="manager_password" name="password" required>
+                        <div class="position-relative">
+                            <input type="password" class="form-control" id="manager_password" name="password" required>
+                            <button type="button" class="password-toggle btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3 text-muted" data-target="manager_password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     
                     <div class="d-flex justify-content-between">
