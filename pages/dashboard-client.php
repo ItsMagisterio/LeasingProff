@@ -150,7 +150,7 @@ $USER_ROLES = [
                                     </td>
                                     <td><?= date('d.m.Y', strtotime($application['created_at'])) ?></td>
                                     <td><span class="badge <?= $statusClass ?>"><?= htmlspecialchars($statusText) ?></span></td>
-                                    <td><a href="#" class="btn btn-sm btn-primary">Подробнее</a></td>
+                                    <td><a href="index.php?page=application-details&id=<?= $application['id'] ?>" class="btn btn-sm btn-primary">Подробнее</a></td>
                                 </tr>
                                 <?php endforeach; ?>
                             </tbody>
