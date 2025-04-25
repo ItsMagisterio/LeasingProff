@@ -210,7 +210,7 @@ if (!$selectedOption && !empty($paymentOptions)) {
                     <h5 class="card-title">Остались вопросы?</h5>
                     <p class="card-text">Свяжитесь с нами, и мы поможем с выбором автомобиля и условий лизинга.</p>
                     <div class="d-grid">
-                        <a href="#" class="btn btn-outline-primary">Связаться с нами</a>
+                        <a href="index.php?page=contact" class="btn btn-outline-primary">Связаться с нами</a>
                     </div>
                 </div>
             </div>
