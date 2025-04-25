@@ -1876,7 +1876,7 @@ function includeHomePage() {
                                                 <label for="vehiclePrice" class="form-label">Стоимость транспорта (₽)</label>
                                                 <input type="range" class="form-range" id="vehiclePriceRange" min="500000" max="10000000" step="100000" value="3000000" oninput="updateVehiclePrice()">
                                                 <div class="input-group">
-                                                    <input type="number" class="form-control" id="vehiclePrice" value="3000000" min="500000" max="10000000" oninput="updateVehiclePriceRange()">
+                                                    <input type="text" class="form-control" id="vehiclePrice" value="3 000 000" min="500000" max="10000000" oninput="updateVehiclePriceRange()">
                                                     <span class="input-group-text">₽</span>
                                                 </div>
                                             </div>

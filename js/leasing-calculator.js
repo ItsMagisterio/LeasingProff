@@ -125,8 +125,8 @@ function updateVehiclePrice() {
     const vehiclePrice = document.getElementById('vehiclePrice');
     
     if (vehiclePriceRange && vehiclePrice) {
-        // Для полей input type="number" нельзя использовать пробелы в value
-        vehiclePrice.value = vehiclePriceRange.value;
+        // Для полей input type="text" можно использовать пробелы в value
+        vehiclePrice.value = formatNumberWithSpaces(vehiclePriceRange.value);
     }
 }
 
@@ -135,7 +135,7 @@ function updateVehiclePriceRange() {
     const vehiclePrice = document.getElementById('vehiclePrice');
     
     if (vehiclePriceRange && vehiclePrice) {
-        vehiclePriceRange.value = vehiclePrice.value;
+        vehiclePriceRange.value = removeSpacesFromNumber(vehiclePrice.value);
     }
 }
 
