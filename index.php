@@ -255,7 +255,7 @@ function outputHeader($title = 'Лизинг недвижимости и тра�
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>' . htmlspecialchars($title) . ' | 2Leasing</title>
+        <title>' . htmlspecialchars($title) . ' | лизинг.орг</title>
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Font Awesome -->
@@ -465,7 +465,7 @@ function outputNavigation() {
         <div class="container">
             <!-- Логотип - переход на главную страницу -->
             <a class="navbar-brand" href="index.php" title="Вернуться на главную страницу">
-                <span class="text-primary">2</span>Leasing
+                лизинг.орг
             </a>
             <!-- Кнопка мобильного меню -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Переключить навигацию">
