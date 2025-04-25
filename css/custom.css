@@ -764,6 +764,7 @@ body {
   margin-right: 0.75rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   transform: translateY(0);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .social-icon:hover {
@@ -771,6 +772,20 @@ body {
   color: white;
   box-shadow: 0 6px 15px rgba(0, 82, 204, 0.25);
   transform: translateY(-3px);
+  border-color: var(--primary-color);
+}
+
+.social-icon.rounded-circle {
+  width: 45px;
+  height: 45px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin-right: 1rem;
+  background-color: transparent;
+}
+
+.social-icon.rounded-circle:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 .footer hr {
