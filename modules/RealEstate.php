@@ -14,34 +14,63 @@ class RealEstate {
      */
     public function getAllRealEstate($limit = 0, $offset = 0, $filters = []) {
         $jsonFile = __DIR__ . '/../data/real_estate.json';
+        
+        // Логирование для отладки
+        file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Запрос на getAllRealEstate с фильтрами: " . print_r($filters, true) . "\n", FILE_APPEND);
+        
+        // Проверяем существование файла
+        if (!file_exists($jsonFile)) {
+            file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Файл real_estate.json не найден\n", FILE_APPEND);
+            return [];
+        }
+        
         $jsonData = file_get_contents($jsonFile);
         $data = json_decode($jsonData, true);
         
+        // Проверяем корректность данных
+        if (!isset($data['records']) || !is_array($data['records'])) {
+            file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Некорректная структура данных в real_estate.json\n", FILE_APPEND);
+            return [];
+        }
+        
         $properties = $data['records'];
+        file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Найдено записей: " . count($properties) . "\n", FILE_APPEND);
         
         // Apply filters
         if (!empty($filters)) {
             $properties = array_filter($properties, function($property) use ($filters) {
-                if (isset($filters['type']) && $filters['type'] && $property['type'] !== $filters['type']) {
+                // Логируем свойство для отладки (только первое)
+                static $logged = false;
+                if (!$logged) {
+                    file_put_contents(__DIR__ . '/../debug.log', date('Y-m-d H:i:s') . " - Проверяем свойство: " . print_r($property, true) . "\n", FILE_APPEND);
+                    $logged = true;
+                }
+                
+                if (isset($filters['type']) && $filters['type'] && (!isset($property['type']) || $property['type'] !== $filters['type'])) {
                     return false;
                 }
-                if (isset($filters['min_price']) && $filters['min_price'] && $property['price'] < $filters['min_price']) {
+                if (isset($filters['min_price']) && $filters['min_price'] && (!isset($property['price']) || $property['price'] < $filters['min_price'])) {
                     return false;
                 }
-                if (isset($filters['max_price']) && $filters['max_price'] && $property['price'] > $filters['max_price']) {
+                if (isset($filters['max_price']) && $filters['max_price'] && (!isset($property['price']) || $property['price'] > $filters['max_price'])) {
                     return false;
                 }
-                if (isset($filters['min_area']) && $filters['min_area'] && $property['area'] < $filters['min_area']) {
+                if (isset($filters['min_area']) && $filters['min_area'] && (!isset($property['area']) || $property['area'] < $filters['min_area'])) {
                     return false;
                 }
-                if (isset($filters['max_area']) && $filters['max_area'] && $property['area'] > $filters['max_area']) {
+                if (isset($filters['max_area']) && $filters['max_area'] && (!isset($property['area']) || $property['area'] > $filters['max_area'])) {
                     return false;
                 }
-                if (isset($filters['rooms']) && $filters['rooms'] && $property['rooms'] != $filters['rooms']) {
+                if (isset($filters['rooms']) && $filters['rooms'] && (!isset($property['rooms']) || $property['rooms'] != $filters['rooms'])) {
                     return false;
                 }
-                if (isset($filters['status']) && $filters['status'] && $property['status'] !== $filters['status']) {
-                    return false;
+                if (isset($filters['status']) && $filters['status']) {
+                    // Если статус не указан в объекте, считаем его доступным по умолчанию
+                    if (!isset($property['status'])) {
+                        return $filters['status'] === 'available';
+                    } else if ($property['status'] !== $filters['status']) {
+                        return false;
+                    }
                 }
                 return true;
             });
