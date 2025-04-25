@@ -1,29 +1,11 @@
 <?php
-// Отобразим текущую сессию для отладки
-echo '<div style="background-color: #f8f9fa; padding: 10px; margin-bottom: 15px; border-radius: 5px;">';
-echo '<h5>Отладочная информация (будет удалена в prod):</h5>';
-echo '<pre>';
-echo 'SESSION: ';
-print_r($_SESSION);
-echo '</pre>';
-echo '</div>';
-
-// Принудительно задаем роль администратора для отладки
-$_SESSION['role'] = 'admin';
-if (!isset($_SESSION['user_id'])) {
-    $_SESSION['user_id'] = 1; // Временно для отладки
-}
-
-// Комментируем проверку доступа для отладки
-/*
 // Проверка авторизации и уровня доступа
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     // Если пользователь не админ - используем JavaScript для редиректа
     echo '<script>window.location.href = "index.php";</script>';
     echo '<div class="alert alert-danger">У вас нет доступа к этой странице. Перенаправление...</div>';
     exit;
 }
-*/
 
 // Получаем список всех клиентов
 require_once 'modules/Users.php';
