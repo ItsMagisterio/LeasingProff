@@ -329,8 +329,9 @@
             "monthly_payment": 78006,
             "comments": "",
             "created_at": "2025-04-25 15:49:00",
-            "updated_at": "2025-04-25 15:49:00",
-            "vehicle_id": 0
+            "updated_at": "2025-04-25 16:33:23",
+            "vehicle_id": 0,
+            "manager_id": 3
         }
     ],
     "next_id": 18
