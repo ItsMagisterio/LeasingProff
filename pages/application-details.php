@@ -48,6 +48,10 @@ switch ($application['status']) {
         $statusClass = 'bg-danger';
         $statusText = 'Отклонена';
         break;
+    case 'cancelled':
+        $statusClass = 'bg-danger';
+        $statusText = 'Отменена';
+        break;
     case 'signed':
         $statusClass = 'bg-info';
         $statusText = 'Подписана';
@@ -237,7 +241,11 @@ $isRealEstate = $application['type'] === 'real_estate';
                             <a href="index.php?page=applications" class="btn btn-outline-primary rounded-pill me-2">Назад к списку заявок</a>
                             
                             <?php if ($application['status'] === 'new' || $application['status'] === 'in_progress'): ?>
-                            <button type="button" class="btn btn-outline-danger rounded-pill me-2">Отменить заявку</button>
+                            <form action="index.php" method="post" style="display: inline-block;">
+                                <input type="hidden" name="action" value="cancel_application">
+                                <input type="hidden" name="application_id" value="<?= $applicationId ?>">
+                                <button type="submit" class="btn btn-outline-danger rounded-pill me-2">Отменить заявку</button>
+                            </form>
                             <?php endif; ?>
                             
                             <?php if ($application['status'] === 'rejected'): ?>

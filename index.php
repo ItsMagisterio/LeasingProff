@@ -172,6 +172,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $page = 'dashboard-manager';
         }
         
+        // Отмена заявки пользователем
+        elseif ($action === 'cancel_application' && $auth->isLoggedIn()) {
+            $applicationId = (int) $_POST['application_id'];
+            
+            // Проверяем, что заявка принадлежит текущему пользователю
+            $application = $applications->getApplicationById($applicationId);
+            
+            if ($application && $application['user_id'] == $auth->getUserId()) {
+                // Обновляем статус заявки на 'cancelled'
+                $result = $applications->updateApplicationStatus($applicationId, 'cancelled', 'Отменено пользователем');
+                
+                if ($result['success']) {
+                    $success = 'Заявка успешно отменена';
+                } else {
+                    $error = $result['message'];
+                }
+            } else {
+                $error = 'Заявка не найдена или у вас нет прав для ее отмены';
+            }
+            
+            $page = 'dashboard-client';
+        }
+        
         // Добавление нового автомобиля (для менеджера и админа)
         elseif ($action === 'add_vehicle' && $auth->isManager()) {
             $vehicleData = [
