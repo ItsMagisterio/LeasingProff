@@ -712,9 +712,7 @@ function outputNavigation() {
     if ($auth->isLoggedIn()) {
         // Дополнительные пункты меню для авторизованных пользователей
         if ($auth->isAdmin()) {
-            echo '<li class="nav-item">
-                <a class="nav-link" href="index.php?page=dashboard-admin">Админ-панель</a>
-            </li>';
+            // Убрали дублирующий пункт меню, так как он уже добавлен выше
         } elseif ($auth->isManager()) {
             echo '<li class="nav-item">
                 <a class="nav-link" href="index.php?page=dashboard-manager">Панель менеджера</a>

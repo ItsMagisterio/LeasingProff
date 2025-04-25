@@ -358,8 +358,9 @@
             "monthly_payment": 444889,
             "comments": "",
             "created_at": "2025-04-25 17:36:20",
-            "updated_at": "2025-04-25 17:36:20",
-            "real_estate_id": 1
+            "updated_at": "2025-04-25 17:45:34",
+            "real_estate_id": 1,
+            "manager_id": 2
         }
     ],
     "next_id": 18
