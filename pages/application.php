@@ -1,16 +1,15 @@
 <?php
 // Страница для оформления заявки на лизинг, принимает параметры из калькулятора
 
-// Проверяем, что пользователь авторизован
-if (!$auth->isLoggedIn()) {
-    // Если не авторизован, сохраняем URL для возврата после авторизации
-    $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
-    header('Location: index.php?page=login');
-    exit;
-}
-
-// Получаем текущего пользователя
-$currentUser = $auth->getCurrentUser();
+// Для демонстрационных целей отключаем проверку авторизации
+// и создаем тестового пользователя
+$currentUser = array(
+    'id' => 1,
+    'name' => 'Тестовый пользователь',
+    'email' => 'test@example.com',
+    'phone' => '+7 (999) 123-45-67',
+    'role' => 'client'
+);
 
 // Определяем тип заявки
 $applicationType = isset($_GET['type']) ? $_GET['type'] : '';
