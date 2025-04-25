@@ -346,6 +346,9 @@ function showMatchingVehicleCompanies(price, downPaymentPercent, term, vehicleTy
         const loanAmount = price * (1 - downPaymentPercent / 100);
         const companyMonthlyPayment = loanAmount * (companyMonthlyRate * Math.pow(1 + companyMonthlyRate, term)) / (Math.pow(1 + companyMonthlyRate, term) - 1);
         
+        // Форматированный платеж для отображения
+        const formattedPayment = formatCurrency(companyMonthlyPayment);
+        
         // Создаем карточку компании
         const companyCard = document.createElement('div');
         companyCard.className = 'col';
@@ -361,11 +364,11 @@ function showMatchingVehicleCompanies(price, downPaymentPercent, term, vehicleTy
                             ${getStarRating(company.rating)}
                         </div>
                     </div>
-                    <h5 class="text-center mb-3">${formatCurrency(companyMonthlyPayment)}</h5>
+                    <h5 class="text-center mb-3">${formattedPayment}</h5>
                     <p class="text-center text-muted mb-0">в месяц</p>
                 </div>
                 <div class="card-footer bg-white border-0 text-center py-3">
-                    <a href="#" class="btn btn-outline-primary rounded-pill px-4">Оформить</a>
+                    <a href="index.php?page=application&type=vehicle&company=${encodeURIComponent(company.name)}&monthly=${encodeURIComponent(formattedPayment)}" class="btn btn-outline-primary rounded-pill px-4">Оформить</a>
                 </div>
             </div>
         `;
@@ -415,6 +418,9 @@ function showMatchingRealEstateCompanies(price, downPaymentPercent, term, realEs
         const loanAmount = price * (1 - downPaymentPercent / 100);
         const companyMonthlyPayment = loanAmount * (companyMonthlyRate * Math.pow(1 + companyMonthlyRate, term)) / (Math.pow(1 + companyMonthlyRate, term) - 1);
         
+        // Форматированный платеж для отображения
+        const formattedPayment = formatCurrency(companyMonthlyPayment);
+        
         // Создаем карточку компании
         const companyCard = document.createElement('div');
         companyCard.className = 'col';
@@ -430,11 +436,11 @@ function showMatchingRealEstateCompanies(price, downPaymentPercent, term, realEs
                             ${getStarRating(company.rating)}
                         </div>
                     </div>
-                    <h5 class="text-center mb-3">${formatCurrency(companyMonthlyPayment)}</h5>
+                    <h5 class="text-center mb-3">${formattedPayment}</h5>
                     <p class="text-center text-muted mb-0">в месяц</p>
                 </div>
                 <div class="card-footer bg-white border-0 text-center py-3">
-                    <a href="#" class="btn btn-outline-primary rounded-pill px-4">Оформить</a>
+                    <a href="index.php?page=application&type=real_estate&company=${encodeURIComponent(company.name)}&monthly=${encodeURIComponent(formattedPayment)}" class="btn btn-outline-primary rounded-pill px-4">Оформить</a>
                 </div>
             </div>
         `;
