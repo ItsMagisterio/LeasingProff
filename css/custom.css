@@ -682,6 +682,15 @@ body {
   margin-top: -10px; /* Корректировка для плавающих меток */
 }
 
+/* Стили для автоматически растягивающихся текстовых полей */
+textarea {
+  min-height: 100px;
+  overflow-y: hidden; /* Скрываем вертикальную полосу прокрутки */
+  resize: none; /* Запрещаем ручное изменение размера */
+  box-sizing: border-box;
+  transition: height 0.2s ease; /* Плавное изменение высоты */
+}
+
 /* Футер */
 .footer {
   background-color: var(--dark-color);
