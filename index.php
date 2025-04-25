@@ -2703,10 +2703,6 @@ function includeRegisterPage() {
     </section>';
 }
 
-// Маршрутизация
-outputHeader();
-outputNavigation();
-
 // Проверка авторизации для защищенных страниц
 $protectedClientPages = ['dashboard-client'];
 $protectedManagerPages = ['dashboard-manager', 'application-details', 'vehicles-admin', 'add-vehicle'];
@@ -2729,6 +2725,10 @@ if (in_array($page, $protectedAdminPages) && !$auth->isAdmin()) {
     header('Location: index.php?page=login');
     exit;
 }
+
+// Маршрутизация - вывод шапки и навигации после проверок авторизации
+outputHeader();
+outputNavigation();
 
 // Отображение страницы
 switch ($page) {
