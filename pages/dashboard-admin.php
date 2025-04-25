@@ -410,22 +410,36 @@ $unassignedApplications = $applications->getUnassignedApplications();
             <div class="dashboard-card mt-4">
                 <h5>Быстрые действия</h5>
                 <div class="d-grid gap-2">
-                    <button class="btn btn-primary modal-open-btn" data-target="addManagerModal">
+                    <button type="button" class="btn btn-primary" onclick="showModal('addManagerModal')">
                         <i class="fas fa-user-plus me-2"></i> Добавить менеджера
                     </button>
-                    <button class="btn btn-success modal-open-btn" data-target="addVehicleModal">
+                    <button type="button" class="btn btn-success" onclick="showModal('addVehicleModal')">
                         <i class="fas fa-car me-2"></i> Добавить автомобиль
                     </button>
-                    <button class="btn btn-info text-white modal-open-btn" data-target="addRealEstateModal">
+                    <button type="button" class="btn btn-info text-white" onclick="showModal('addRealEstateModal')">
                         <i class="fas fa-building me-2"></i> Добавить недвижимость
                     </button>
-                    <button class="btn btn-secondary modal-open-btn" data-target="exportReportModal">
+                    <button type="button" class="btn btn-secondary" onclick="showModal('exportReportModal')">
                         <i class="fas fa-file-export me-2"></i> Экспорт отчета
                     </button>
-                    <button class="btn btn-warning text-dark modal-open-btn" data-target="systemSettingsModal">
+                    <button type="button" class="btn btn-warning text-dark" onclick="showModal('systemSettingsModal')">
                         <i class="fas fa-cog me-2"></i> Настройки системы
                     </button>
                 </div>
+                
+                <script>
+                function showModal(modalId) {
+                    // Используем нативный JavaScript для прямого управления модальными окнами
+                    const modal = document.getElementById(modalId);
+                    if (modal) {
+                        // Используем Bootstrap 5 API для создания и показа модального окна
+                        const bsModal = new bootstrap.Modal(modal);
+                        bsModal.show();
+                    } else {
+                        console.error('Модальное окно с ID ' + modalId + ' не найдено');
+                    }
+                }
+                </script>
             </div>
         </div>
     </div>
@@ -745,8 +759,49 @@ $unassignedApplications = $applications->getUnassignedApplications();
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post" action="index.php?page=dashboard-admin">
+                <form method="post" action="index.php?page=dashboard-admin" id="settingsForm" onsubmit="return submitSettingsForm(this);">
                     <input type="hidden" name="action" value="update_settings">
+                    
+                    <script>
+                    function submitSettingsForm(form) {
+                        // Отправляем форму асинхронно через fetch API
+                        let formData = new FormData(form);
+                        
+                        // Выводим для отладки данные формы
+                        console.log("Отправка формы настроек...");
+                        for (let entry of formData.entries()) {
+                            console.log(entry[0] + ": " + entry[1]);
+                        }
+                        
+                        fetch(form.action, {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                // Закрываем модальное окно
+                                let modal = document.getElementById('systemSettingsModal');
+                                let bsModal = bootstrap.Modal.getInstance(modal);
+                                bsModal.hide();
+                                
+                                // Показываем сообщение об успехе
+                                alert('Настройки системы успешно обновлены!');
+                                
+                                // Перезагружаем страницу
+                                window.location.reload();
+                            } else {
+                                alert('Ошибка при сохранении настроек!');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Ошибка:', error);
+                            alert('Произошла ошибка при сохранении настроек. Пожалуйста, попробуйте еще раз.');
+                        });
+                        
+                        // Предотвращаем стандартную отправку формы
+                        return false;
+                    }
+                    </script>
                     
                     <div class="mb-3">
                         <label for="site_name" class="form-label">Название сайта</label>
