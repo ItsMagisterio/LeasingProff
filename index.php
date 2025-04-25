@@ -1050,7 +1050,7 @@ function includeBlogPage() {
                             </div>
                             <h3 class="mb-3">Изменения в законодательстве о лизинге в 2025 году</h3>
                             <p class="text-muted">В 2025 году вступили в силу новые изменения в законодательстве о лизинге, которые значительно упрощают процедуру оформления сделок и снижают налоговую нагрузку на лизингополучателей...</p>
-                            <a href="#" class="btn btn-outline-primary rounded-pill">Читать далее</a>
+                            <a href="index.php?page=blog&article_id=1" class="btn btn-outline-primary rounded-pill">Читать далее</a>
                         </div>
                     </div>
                     
@@ -1062,7 +1062,7 @@ function includeBlogPage() {
                             </div>
                             <h3 class="mb-3">Как выбрать оптимальный срок лизинга для автомобиля</h3>
                             <p class="text-muted">Срок лизинга является одним из ключевых параметров, влияющих на стоимость сделки. В этой статье мы рассмотрим, как определить оптимальный срок лизинга для автомобиля в зависимости от его класса и ваших потребностей...</p>
-                            <a href="#" class="btn btn-outline-primary rounded-pill">Читать далее</a>
+                            <a href="index.php?page=blog&article_id=2" class="btn btn-outline-primary rounded-pill">Читать далее</a>
                         </div>
                     </div>
                     
@@ -1074,17 +1074,17 @@ function includeBlogPage() {
                             </div>
                             <h3 class="mb-3">Тренды рынка лизинга недвижимости в 2025 году</h3>
                             <p class="text-muted">Рынок лизинга недвижимости стремительно развивается. В 2025 году мы наблюдаем ряд интересных тенденций, которые могут повлиять на решения инвесторов и предпринимателей...</p>
-                            <a href="#" class="btn btn-outline-primary rounded-pill">Читать далее</a>
+                            <a href="index.php?page=blog&article_id=3" class="btn btn-outline-primary rounded-pill">Читать далее</a>
                         </div>
                     </div>
                     
                     <nav class="mt-4">
                         <ul class="pagination justify-content-center">
                             <li class="page-item disabled"><a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a></li>
+                            <li class="page-item active"><a class="page-link" href="index.php?page=blog">1</a></li>
+                            <li class="page-item"><a class="page-link" href="index.php?page=blog">2</a></li>
+                            <li class="page-item"><a class="page-link" href="index.php?page=blog">3</a></li>
+                            <li class="page-item"><a class="page-link" href="index.php?page=blog"><i class="fas fa-chevron-right"></i></a></li>
                         </ul>
                     </nav>
                 </div>
@@ -1094,21 +1094,21 @@ function includeBlogPage() {
                         <div class="card-body p-4">
                             <h4 class="mb-3">Категории</h4>
                             <div class="list-group list-group-flush">
-                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <a href="index.php?page=blog&category=news" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                     Новости
                                     <span class="badge bg-primary rounded-pill">12</span>
                                 </a>
-                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <a href="index.php?page=blog&category=advice" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                     Советы
                                     <span class="badge bg-primary rounded-pill">8</span>
                                 </a>
-                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <a href="index.php?page=blog&category=analytics" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                     Аналитика
                                     <span class="badge bg-primary rounded-pill">5</span>
                                 </a>
-                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                    Интервью
-                                    <span class="badge bg-primary rounded-pill">3</span>
+                                <a href="index.php?page=blog" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    Все статьи
+                                    <span class="badge bg-primary rounded-pill">28</span>
                                 </a>
                             </div>
                         </div>
