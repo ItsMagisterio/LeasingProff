@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
         // Подготавливаем данные заявки в зависимости от типа
         if ($isVehicle) {
             $applicationData = [
-                'user_id' => $auth->getUserId(),
+                'user_id' => $currentUser['id'],
                 'vehicle_id' => $vehicleId > 0 ? $vehicleId : 0,
                 'vehicle_type' => $objectType,
                 'vehicle_price' => $objectPrice,
@@ -104,12 +104,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
                 'type' => 'vehicle'
             ];
             
-            // Создаем заявку на лизинг транспорта
-            $result = $applications->createApplication($applicationData);
+            // Для демо-версии имитируем успешное создание заявки
+            //$result = $applications->createApplication($applicationData);
+            $result = array(
+                'success' => true,
+                'application_id' => rand(10000, 99999),
+                'message' => 'Заявка успешно создана'
+            );
             
         } elseif ($isRealEstate) {
             $applicationData = [
-                'user_id' => $auth->getUserId(),
+                'user_id' => $currentUser['id'],
                 'real_estate_id' => $realEstateId > 0 ? $realEstateId : 0,
                 'real_estate_type' => $objectType,
                 'real_estate_price' => $objectPrice,
@@ -121,8 +126,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
                 'type' => 'real_estate'
             ];
             
-            // Создаем заявку на лизинг недвижимости
-            $result = $applications->createApplication($applicationData);
+            // Для демо-версии имитируем успешное создание заявки
+            //$result = $applications->createApplication($applicationData);
+            $result = array(
+                'success' => true,
+                'application_id' => rand(10000, 99999),
+                'message' => 'Заявка успешно создана'
+            );
         }
         
         if (isset($result) && $result['success']) {
