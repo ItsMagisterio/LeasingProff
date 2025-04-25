@@ -2708,6 +2708,10 @@ switch ($page) {
     case 'profile':
         includeProfilePage();
         break;
+    // Обработка страницы оформления заявки на лизинг
+    case 'application':
+        include 'pages/application.php';
+        break;
     // Удалили обработку документов по запросу пользователя
     // case 'documents':
     //     include 'pages/documents.php';
