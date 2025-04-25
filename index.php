@@ -275,23 +275,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents($debugFile, date('Y-m-d H:i:s') . " - isAdmin check: " . ($auth->isAdmin() ? 'true' : 'false') . "\n", FILE_APPEND);
             
             if ($auth->isAdmin()) {
-            $userData = [
-                'email' => $_POST['email'],
-                'password' => $_POST['password'],
-                'first_name' => $_POST['first_name'],
-                'last_name' => $_POST['last_name'],
-                'phone' => $_POST['phone']
-            ];
-            
-            $result = $users->createManager($userData);
-            
-            if ($result['success']) {
-                $success = 'Менеджер успешно добавлен';
-                $page = 'managers';
-            } else {
-                $error = $result['message'];
-                $page = 'add-manager';
-            }
+                $userData = [
+                    'email' => $_POST['email'],
+                    'password' => $_POST['password'],
+                    'first_name' => $_POST['first_name'],
+                    'last_name' => $_POST['last_name'],
+                    'phone' => $_POST['phone']
+                ];
+                
+                // Добавляем отладку
+                file_put_contents($debugFile, date('Y-m-d H:i:s') . " - Создание менеджера с данными: " . print_r($userData, true) . "\n", FILE_APPEND);
+                
+                $result = $users->createManager($userData);
+                
+                // Запись результата в лог
+                file_put_contents($debugFile, date('Y-m-d H:i:s') . " - Результат создания менеджера: " . print_r($result, true) . "\n", FILE_APPEND);
+                
+                if ($result['success']) {
+                    $success = 'Менеджер успешно добавлен';
+                } else {
+                    $error = $result['message'];
+                }
+                
+                // Важно: оставаемся на той же странице
+                $page = 'dashboard-admin';
             } else {
                 // Если нет прав - записываем это в отладочный файл
                 file_put_contents($debugFile, date('Y-m-d H:i:s') . " - ERROR: No permission to add manager\n", FILE_APPEND);
