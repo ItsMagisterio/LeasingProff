@@ -2538,9 +2538,12 @@ function includeLoginPage() {
                                     <input type="email" class="form-control" id="login-email" name="email" placeholder="name@example.com" required>
                                     <label for="login-email"><i class="fas fa-envelope me-2 text-muted"></i>Email</label>
                                 </div>
-                                <div class="form-floating mb-3">
+                                <div class="form-floating mb-3 position-relative">
                                     <input type="password" class="form-control" id="login-password" name="password" placeholder="Password" required>
                                     <label for="login-password"><i class="fas fa-lock me-2 text-muted"></i>Пароль</label>
+                                    <button type="button" class="password-toggle btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3 text-muted" data-target="login-password">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <div class="form-check">
