@@ -19,7 +19,7 @@
         "updated_at": "datetime"
     },
     "indices": [],
-    "auto_increment": 13,
+    "auto_increment": 14,
     "records": [
         {
             "make": "Mercedes-Benz",
@@ -248,6 +248,25 @@
             "id": 12,
             "created_at": "2025-04-25 16:39:04",
             "updated_at": "2025-04-25 16:39:04"
+        },
+        {
+            "make": "test",
+            "model": "tester",
+            "year": 2015,
+            "engine": "test",
+            "power": 200,
+            "drive_type": "all",
+            "transmission": "automatic",
+            "color": "test",
+            "interior": "test",
+            "features": "\u0435\u0443\u044b\u0435",
+            "image_url": "data:image\/jpeg;base64,\/9j\/4AAQSkZJRgABAQAAAQABAAD\/2wCEAAkGBxITEhUSExMWFhUVFRUVFxcYFxgYFxUVFRUWFhUVFRUaHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OFxAQGi0dHR0tLS0tLS0tLS0tLS0tLSstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSs1LS0tKy0rLS03Lf\/AABEIAMIBAwMBIgACEQEDEQH\/xAAcAAABBQEBAQAAAAAAAAAAAAAEAAIDBQYBBwj\/xABDEAABAwICBwUFBgQEBwEBAAABAAIDBBESIQUxQVFhcZEGE4GhsSIyQsHRFDNSkuHwYnKCohUjQ8IHJERTY7LxVBb\/xAAXAQEBAQEAAAAAAAAAAAAAAAAAAQID\/8QAIREBAQEAAwADAAIDAAAAAAAAAAERAhIhAzFBE2EUUXH\/2gAMAwEAAhEDEQA\/AMf379x8V3vnbiiqiRQxi632ZxA+d3Hp+igdV21+qvho+4uCgqmkLdoPBTaYBiq+Km7wnZfkh3XB2fvwRMLX\/hPhl8lGjI2i+qytaeBoH6lDMY\/8XWylEJ1+lvkmpiaWRjdZsuOkY8e+EO6lxHVdDv0cAbkJashVFG69xnyKfBTuJt6qSmLDliIKs4YwNt1nVsw2HR51HUuy0Nsx0RrJrZBSsladdlfBUCjByOJvEEW6FTN0fLbJ4cNxaL9QUXO5o1HwUf2ltssipsAZ0cWm5BHI5dFPFTX2D0Kra7SRB95MptJXOtNGijpBv+ad3Vv3dB0Je7U8joR9VdspX21tPgtT1KAdGDu8wlFEW8PFEPxNNnYTyugNKmTD7DHeAJUsInOksJsXeiIjmdIPZOLoCsLLDMTdwI5hXfZwEO1rn63MW8j3sPtF2HcSmHRULziD3sPK4Wi7vG2xAKqe6MbrWyU5SxZZTY9FFguCHjxB6G6MgdlqIsiKV+4jkUZHTh2YGEpn+ltVscsbzhOvoUUIbLlVo3PE2",
+            "price": 300000,
+            "monthly_payment": 5000,
+            "status": "available",
+            "id": 13,
+            "created_at": "2025-04-25 16:44:49",
+            "updated_at": "2025-04-25 16:44:49"
         }
     ]
 }

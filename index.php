@@ -743,17 +743,27 @@ function outputFooter() {
     <script>
         // Инициализация всех модальных окон Bootstrap
         document.addEventListener("DOMContentLoaded", function() {
-            // Инициализируем модальные окна
-            var modalElements = document.querySelectorAll(".modal");
-            modalElements.forEach(function(modalElement) {
-                var modal = new bootstrap.Modal(modalElement);
+            console.log("DOM fully loaded - initializing modals");
+            
+            // Прямая привязка кнопок к модальным окнам
+            document.querySelectorAll(\'[data-bs-toggle="modal"]\').forEach(function(button) {
+                console.log("Found modal trigger button:", button.textContent.trim());
                 
-                // Добавляем обработчики для кнопок, которые открывают модальные окна
-                var modalTriggers = document.querySelectorAll(\'[data-bs-target="#\' + modalElement.id + \'"]\');
-                modalTriggers.forEach(function(trigger) {
-                    trigger.addEventListener("click", function() {
+                button.addEventListener(\'click\', function(event) {
+                    event.preventDefault();
+                    console.log("Button clicked");
+                    
+                    var targetModalId = this.getAttribute(\'data-bs-target\');
+                    console.log("Target modal:", targetModalId);
+                    
+                    var modalElement = document.querySelector(targetModalId);
+                    if (modalElement) {
+                        console.log("Modal element found:", targetModalId);
+                        var modal = new bootstrap.Modal(modalElement);
                         modal.show();
-                    });
+                    } else {
+                        console.error("Modal element not found:", targetModalId);
+                    }
                 });
             });
         });
