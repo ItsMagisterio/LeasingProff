@@ -65,8 +65,7 @@ switch ($application['status']) {
 $isVehicle = $application['type'] === 'vehicle';
 $isRealEstate = $application['type'] === 'real_estate';
 
-// Устанавливаем заголовок страницы
-outputHeader('Заявка №' . $applicationId);
+// Заголовок страницы уже выводится в index.php
 ?>
 
 <div class="container py-5">

@@ -2704,8 +2704,8 @@ function includeRegisterPage() {
 }
 
 // Проверка авторизации для защищенных страниц
-$protectedClientPages = ['dashboard-client'];
-$protectedManagerPages = ['dashboard-manager', 'application-details', 'vehicles-admin', 'add-vehicle'];
+$protectedClientPages = ['dashboard-client', 'application-details'];
+$protectedManagerPages = ['dashboard-manager', 'vehicles-admin', 'add-vehicle'];
 $protectedAdminPages = ['dashboard-admin', 'managers', 'add-manager'];
 
 // Редирект неавторизованных пользователей
