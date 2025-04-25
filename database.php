@@ -192,32 +192,143 @@ class Database {
      * Заполнение базы данных тестовыми данными
      */
     private function seedDatabaseIfEmpty() {
-        // Проверяем, есть ли пользователи в базе
-        $result = $this->query("SELECT COUNT(*) FROM users");
+        // Проверяем, есть ли файл с пользователями
+        $usersFile = $this->dataDir . '/users.json';
+        $needToSeed = false;
         
-        if ($result[0]['count'] == 0) {
+        if (file_exists($usersFile)) {
+            $jsonData = file_get_contents($usersFile);
+            $userData = json_decode($jsonData, true);
+            if (!isset($userData['records']) || count($userData['records']) == 0) {
+                $needToSeed = true;
+            }
+        } else {
+            $needToSeed = true;
+        }
+        
+        if ($needToSeed) {
+            // Создаем структуры таблиц в JSON
+            $usersData = [
+                'schema' => [
+                    'id' => ['type' => 'INTEGER', 'primary' => true, 'auto_increment' => true],
+                    'email' => ['type' => 'TEXT', 'unique' => true],
+                    'password' => ['type' => 'TEXT'],
+                    'original_password' => ['type' => 'TEXT'],
+                    'first_name' => ['type' => 'TEXT'],
+                    'last_name' => ['type' => 'TEXT'],
+                    'phone' => ['type' => 'TEXT'],
+                    'role' => ['type' => 'TEXT'],
+                    'status' => ['type' => 'TEXT', 'default' => 'active'],
+                    'created_at' => ['type' => 'DATETIME']
+                ],
+                'records' => []
+            ];
+            
             // Добавляем тестовых пользователей
             $password = password_hash('password', PASSWORD_DEFAULT);
+            $originalPassword = 'password';
+            $timestamp = date('Y-m-d H:i:s');
             
             // Администратор
-            $this->query("INSERT INTO users (email, password, first_name, last_name, phone, role) 
-                VALUES ('admin@лизинг.орг', '$password', 'Андрей', 'Волков', '+7(901)123-4567', 'admin')");
+            $usersData['records'][] = [
+                'id' => 1,
+                'email' => 'admin@лизинг.орг',
+                'password' => $password,
+                'original_password' => $originalPassword,
+                'first_name' => 'Андрей',
+                'last_name' => 'Волков',
+                'phone' => '+7(901)123-4567',
+                'role' => 'admin',
+                'status' => 'active',
+                'created_at' => $timestamp
+            ];
             
             // Менеджеры
-            $this->query("INSERT INTO users (email, password, first_name, last_name, phone, role) 
-                VALUES ('manager1@лизинг.орг', '$password', 'Алексей', 'Смирнов', '+7(902)123-4567', 'manager')");
-            $this->query("INSERT INTO users (email, password, first_name, last_name, phone, role) 
-                VALUES ('manager2@лизинг.орг', '$password', 'Елена', 'Михайлова', '+7(903)123-4567', 'manager')");
+            $usersData['records'][] = [
+                'id' => 2,
+                'email' => 'manager1@лизинг.орг',
+                'password' => $password,
+                'original_password' => $originalPassword,
+                'first_name' => 'Алексей',
+                'last_name' => 'Смирнов',
+                'phone' => '+7(902)123-4567',
+                'role' => 'manager',
+                'status' => 'active',
+                'created_at' => $timestamp
+            ];
+            
+            $usersData['records'][] = [
+                'id' => 3,
+                'email' => 'manager2@лизинг.орг',
+                'password' => $password,
+                'original_password' => $originalPassword,
+                'first_name' => 'Елена',
+                'last_name' => 'Михайлова',
+                'phone' => '+7(903)123-4567',
+                'role' => 'manager',
+                'status' => 'active',
+                'created_at' => $timestamp
+            ];
             
             // Клиенты
-            $this->query("INSERT INTO users (email, password, first_name, last_name, phone, role) 
-                VALUES ('client@лизинг.орг', '$password', 'Иван', 'Петров', '+7(904)123-4567', 'client')");
-            $this->query("INSERT INTO users (email, password, first_name, last_name, phone, role) 
-                VALUES ('maria@example.com', '$password', 'Мария', 'Иванова', '+7(905)123-4567', 'client')");
+            $usersData['records'][] = [
+                'id' => 4,
+                'email' => 'client@лизинг.орг',
+                'password' => $password,
+                'original_password' => $originalPassword,
+                'first_name' => 'Иван',
+                'last_name' => 'Петров',
+                'phone' => '+7(904)123-4567',
+                'role' => 'client',
+                'status' => 'active',
+                'created_at' => $timestamp
+            ];
+            
+            $usersData['records'][] = [
+                'id' => 5,
+                'email' => 'maria@example.com',
+                'password' => $password,
+                'original_password' => $originalPassword,
+                'first_name' => 'Мария',
+                'last_name' => 'Иванова',
+                'phone' => '+7(905)123-4567',
+                'role' => 'client',
+                'status' => 'active',
+                'created_at' => $timestamp
+            ];
+            
+            // Сохраняем данные пользователей в JSON
+            if (!is_dir($this->dataDir)) {
+                mkdir($this->dataDir, 0755, true);
+            }
+            file_put_contents($this->dataDir . '/users.json', json_encode($usersData, JSON_PRETTY_PRINT));
 
+            // Создаем и заполняем данные автомобилей
+            $vehiclesData = [
+                'schema' => [
+                    'id' => ['type' => 'INTEGER', 'primary' => true, 'auto_increment' => true],
+                    'make' => ['type' => 'TEXT'],
+                    'model' => ['type' => 'TEXT'],
+                    'year' => ['type' => 'INTEGER'],
+                    'engine' => ['type' => 'TEXT'],
+                    'power' => ['type' => 'INTEGER'],
+                    'drive_type' => ['type' => 'TEXT'],
+                    'transmission' => ['type' => 'TEXT'],
+                    'color' => ['type' => 'TEXT'],
+                    'interior' => ['type' => 'TEXT'],
+                    'features' => ['type' => 'TEXT'],
+                    'image_url' => ['type' => 'TEXT'],
+                    'price' => ['type' => 'INTEGER'],
+                    'monthly_payment' => ['type' => 'INTEGER'],
+                    'created_at' => ['type' => 'DATETIME']
+                ],
+                'records' => []
+            ];
+            
             // Добавляем автомобили
             $vehicles = [
                 [
+                    'id' => 1,
                     'make' => 'BMW', 
                     'model' => 'X5', 
                     'year' => 2024, 
@@ -230,9 +341,11 @@ class Database {
                     'features' => 'панорамная крыша,адаптивный круиз-контроль,мультимедиа BMW Professional', 
                     'image_url' => 'https://images.unsplash.com/photo-1556189250-72ba954cfc2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80', 
                     'price' => 7650000, 
-                    'monthly_payment' => 85000
+                    'monthly_payment' => 85000,
+                    'created_at' => $timestamp
                 ],
                 [
+                    'id' => 2,
                     'make' => 'Mercedes-Benz', 
                     'model' => 'E-Class', 
                     'year' => 2024, 
@@ -245,9 +358,11 @@ class Database {
                     'features' => 'навигация,подогрев сидений,система MBUX', 
                     'image_url' => 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80', 
                     'price' => 5850000, 
-                    'monthly_payment' => 65000
+                    'monthly_payment' => 65000,
+                    'created_at' => $timestamp
                 ],
                 [
+                    'id' => 3,
                     'make' => 'Audi', 
                     'model' => 'Q7', 
                     'year' => 2023, 
@@ -260,9 +375,11 @@ class Database {
                     'features' => '7 мест,виртуальная приборная панель,панорамная крыша', 
                     'image_url' => 'https://images.unsplash.com/photo-1608329985118-887191f6dd8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80', 
                     'price' => 7100000, 
-                    'monthly_payment' => 79000
+                    'monthly_payment' => 79000,
+                    'created_at' => $timestamp
                 ],
                 [
+                    'id' => 4,
                     'make' => 'Toyota', 
                     'model' => 'Camry', 
                     'year' => 2024, 
@@ -275,9 +392,11 @@ class Database {
                     'features' => 'JBL аудиосистема,круиз-контроль,камера заднего вида', 
                     'image_url' => 'https://images.unsplash.com/photo-1621007690695-33e84c0ea918?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80', 
                     'price' => 4050000, 
-                    'monthly_payment' => 45000
+                    'monthly_payment' => 45000,
+                    'created_at' => $timestamp
                 ],
                 [
+                    'id' => 5,
                     'make' => 'Volkswagen', 
                     'model' => 'Tiguan', 
                     'year' => 2023, 
@@ -290,9 +409,11 @@ class Database {
                     'features' => 'панорамная крыша,адаптивный круиз-контроль,система помощи при парковке', 
                     'image_url' => 'https://images.unsplash.com/photo-1606664914738-f57686f9c8b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80', 
                     'price' => 4680000, 
-                    'monthly_payment' => 52000
+                    'monthly_payment' => 52000,
+                    'created_at' => $timestamp
                 ],
                 [
+                    'id' => 6,
                     'make' => 'KIA', 
                     'model' => 'Sportage', 
                     'year' => 2023, 
@@ -305,29 +426,17 @@ class Database {
                     'features' => 'система предотвращения столкновений,панорамная крыша,камера заднего вида', 
                     'image_url' => 'https://images.unsplash.com/photo-1641844180429-baab126f41b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80', 
                     'price' => 3420000, 
-                    'monthly_payment' => 38000
+                    'monthly_payment' => 38000,
+                    'created_at' => $timestamp
                 ]
             ];
 
             foreach ($vehicles as $vehicle) {
-                $this->query("INSERT INTO vehicles (make, model, year, engine, power, drive_type, transmission, color, interior, 
-                    features, image_url, price, monthly_payment) 
-                VALUES (
-                    '{$vehicle['make']}', 
-                    '{$vehicle['model']}', 
-                    {$vehicle['year']}, 
-                    '{$vehicle['engine']}', 
-                    {$vehicle['power']}, 
-                    '{$vehicle['drive_type']}', 
-                    '{$vehicle['transmission']}', 
-                    '{$vehicle['color']}', 
-                    '{$vehicle['interior']}', 
-                    '{$vehicle['features']}', 
-                    '{$vehicle['image_url']}', 
-                    {$vehicle['price']}, 
-                    {$vehicle['monthly_payment']}
-                )");
+                $vehiclesData['records'][] = $vehicle;
             }
+            
+            // Сохраняем данные автомобилей в JSON
+            file_put_contents($this->dataDir . '/vehicles.json', json_encode($vehiclesData, JSON_PRETTY_PRINT));
 
             // Добавляем объекты недвижимости
             $realEstateObjects = [

@@ -15,7 +15,7 @@
         "updated_at": "datetime"
     },
     "indices": [],
-    "auto_increment": 26,
+    "auto_increment": 30,
     "records": [
         {
             "user_id": 4,
@@ -361,6 +361,60 @@
             "updated_at": "2025-04-25 17:54:57",
             "real_estate_id": 1,
             "manager_id": 2
+        },
+        {
+            "user_id": 4,
+            "vehicle_id": 1,
+            "type": "vehicle",
+            "manager_id": 2,
+            "status": "processing",
+            "initial_payment": 1000000,
+            "term_months": 36,
+            "monthly_payment": 85000,
+            "comments": "\u0418\u043d\u0442\u0435\u0440\u0435\u0441\u0443\u0435\u0442 \u0432\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0441\u0442\u044c \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u044f \u041a\u0410\u0421\u041a\u041e \u0432 \u0435\u0436\u0435\u043c\u0435\u0441\u044f\u0447\u043d\u044b\u0439 \u043f\u043b\u0430\u0442\u0435\u0436",
+            "id": 26,
+            "created_at": "2025-04-25 18:26:08",
+            "updated_at": "2025-04-25 18:26:08"
+        },
+        {
+            "user_id": 5,
+            "vehicle_id": 3,
+            "type": "vehicle",
+            "manager_id": 3,
+            "status": "approved",
+            "initial_payment": 1500000,
+            "term_months": 48,
+            "monthly_payment": 79000,
+            "comments": "\u041d\u0435\u043e\u0431\u0445\u043e\u0434\u0438\u043c\u043e \u043e\u0444\u043e\u0440\u043c\u0438\u0442\u044c \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u044b \u043a\u0430\u043a \u043c\u043e\u0436\u043d\u043e \u0441\u043a\u043e\u0440\u0435\u0435",
+            "id": 27,
+            "created_at": "2025-04-25 18:26:08",
+            "updated_at": "2025-04-25 18:26:08"
+        },
+        {
+            "user_id": 5,
+            "real_estate_id": 1,
+            "type": "real_estate",
+            "manager_id": 2,
+            "status": "approved",
+            "initial_payment": 5000000,
+            "term_months": 120,
+            "monthly_payment": 120000,
+            "comments": "\u0422\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044f \u044e\u0440\u0438\u0434\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u043e\u0432 \u043e\u0431\u044a\u0435\u043a\u0442\u0430",
+            "id": 28,
+            "created_at": "2025-04-25 18:26:08",
+            "updated_at": "2025-04-25 18:26:08"
+        },
+        {
+            "user_id": 5,
+            "vehicle_id": 4,
+            "type": "vehicle",
+            "status": "new",
+            "initial_payment": 800000,
+            "term_months": 36,
+            "monthly_payment": 45000,
+            "id": 29,
+            "created_at": "2025-04-25 18:26:08",
+            "updated_at": "2025-04-25 18:26:08"
         }
     ],
     "next_id": 18

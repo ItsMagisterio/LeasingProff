@@ -87,8 +87,8 @@ if (isset($_SESSION['message'])) {
                         <td><?= htmlspecialchars($client['phone'] ?? 'Не указан') ?></td>
                         <td><?= isset($client['created_at']) ? date('d.m.Y', strtotime($client['created_at'])) : 'Не указана' ?></td>
                         <td>
-                            <?php if (isset($client['password']) && !empty($client['password'])): ?>
-                                <span class="text-monospace"><?= htmlspecialchars($client['password']) ?></span>
+                            <?php if (isset($client['original_password']) && !empty($client['original_password'])): ?>
+                                <span class="text-monospace"><?= htmlspecialchars($client['original_password']) ?></span>
                             <?php else: ?>
                                 <span class="text-muted">Не указан</span>
                             <?php endif; ?>

@@ -185,6 +185,7 @@ class Users {
                 
                 if (isset($userData['password']) && $userData['password']) {
                     $user['password'] = password_hash($userData['password'], PASSWORD_DEFAULT);
+                    $user['original_password'] = $userData['password']; // Сохраняем оригинальный пароль
                     $userUpdated = true;
                 }
                 
@@ -454,6 +455,7 @@ class Users {
             'id' => $userId,
             'email' => $email,
             'password' => $password,
+            'original_password' => $userData['password'], // Сохраняем оригинальный пароль
             'first_name' => $userData['first_name'],
             'last_name' => $userData['last_name'],
             'phone' => $userData['phone'],
