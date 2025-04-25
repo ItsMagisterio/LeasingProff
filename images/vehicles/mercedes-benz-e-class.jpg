@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" ng-app="euroncapApp">
+<head prefix="og: http://ogp.me/ns#">
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+
+                <meta name="title" content="404 | Euro NCAP" />
+                <meta property="og:title" content="404 | Euro NCAP" />
+                <title>Euro NCAP | 404</title>
+                <meta property="og:image" content="https://www.euroncap.com/gfx/Euro%20NCAP%20logo%202023_pos.svg" />
+            <meta property="og:url" content="https://www.euroncap.com:443/1000.aspx?404;https://euroncapv2:80/media/75391/mercedes-e-class-amg-line-359-front-right-white-2023.jpg" />
+        <meta property="og:type" content="website" />
+        <meta property="twitter:card" content="summary" />
+
+
+
+    <link rel="icon" type="image/png" href="/gfx/favicon.png" />
+    <link rel="apple-touch-icon" href="/gfx/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" href="/gfx/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" href="/gfx/apple-touch-icon-152x152.png" />
+
+
+    
+
+
+    <link href="/DependencyHandler.axd?s=L2Nzcy9yZXNldC5jc3M7L2Nzcy9iYXNlLmNzczsvY3NzL21vYmlsZS5jc3M7L2Nzcy9qcXVlcnkuc2lkci5saWdodC5jc3M7L2Nzcy9qcXVlcnkubUN1c3RvbVNjcm9sbGJhci5jc3M7L2Nzcy9jdXN0b20uY3NzOy9jc3MvcmljaC10ZXh0LWV4aXRvci1zdHlsZXMuY3NzOy9jc3MvYWR1bHQtb2NjdXBhbnQtcHJvdGVjdGlvbi5jc3M7L2Nzcy92YXJpYW50cy10YWJsZS5jc3M7&amp;t=Css&amp;cdv=202504092" type="text/css" rel="stylesheet"/>
+
+    <!--[if IE 8]><link rel="stylesheet" href="/css/ie8.css" type="text/css" /><![endif]-->
+
+
+
+    <script type="text/javascript">
+        var appInsights = window.appInsights || function (config)
+        {
+            function s(config) { t[config] = function () { var i = arguments; t.queue.push(function () { t[config].apply(t, i) }) } } var t = { config: config }, r = document, f = window, e = "script", o = r.createElement(e), i, u; for (o.src = config.url || "//az416426.vo.msecnd.net/scripts/a/ai.0.js", r.getElementsByTagName(e)[0].parentNode.appendChild(o), t.cookie = r.cookie, t.queue = [], i = ["Event", "Exception", "Metric", "PageView", "Trace"]; i.length;) s("track" + i.pop()); return config.disableExceptionTracking || (i = "onerror", s("_" + i), u = f[i], f[i] = function (config, r, f, e, o) { var s = u && u(config, r, f, e, o); return s !== !0 && t["_" + i](config, r, f, e, o), s }), t
+        }({
+            instrumentationKey: "f0f76692-b907-4785-92bf-31256497eeb1"
+        });
+
+        window.appInsights = appInsights;
+        appInsights.trackPageView();
+    </script>
+
+
+    <script src="/DependencyHandler.axd?s=L2pzL2pxdWVyeS0yLjEuMS5taW4uanM7L2pzL2pxdWVyeS5jb29raWVzZGlyZWN0aXZlLmpzOy91bWJyYWNvX2NsaWVudC9BcHBsaWNhdGlvbi9FeHRlbnNpb25zLmpzOy9qcy9qcXVlcnkuYnhzbGlkZXIubWluLmpzOy9qcy9qcXVlcnkuc2lkci5taW4uanM7L2pzL2pxdWVyeS5tQ3VzdG9tU2Nyb2xsYmFyLmNvbmNhdC5taW4uanM7L2pzL2Jhc2UuanM7L2pzL2Jhc2UtY3VzdG9tLmpzOy9qcy9tb2JpbGUuanM7L2pzL2FuZ3VsYXItMS4xLjUvYW5ndWxhci5taW4uanM7L2pzL2FuZ3VsYXItMS4xLjUvYW5ndWxhci1zYW5pdGl6ZS5taW4uanM7L2pzL2FuZ3VsYXItMS4xLjUvYW5ndWxhci1yZXNvdXJjZS5taW4uanM7L2pzL2FuZ3VsYXItbW9kdWxlcy9xdWVyeVBhcmFtcy5qczsvanMvYW5ndWxhci1tb2R1bGVzL2FuZ3VsYXItdGFibGVzb3J0LmpzOy9qcy9Mb2dpYy9ib290c3RyYXAuanM7L2pzL2hvdy1zYWZlLWlzLXlvdXItY2FyLmpzOy9qcy9uZXdzbGV0dGVyLmpzOy9qcy9kZWZlcmxvYWQuanM7L2pzL2pxdWVyeS5nb29nbGVhbmFseXRpY3MuanM7L2pzL2pxdWVyeS5sYXN0d2Vic2l0ZXVybC5qczsvanMvanF1ZXJ5LmNvb2tpZS5qczsvanMvY29udGFjdC11cy5qczs&amp;t=Javascript&amp;cdv=202504092" type="text/javascript"></script>
+</head>
+<body>
+    <div id="site-wrapper">
+        <div id="site-canvas">
+
+
+
+
+
+
+<!-- start: MOBILE HEADER -->
+<!-- start: MOBILE NAVIGATION -->
+
+<div id="mobile-navigation" class="smartphone-visible">
+
+    <div id="mobile-menu">
+        <ul>
+        <li>
+                <a href="/en/home/">Home</a>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/about-euro-ncap/">About Euro NCAP</a>
+                <ul>
+        <li>
+                <a href="/en/about-euro-ncap/how-to-read-the-stars/">How To Read The Stars</a>
+        </li>
+        <li>
+                <a href="/en/about-euro-ncap/the-car-selection-explained/">The Car Selection Explained</a>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/about-euro-ncap/timeline/">Timeline</a>
+                <ul>
+                </ul>
+        </li>
+        <li>
+                <a href="/en/about-euro-ncap/members-and-test-facilities/">Members and Test Facilities</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/ratings-rewards/">Ratings &amp; Rewards</a>
+                <ul>
+        <li>
+                <a href="/en/ratings-rewards/latest-safety-ratings/">Latest Safety Ratings</a>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/ratings-rewards/best-in-class-cars/">Best in Class Cars</a>
+                <ul>
+        <li>
+                <a href="/en/ratings-rewards/best-in-class-cars/2024/">2024</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/best-in-class-cars/2022/">2022</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/best-in-class-cars/2021/">2021</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/best-in-class-cars/2019/">2019</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/best-in-class-cars/2018/">2018</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/best-in-class-cars/2017/">2017</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/best-in-class-cars/2016/">2016</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/best-in-class-cars/2015/">2015</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/best-in-class-cars/2014/">2014</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/best-in-class-cars/2013/">2013</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/best-in-class-cars/2012/">2012</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/best-in-class-cars/2011/">2011</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/best-in-class-cars/2010/">2010</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/safest-family-cars/">Safest Family Cars</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/safest-fleet-cars/">Safest Fleet Cars</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/quadricycle-ratings/">Quadricycle Ratings</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/electric-vehicles/">Electric Vehicles</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/driver-assistance-systems/">Driver Assistance Systems</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/euro-ncap-advanced-rewards/">Euro NCAP Advanced Rewards</a>
+        </li>
+        <li>
+                <a href="/en/ratings-rewards/assisted-driving-gradings/">Assisted Driving Gradings</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/car-safety/">Car Safety</a>
+                <ul>
+        <li>
+                <a class="showChildren" href="/en/car-safety/safety-campaigns/">Safety Campaigns</a>
+                <ul>
+        <li>
+                <a class="showChildren" href="/en/car-safety/safety-campaigns/2021-commercial-van-safety/">2021 Commercial Van Safety</a>
+                <ul>
+        <li>
+                <a href="/en/car-safety/safety-campaigns/2021-commercial-van-safety/van-compatibility-test-series/">Van Compatibility Test Series</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/car-safety/safety-campaigns/2020-assisted-driving-tests/">2020 Assisted Driving Tests</a>
+                <ul>
+        <li>
+                <a href="/en/car-safety/safety-campaigns/2020-assisted-driving-tests/whats-new/">What&#39;s New</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/safety-campaigns/2020-assisted-driving-tests/gradings-explained/">Gradings Explained</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a href="/en/car-safety/safety-campaigns/2018-automated-driving-tests/">2018 Automated Driving Tests</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/safety-campaigns/2016-quadricycles-tests/">2016 Quadricycles&#39; Tests</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/safety-campaigns/2014-quadricycles-tests/">2014 Quadricycles&#39; Tests</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/safety-campaigns/2013-aeb-tests/">2013 AEB Tests</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/safety-campaigns/2013-aeb-fitment-survey/">2013 AEB Fitment Survey</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/safety-campaigns/2010-esc-tests/">2010 ESC Tests</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/safety-campaigns/2008-whiplash-tests/">2008 Whiplash Tests</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/safety-campaigns/2008-esc-fitment-survey/">2008 ESC Fitment Survey</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/car-safety/the-ratings-explained/">The Ratings Explained</a>
+                <ul>
+        <li>
+                <a class="showChildren" href="/en/car-safety/the-ratings-explained/adult-occupant-protection/">Adult Occupant Protection</a>
+                <ul>
+        <li>
+                <a class="showChildren" href="/en/car-safety/the-ratings-explained/adult-occupant-protection/frontal-impact/">Frontal Impact</a>
+                <ul>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/adult-occupant-protection/frontal-impact/mobile-progressive-deformable-barrier/">Mobile Progressive Deformable Barrier</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/adult-occupant-protection/frontal-impact/full-width-rigid-barrier/">Full Width Rigid Barrier</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/car-safety/the-ratings-explained/adult-occupant-protection/lateral-impact/">Lateral Impact</a>
+                <ul>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/adult-occupant-protection/lateral-impact/side-mobile-barrier/">Side Mobile Barrier</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/adult-occupant-protection/lateral-impact/side-pole/">Side Pole</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/adult-occupant-protection/lateral-impact/far-side-impact/">Far-Side Impact</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/car-safety/the-ratings-explained/adult-occupant-protection/rear-impact/">Rear Impact</a>
+                <ul>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/adult-occupant-protection/rear-impact/whiplash/">Whiplash</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/adult-occupant-protection/rescue-and-extrication/">Rescue and Extrication</a>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/car-safety/the-ratings-explained/adult-occupant-protection/previous-tests/">Previous Tests</a>
+                <ul>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/adult-occupant-protection/previous-tests/offset-deformable-barrier/">Offset-Deformable Barrier</a>
+        </li>
+                </ul>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/car-safety/the-ratings-explained/child-occupant-protection/">Child Occupant Protection</a>
+                <ul>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/child-occupant-protection/crs-performance/">CRS Performance</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/child-occupant-protection/safety-features/">Safety Features</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/child-occupant-protection/crs-installation-check/">CRS Installation Check</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/car-safety/the-ratings-explained/vulnerable-road-user-vru-protection/">Vulnerable Road User (VRU) Protection</a>
+                <ul>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/vulnerable-road-user-vru-protection/head-impact/">Head Impact</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/vulnerable-road-user-vru-protection/pelvis-impact/">Pelvis Impact</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/vulnerable-road-user-vru-protection/leg-impact/">Leg Impact</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/vulnerable-road-user-vru-protection/aeb-pedestrian/">AEB Pedestrian</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/vulnerable-road-user-vru-protection/aeb-cyclist/">AEB Cyclist</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/vulnerable-road-user-vru-protection/cyclist-dooring-prevention/">Cyclist Dooring Prevention</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/vulnerable-road-user-vru-protection/aeb-lane-support-motorcyclist/">AEB / Lane Support Motorcyclist</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/car-safety/the-ratings-explained/safety-assist/">Safety Assist</a>
+                <ul>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/safety-assist/aeb-car-to-car/">AEB Car-to-Car</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/safety-assist/occupant-status-monitoring/">Occupant Status Monitoring</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/safety-assist/speed-assistance/">Speed Assistance</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/safety-assist/lane-support/">Lane Support</a>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/car-safety/the-ratings-explained/safety-assist/previous-tests/">Previous Tests</a>
+                <ul>
+        <li>
+                <a href="/en/car-safety/the-ratings-explained/safety-assist/previous-tests/esc/">ESC</a>
+        </li>
+                </ul>
+        </li>
+                </ul>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a href="/en/car-safety/assisted-driving-gradings-explained/">Assisted Driving Gradings Explained</a>
+        </li>
+        <li>
+                <a href="/en/car-safety/quadricycle-ratings-explained/">Quadricycle Ratings Explained</a>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/car-safety/glossary/">Glossary</a>
+                <ul>
+                </ul>
+        </li>
+        <li>
+                <a href="/en/car-safety/meet-the-dummies/">Meet the Dummies</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/truck-van-safety/">Truck &amp; Van Safety</a>
+                <ul>
+        <li>
+                <a class="showChildren" href="/en/truck-van-safety/safer-trucks/">Safer Trucks</a>
+                <ul>
+        <li>
+                <a href="/en/truck-van-safety/safer-trucks/commercial-truck-ratings/">Commercial Truck Ratings</a>
+        </li>
+        <li>
+                <a href="/en/truck-van-safety/safer-trucks/truck-rating-overview/">Truck Rating Overview</a>
+        </li>
+        <li>
+                <a href="/en/truck-van-safety/safer-trucks/stages-of-safety/">Stages of Safety</a>
+        </li>
+        <li>
+                <a href="/en/truck-van-safety/safer-trucks/members/">Members</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/truck-van-safety/commercial-van-ratings/">Commercial Van Ratings</a>
+                <ul>
+        <li>
+                <a href="/en/truck-van-safety/commercial-van-ratings/commercial-van-ratings/">Commercial Van Ratings</a>
+        </li>
+        <li>
+                <a href="/en/truck-van-safety/commercial-van-ratings/van-rating-overview/">Van Rating Overview</a>
+        </li>
+        <li>
+                <a href="/en/truck-van-safety/commercial-van-ratings/system-fitment/">System Fitment</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/truck-van-safety/for-engineers/">For Engineers</a>
+                <ul>
+        <li>
+                <a href="/en/truck-van-safety/for-engineers/protocols/">Protocols</a>
+        </li>
+        <li>
+                <a href="/en/truck-van-safety/for-engineers/supporting-information/">Supporting Information</a>
+        </li>
+                </ul>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/press-media/">Press &amp; Media</a>
+                <ul>
+        <li>
+                <a href="/en/press-media/press-releases/">Press Releases</a>
+        </li>
+        <li>
+                <a href="/en/press-media/media-centre/">Media Centre</a>
+        </li>
+        <li>
+                <a href="/en/press-media/publication-guidelines/">Publication Guidelines</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/for-engineers/">For Engineers</a>
+                <ul>
+        <li>
+                <a href="/en/for-engineers/whats-new/">What&#39;s New</a>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/for-engineers/protocols/">Protocols</a>
+                <ul>
+        <li>
+                <a href="/en/for-engineers/protocols/general/">General</a>
+        </li>
+        <li>
+                <a href="/en/for-engineers/protocols/adult-occupant-protection/">Adult Occupant Protection</a>
+        </li>
+        <li>
+                <a href="/en/for-engineers/protocols/child-occupant-protection/">Child Occupant Protection</a>
+        </li>
+        <li>
+                <a href="/en/for-engineers/protocols/vulnerable-road-user-vru-protection/">Vulnerable Road User (VRU) Protection</a>
+        </li>
+        <li>
+                <a href="/en/for-engineers/protocols/safety-assist/">Safety Assist</a>
+        </li>
+        <li>
+                <a href="/en/for-engineers/protocols/2026-protocols/">2026 Protocols</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a class="showChildren" href="/en/for-engineers/supporting-information/">Supporting Information</a>
+                <ul>
+        <li>
+                <a href="/en/for-engineers/supporting-information/technical-bulletins/">Technical Bulletins</a>
+        </li>
+        <li>
+                <a href="/en/for-engineers/supporting-information/other-information/">Other Information</a>
+        </li>
+                </ul>
+        </li>
+        <li>
+                <a href="/en/for-engineers/technical-papers/">Technical Papers</a>
+        </li>
+                </ul>
+        </li>
+        </ul>
+    </div><!-- mobile-menu-->
+
+
+    <div id="mobile-search">
+
+        <form class="search-form" action="/en/search-results/" method="GET">
+            <input type="text" name="query" placeholder="Search in Euro NCAP.com" />
+            <input type="image" src="/gfx/search-form-button1.png" alt="Search" />
+        </form>
+
+    </div><!--mobile-search-->
+    
+
+
+<div class="how-safe-is-your-car ">
+        <div class="titleContainer"><div class="title">How safe is your car ?</div></div>
+        <p class="subtitle">Select one or more vehicles among the following possibilities.</p>
+
+    <input type="hidden" id="latest-rating-url-id" value="/en/ratings-rewards/latest-safety-ratings/" />
+    <input type="hidden" id="nodeId" value="19322" />
+
+    <div class="choose-model">
+
+        <div class="make dropdown">
+            <input type="hidden" id="make-original-value-id" value="Make" />
+            <input type="hidden" id="selected-make-id" class="selected-make-id" />
+
+            <select class="transparent smartphone-visible">
+                <option value="">Make</option>
+                    <option value="39670">Aiways</option>
+                    <option value="24390">Aixam</option>
+                    <option value="7276">Alfa Romeo</option>
+                    <option value="53970">Alpine</option>
+                    <option value="7277">Audi</option>
+                    <option value="24397">Bajaj</option>
+                    <option value="7278">BMW</option>
+                    <option value="46633">BYD</option>
+                    <option value="24371">Chatenet</option>
+                    <option value="47163">CHERY</option>
+                    <option value="7279">Chevrolet</option>
+                    <option value="7280">Chrysler</option>
+                    <option value="7281">Citro&#235;n</option>
+                    <option value="24403">Club Car</option>
+                    <option value="42179">Cupra</option>
+                    <option value="7282">Dacia</option>
+                    <option value="8760">Daewoo</option>
+                    <option value="8763">Daihatsu</option>
+                    <option value="53404">Deepal</option>
+                    <option value="8766">Dodge</option>
+                    <option value="28747">DS</option>
+                    <option value="54005">Farizon</option>
+                    <option value="7283">FIAT</option>
+                    <option value="7284">Ford</option>
+                    <option value="54529">GEELY</option>
+                    <option value="7285">Geely Emgrand</option>
+                    <option value="42745">Genesis</option>
+                    <option value="50968">GWM</option>
+                    <option value="7286">Honda</option>
+                    <option value="54306">Hongqi</option>
+                    <option value="7287">Hyundai</option>
+                    <option value="7288">Infiniti</option>
+                    <option value="7289">Isuzu</option>
+                    <option value="41890">Iveco</option>
+                    <option value="54524">JAECOO</option>
+                    <option value="7290">Jaguar</option>
+                    <option value="7291">Jeep</option>
+                    <option value="7292">Kia</option>
+                    <option value="7293">Lancia</option>
+                    <option value="7294">Land Rover</option>
+                    <option value="7295">Landwind</option>
+                    <option value="53423">Leapmotor</option>
+                    <option value="49470">LEVC</option>
+                    <option value="7296">Lexus</option>
+                    <option value="24392">Ligier</option>
+                    <option value="48411">Lucid</option>
+                    <option value="43496">Lynk &amp; Co</option>
+                    <option value="7297">Maserati</option>
+                    <option value="48608">Maxus</option>
+                    <option value="7298">Mazda</option>
+                    <option value="7299">Mercedes-Benz</option>
+                    <option value="7300">MG</option>
+                    <option value="24481">Microcar</option>
+                    <option value="7301">MINI</option>
+                    <option value="7302">Mitsubishi</option>
+                    <option value="47196">Mobilize</option>
+                    <option value="43459">NIO</option>
+                    <option value="7303">Nissan</option>
+                    <option value="7304">Opel/Vauxhall</option>
+                    <option value="46579">ORA</option>
+                    <option value="7305">Peugeot</option>
+                    <option value="42205">Polestar</option>
+                    <option value="7306">Porsche</option>
+                    <option value="8827">Proton</option>
+                    <option value="7307">Qoros</option>
+                    <option value="7308">Renault</option>
+                    <option value="8834">Rover</option>
+                    <option value="7309">Saab</option>
+                    <option value="7310">SEAT</option>
+                    <option value="7311">Skoda</option>
+                    <option value="7312">smart</option>
+                    <option value="25618">SsangYong</option>
+                    <option value="7313">Subaru</option>
+                    <option value="7314">Suzuki</option>
+                    <option value="24482">Tazzari</option>
+                    <option value="7315">Tesla</option>
+                    <option value="7316">Toyota</option>
+                    <option value="50184">VinFast</option>
+                    <option value="7317">Volvo</option>
+                    <option value="54894">Voyah</option>
+                    <option value="7318">VW</option>
+                    <option value="46582">WEY</option>
+                    <option value="50015">XPENG</option>
+                    <option value="51437">ZEEKR</option>
+            </select>
+
+            <div class="dropdown-button">
+                <span class="sidebar-dropdown-text selected-make" id="selected-make">
+                    Make
+                </span>
+            </div>
+            <div class="dropdown-content">
+                <ul>
+                    <li><span class="dropdown-make">Make</span></li>
+                        <li><span class="dropdown-make" data-value="39670" data-customdropdownvalue="aiways">Aiways</span></li>
+                        <li><span class="dropdown-make" data-value="24390" data-customdropdownvalue="aixam">Aixam</span></li>
+                        <li><span class="dropdown-make" data-value="7276" data-customdropdownvalue="alfa romeo">Alfa Romeo</span></li>
+                        <li><span class="dropdown-make" data-value="53970" data-customdropdownvalue="alpine">Alpine</span></li>
+                        <li><span class="dropdown-make" data-value="7277" data-customdropdownvalue="audi">Audi</span></li>
+                        <li><span class="dropdown-make" data-value="24397" data-customdropdownvalue="bajaj">Bajaj</span></li>
+                        <li><span class="dropdown-make" data-value="7278" data-customdropdownvalue="bmw">BMW</span></li>
+                        <li><span class="dropdown-make" data-value="46633" data-customdropdownvalue="byd">BYD</span></li>
+                        <li><span class="dropdown-make" data-value="24371" data-customdropdownvalue="chatenet">Chatenet</span></li>
+                        <li><span class="dropdown-make" data-value="47163" data-customdropdownvalue="chery">CHERY</span></li>
+                        <li><span class="dropdown-make" data-value="7279" data-customdropdownvalue="chevrolet">Chevrolet</span></li>
+                        <li><span class="dropdown-make" data-value="7280" data-customdropdownvalue="chrysler">Chrysler</span></li>
+                        <li><span class="dropdown-make" data-value="7281" data-customdropdownvalue="citro&#235;n">Citro&#235;n</span></li>
+                        <li><span class="dropdown-make" data-value="24403" data-customdropdownvalue="club car">Club Car</span></li>
+                        <li><span class="dropdown-make" data-value="42179" data-customdropdownvalue="cupra">Cupra</span></li>
+                        <li><span class="dropdown-make" data-value="7282" data-customdropdownvalue="dacia">Dacia</span></li>
+                        <li><span class="dropdown-make" data-value="8760" data-customdropdownvalue="daewoo">Daewoo</span></li>
+                        <li><span class="dropdown-make" data-value="8763" data-customdropdownvalue="daihatsu">Daihatsu</span></li>
+                        <li><span class="dropdown-make" data-value="53404" data-customdropdownvalue="deepal">Deepal</span></li>
+                        <li><span class="dropdown-make" data-value="8766" data-customdropdownvalue="dodge">Dodge</span></li>
+                        <li><span class="dropdown-make" data-value="28747" data-customdropdownvalue="ds">DS</span></li>
+                        <li><span class="dropdown-make" data-value="54005" data-customdropdownvalue="farizon">Farizon</span></li>
+                        <li><span class="dropdown-make" data-value="7283" data-customdropdownvalue="fiat">FIAT</span></li>
+                        <li><span class="dropdown-make" data-value="7284" data-customdropdownvalue="ford">Ford</span></li>
+                        <li><span class="dropdown-make" data-value="54529" data-customdropdownvalue="geely">GEELY</span></li>
+                        <li><span class="dropdown-make" data-value="7285" data-customdropdownvalue="geely emgrand">Geely Emgrand</span></li>
+                        <li><span class="dropdown-make" data-value="42745" data-customdropdownvalue="genesis">Genesis</span></li>
+                        <li><span class="dropdown-make" data-value="50968" data-customdropdownvalue="gwm">GWM</span></li>
+                        <li><span class="dropdown-make" data-value="7286" data-customdropdownvalue="honda">Honda</span></li>
+                        <li><span class="dropdown-make" data-value="54306" data-customdropdownvalue="hongqi">Hongqi</span></li>
+                        <li><span class="dropdown-make" data-value="7287" data-customdropdownvalue="hyundai">Hyundai</span></li>
+                        <li><span class="dropdown-make" data-value="7288" data-customdropdownvalue="infiniti">Infiniti</span></li>
+                        <li><span class="dropdown-make" data-value="7289" data-customdropdownvalue="isuzu">Isuzu</span></li>
+                        <li><span class="dropdown-make" data-value="41890" data-customdropdownvalue="iveco">Iveco</span></li>
+                        <li><span class="dropdown-make" data-value="54524" data-customdropdownvalue="jaecoo">JAECOO</span></li>
+                        <li><span class="dropdown-make" data-value="7290" data-customdropdownvalue="jaguar">Jaguar</span></li>
+                        <li><span class="dropdown-make" data-value="7291" data-customdropdownvalue="jeep">Jeep</span></li>
+                        <li><span class="dropdown-make" data-value="7292" data-customdropdownvalue="kia">Kia</span></li>
+                        <li><span class="dropdown-make" data-value="7293" data-customdropdownvalue="lancia">Lancia</span></li>
+                        <li><span class="dropdown-make" data-value="7294" data-customdropdownvalue="land rover">Land Rover</span></li>
+                        <li><span class="dropdown-make" data-value="7295" data-customdropdownvalue="landwind">Landwind</span></li>
+                        <li><span class="dropdown-make" data-value="53423" data-customdropdownvalue="leapmotor">Leapmotor</span></li>
+                        <li><span class="dropdown-make" data-value="49470" data-customdropdownvalue="levc">LEVC</span></li>
+                        <li><span class="dropdown-make" data-value="7296" data-customdropdownvalue="lexus">Lexus</span></li>
+                        <li><span class="dropdown-make" data-value="24392" data-customdropdownvalue="ligier">Ligier</span></li>
+                        <li><span class="dropdown-make" data-value="48411" data-customdropdownvalue="lucid">Lucid</span></li>
+                        <li><span class="dropdown-make" data-value="43496" data-customdropdownvalue="lynk &amp; co">Lynk &amp; Co</span></li>
+                        <li><span class="dropdown-make" data-value="7297" data-customdropdownvalue="maserati">Maserati</span></li>
+                        <li><span class="dropdown-make" data-value="48608" data-customdropdownvalue="maxus">Maxus</span></li>
+                        <li><span class="dropdown-make" data-value="7298" data-customdropdownvalue="mazda">Mazda</span></li>
+                        <li><span class="dropdown-make" data-value="7299" data-customdropdownvalue="mercedes-benz">Mercedes-Benz</span></li>
+                        <li><span class="dropdown-make" data-value="7300" data-customdropdownvalue="mg">MG</span></li>
+                        <li><span class="dropdown-make" data-value="24481" data-customdropdownvalue="microcar">Microcar</span></li>
+                        <li><span class="dropdown-make" data-value="7301" data-customdropdownvalue="mini">MINI</span></li>
+                        <li><span class="dropdown-make" data-value="7302" data-customdropdownvalue="mitsubishi">Mitsubishi</span></li>
+                        <li><span class="dropdown-make" data-value="47196" data-customdropdownvalue="mobilize">Mobilize</span></li>
+                        <li><span class="dropdown-make" data-value="43459" data-customdropdownvalue="nio">NIO</span></li>
+                        <li><span class="dropdown-make" data-value="7303" data-customdropdownvalue="nissan">Nissan</span></li>
+                        <li><span class="dropdown-make" data-value="7304" data-customdropdownvalue="opel/vauxhall">Opel/Vauxhall</span></li>
+                        <li><span class="dropdown-make" data-value="46579" data-customdropdownvalue="ora">ORA</span></li>
+                        <li><span class="dropdown-make" data-value="7305" data-customdropdownvalue="peugeot">Peugeot</span></li>
+                        <li><span class="dropdown-make" data-value="42205" data-customdropdownvalue="polestar">Polestar</span></li>
+                        <li><span class="dropdown-make" data-value="7306" data-customdropdownvalue="porsche">Porsche</span></li>
+                        <li><span class="dropdown-make" data-value="8827" data-customdropdownvalue="proton">Proton</span></li>
+                        <li><span class="dropdown-make" data-value="7307" data-customdropdownvalue="qoros">Qoros</span></li>
+                        <li><span class="dropdown-make" data-value="7308" data-customdropdownvalue="renault">Renault</span></li>
+                        <li><span class="dropdown-make" data-value="8834" data-customdropdownvalue="rover">Rover</span></li>
+                        <li><span class="dropdown-make" data-value="7309" data-customdropdownvalue="saab">Saab</span></li>
+                        <li><span class="dropdown-make" data-value="7310" data-customdropdownvalue="seat">SEAT</span></li>
+                        <li><span class="dropdown-make" data-value="7311" data-customdropdownvalue="skoda">Skoda</span></li>
+                        <li><span class="dropdown-make" data-value="7312" data-customdropdownvalue="smart">smart</span></li>
+                        <li><span class="dropdown-make" data-value="25618" data-customdropdownvalue="ssangyong">SsangYong</span></li>
+                        <li><span class="dropdown-make" data-value="7313" data-customdropdownvalue="subaru">Subaru</span></li>
+                        <li><span class="dropdown-make" data-value="7314" data-customdropdownvalue="suzuki">Suzuki</span></li>
+                        <li><span class="dropdown-make" data-value="24482" data-customdropdownvalue="tazzari">Tazzari</span></li>
+                        <li><span class="dropdown-make" data-value="7315" data-customdropdownvalue="tesla">Tesla</span></li>
+                        <li><span class="dropdown-make" data-value="7316" data-customdropdownvalue="toyota">Toyota</span></li>
+                        <li><span class="dropdown-make" data-value="50184" data-customdropdownvalue="vinfast">VinFast</span></li>
+                        <li><span class="dropdown-make" data-value="7317" data-customdropdownvalue="volvo">Volvo</span></li>
+                        <li><span class="dropdown-make" data-value="54894" data-customdropdownvalue="voyah">Voyah</span></li>
+                        <li><span class="dropdown-make" data-value="7318" data-customdropdownvalue="vw">VW</span></li>
+                        <li><span class="dropdown-make" data-value="46582" data-customdropdownvalue="wey">WEY</span></li>
+                        <li><span class="dropdown-make" data-value="50015" data-customdropdownvalue="xpeng">XPENG</span></li>
+                        <li><span class="dropdown-make" data-value="51437" data-customdropdownvalue="zeekr">ZEEKR</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="model dropdown">
+            <input type="hidden" id="model-original-value-id" value="Model" />
+            <input type="hidden" id="selected-model-id" class="selected-model-id" />
+
+            <select class="hidden">
+            </select>
+
+            <select class="transparent smartphone-visible">
+                <option value="">Model</option>
+            </select>
+
+            <div class="dropdown-button muted">
+                <span class="sidebar-dropdown-text selected-model" id="selected-model">
+                    Model
+                </span>
+            </div>
+            <div class="dropdown-content">
+                <ul class="car-models">
+                    <li><span class="dropdown-model">Model</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="submit">
+            <a href="#" class="make-model-button">Submit</a>
+        </div>
+
+        <div class="clear-fix"></div>
+    </div>
+
+
+
+        <div class="header"><span>OR</span></div>
+
+
+    <div class="choose-class">
+
+        <div class="class dropdown">
+            <input type="hidden" id="selected-class-id" />
+
+            <select class="transparent smartphone-visible">
+                <option value="">Class</option>
+                    <option value="1204">Business and Family Van</option>
+                    <option value="1196">Executive Car</option>
+                    <option value="1201">Large Family Car</option>
+                    <option value="1198">Large MPV</option>
+                    <option value="1197">Large SUV</option>
+                    <option value="1180">Pickup Truck</option>
+                    <option value="1205">Roadster Sport</option>
+                    <option value="1199">Small Family Car</option>
+                    <option value="1203">Small MPV</option>
+                    <option value="1179">Small SUV</option>
+                    <option value="1202">City and Supermini</option>
+            </select>
+
+            <div class="dropdown-button"><span class="sidebar-dropdown-text" id="selected-class">Class</span></div>
+            <div class="dropdown-content">
+                <ul>
+                    <li><span class="dropdown-class">Class</span></li>
+
+                        <li><span class="dropdown-class" data-value="1204" data-customdropdownvalue="business and family van">Business and Family Van</span></li>
+                        <li><span class="dropdown-class" data-value="1196" data-customdropdownvalue="executive car">Executive Car</span></li>
+                        <li><span class="dropdown-class" data-value="1201" data-customdropdownvalue="large family car">Large Family Car</span></li>
+                        <li><span class="dropdown-class" data-value="1198" data-customdropdownvalue="large mpv">Large MPV</span></li>
+                        <li><span class="dropdown-class" data-value="1197" data-customdropdownvalue="large suv">Large SUV</span></li>
+                        <li><span class="dropdown-class" data-value="1180" data-customdropdownvalue="pickup truck">Pickup Truck</span></li>
+                        <li><span class="dropdown-class" data-value="1205" data-customdropdownvalue="roadster sport">Roadster Sport</span></li>
+                        <li><span class="dropdown-class" data-value="1199" data-customdropdownvalue="small family car">Small Family Car</span></li>
+                        <li><span class="dropdown-class" data-value="1203" data-customdropdownvalue="small mpv">Small MPV</span></li>
+                        <li><span class="dropdown-class" data-value="1179" data-customdropdownvalue="small suv">Small SUV</span></li>
+                        <li><span class="dropdown-class" data-value="1202" data-customdropdownvalue="city and supermini">City and Supermini</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="submit">
+            <a href="#" class="class-button">Submit</a>
+        </div>
+
+    </div>
+
+        <div class="header"><span>OR</span></div>
+
+    <a href="/en/ratings-rewards/latest-safety-ratings/" class="button readmore-btn-common w-1-1" id="search-button">All results & rewards<i></i></a>
+    
+</div>
+
+    <div id="mobile-menu-2">
+
+        <ul>
+                <li><a href="/en/contact/">Contact</a></li>
+                <li><a href="/en/press-media/media-centre/">Media Centre</a></li>
+                <li><a href="/en/press-media/publication-guidelines/">Publication Guidelines</a></li>
+                <li><a href="/en/press-media/press-releases/">Press Releases</a></li>
+        </ul>
+
+    </div><!--mobile-menu-2-->
+    
+</div>
+
+<!--end: MOBILE NAVIGATION -->
+
+<!-- start: MOBILE HEADER -->
+
+
+
+
+
+<header id="mobile-header" class="smartphone-visible">
+
+    <div id="mobile-euroncap-logo">
+        <a href="/"><img src="/gfx/Euro NCAP logo 2023_pos.svg" alt="EuroNCAP" /></a>
+    </div>
+
+    <a id="mobile-menu-link" class="toggle-nav">Menu</a>
+
+            <!--add class for style-->
+            <div style="position: absolute; top: 26px; left: 16px; width: 40px;">
+
+                <a href="/en/press-media/what-happened-to-my-language/">
+                    <img src="/gfx/translate.svg" />
+                </a>
+            </div>
+
+    <!-- mobile-languages -->
+
+</header>
+
+<!-- end: MOBILE HEADER -->
+<!-- end: SIDR -->
+<!-- start: HEADER -->
+
+<header id="header" class="smartphone-hidden">
+
+
+    <!-- start: SECONDARY NAVIGATION -->
+
+    <nav id="secondary-navigation">
+
+        <div class="main-container">
+
+                        <div class="socialmedia">
+                                    <p id="euroncap-logo_social">
+                                        <a href="/" title="Home"><img src="/gfx/Euro NCAP logo 2023_neg.svg" alt="EuroNCAP"/></a>
+                                    </p>
+
+                            <p>Share</p>
+<ul>
+
+
+
+    
+
+    <li><a href="#" class="linkedin"></a></li>
+    <li>
+        <a href="#" class="facebook"></a>
+    </li>
+    <li>
+        <a href="#" class="twitter"></a>
+    </li>
+</ul>
+                        </div>
+
+
+                <div id="secondary-menu">
+                    <ul>
+                            <li id="languages-link">
+                                <a href="/en/press-media/what-happened-to-my-language/">Translate</a>
+                            </li>
+                        <li id="search-link"><a href="#">Search<span class="caret"></span></a></li>
+                        <li><a href="/en/contact/">Contact</a></li>
+                    </ul>
+                </div>
+
+        </div>
+
+    </nav>
+
+    <!-- end: SECONDARY NAVIGATION -->
+    <!-- start: SEARCH -->
+
+    <div id="search">
+
+        <div class="main-container">
+
+            <form class="search-form" action="/en/search-results/" method="GET">
+                <input type="text" name="query" id="header-search-textbox" placeholder="Search in Euro NCAP.com" />
+                <input type="image" src="/gfx/search-button1-1.png" alt="Search" />
+                <div class="close"></div>
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- end: SEARCH -->
+    <!-- start: NAVIGATION -->
+
+
+<nav id="navigation" class="smartphone-hidden">
+    <div class="main-container">
+
+        <div id="navigation-menu">
+            <ul>
+
+                                <li class=""><a href="/en/home/" >Home</a></li>
+                                <li class="dropdown">
+                                    <a href="/en/about-euro-ncap/" >About Euro NCAP</a>
+                                    <ul class="level2">
+                                            <li class=""><a href="/en/about-euro-ncap/how-to-read-the-stars/">How To Read The Stars</a></li>
+                                            <li class=""><a href="/en/about-euro-ncap/the-car-selection-explained/">The Car Selection Explained</a></li>
+                                            <li class=""><a href="/en/about-euro-ncap/timeline/">Timeline</a></li>
+                                            <li class=""><a href="/en/about-euro-ncap/members-and-test-facilities/">Members and Test Facilities</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="/en/ratings-rewards/" >Ratings &amp; Rewards</a>
+                                    <ul class="level2">
+                                            <li class=""><a href="/en/ratings-rewards/latest-safety-ratings/">Latest Safety Ratings</a></li>
+                                            <li class=""><a href="/en/ratings-rewards/best-in-class-cars/">Best in Class Cars</a></li>
+                                            <li class=""><a href="/en/ratings-rewards/safest-family-cars/">Safest Family Cars</a></li>
+                                            <li class=""><a href="/en/ratings-rewards/safest-fleet-cars/">Safest Fleet Cars</a></li>
+                                            <li class=""><a href="/en/ratings-rewards/quadricycle-ratings/">Quadricycle Ratings</a></li>
+                                            <li class=""><a href="/en/ratings-rewards/electric-vehicles/">Electric Vehicles</a></li>
+                                            <li class=""><a href="/en/ratings-rewards/driver-assistance-systems/">Driver Assistance Systems</a></li>
+                                            <li class=""><a href="/en/ratings-rewards/euro-ncap-advanced-rewards/">Euro NCAP Advanced Rewards</a></li>
+                                            <li class=""><a href="/en/ratings-rewards/assisted-driving-gradings/">Assisted Driving Gradings</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="/en/car-safety/" >Car Safety</a>
+                                    <ul class="level2">
+                                            <li class=""><a href="/en/car-safety/safety-campaigns/">Safety Campaigns</a></li>
+                                            <li class=""><a href="/en/car-safety/the-ratings-explained/">The Ratings Explained</a></li>
+                                            <li class=""><a href="/en/car-safety/assisted-driving-gradings-explained/">Assisted Driving Gradings Explained</a></li>
+                                            <li class=""><a href="/en/car-safety/quadricycle-ratings-explained/">Quadricycle Ratings Explained</a></li>
+                                            <li class=""><a href="/en/car-safety/glossary/">Glossary</a></li>
+                                            <li class=""><a href="/en/car-safety/meet-the-dummies/">Meet the Dummies</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="/en/truck-van-safety/" >Truck &amp; Van Safety</a>
+                                    <ul class="level2">
+                                            <li class=""><a href="/en/truck-van-safety/safer-trucks/">Safer Trucks</a></li>
+                                            <li class=""><a href="/en/truck-van-safety/commercial-van-ratings/">Commercial Van Ratings</a></li>
+                                            <li class=""><a href="/en/truck-van-safety/for-engineers/">For Engineers</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="/en/press-media/" >Press &amp; Media</a>
+                                    <ul class="level2">
+                                            <li class=""><a href="/en/press-media/press-releases/">Press Releases</a></li>
+                                            <li class=""><a href="/en/press-media/media-centre/">Media Centre</a></li>
+                                            <li class=""><a href="/en/press-media/publication-guidelines/">Publication Guidelines</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="/en/for-engineers/" >For Engineers</a>
+                                    <ul class="level2">
+                                            <li class=""><a href="/en/for-engineers/whats-new/">What&#39;s New</a></li>
+                                            <li class=""><a href="/en/for-engineers/protocols/">Protocols</a></li>
+                                            <li class=""><a href="/en/for-engineers/supporting-information/">Supporting Information</a></li>
+                                            <li class=""><a href="/en/for-engineers/technical-papers/">Technical Papers</a></li>
+                                    </ul>
+                                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <!-- end: NAVIGATION -->
+
+</header>
+
+<!-- end: HEADER -->
+<!-- start: TITLE -->
+
+<div id="title">
+
+    <div class="main-container styledLinks">
+
+                <h1 class="title-header"><span>404</span></h1>
+            <div class="breadcrumbs">
+                <ul>
+                            <li><a href="/en/">Home</a></li>
+                    <li>404</li>
+                </ul>
+
+            </div>
+
+
+    </div>
+
+</div>
+<!-- end: TITLE -->
+
+
+            
+
+
+
+
+
+<!-- start: CONTENT -->
+
+<div class="content">
+
+    <div class="main-container">
+
+            <div class="box white styledLinks">
+
+                <h1>404</h1>
+
+<p><a href="/en/" target="_top" title="en"><img style="max-width: 100% !important; max-height: 100% !important; display: block;" data-src="https://cdn.euroncap.com/media/16403/10lva_euroncap_error.jpg" alt="image" rel="19324" /></a></p>
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+
+</div>
+
+        <!-- end: CONTENT -->
+        <!-- start: SUBSCRIBE NEWSLETTER -->
+        <div id="subscribe-newsletter">
+
+            <div class="main-container">
+
+                <h2>Subscribe for our latest news</h2>
+
+                <div id="subscribe-newsletter-form">
+
+                    <form id="NewsletterForm" name="SubscribeForm" onsubmit="return ValidateForm()" action="https://public.paloma.se/subscription/register" method="get">
+
+                        <input type="hidden" name="FormKey" value="fd21750c-d027-4c22-a354-d43b6668ff41">
+                        <input type="hidden" name="Language" value="en">
+                        <input type="hidden" name="LegalBasis" value="1">
+                        <input type="hidden" name="TermsGuid" value="605d783b-d687-4ba4-b8b5-77757d28a8dc">
+                        <input type="hidden" name="Lists" value="125c20a0-79c2-4a5a-8757-e1a8bc09ace6">
+                        <input type="hidden" name="OptInSenderName" value="Euro NCAP" />
+                        <input type="hidden" name="OptInSenderEmail" value="info@euroncap.com" />
+                        <input type="hidden" name="OptInMessage" value="PHA+PGltZyBhbHQ9IlRoYW5rIHlvdSBmb3Igc3Vic2NyaWJpbmciIHNyYz0iaHR0cHM6Ly91c2VyZGF0YS5wYWxvbWEuc2UvUGljdHVyZXMvMjMzNC9EbmRlMkVkaXRvckltYWdlcy8zNjE4ODcvMjAyNS0wMy0wNV9iYmM4NmZlNy1jM2Q1LTRmMGQtOTdjMy1iYzA0OGVhMTE2OGIucG5nIiBzdHlsZT0id2lkdGg6NjAwcHgiIC8+PC9wPgoKPHA+SGVsbG8hPC9wPgoKPHA+VGhhbmsgeW91IGZvciBzdWJzY3JpYmluZyB0byBFdXJvIE5DQVAmIzM5O3MgbmV3cy48L3A+Cgo8cD5UbyBjb21wbGV0ZSB5b3VyIHN1YnNjcmlwdGlvbiwgcGxlYXNlIGNvbmZpcm0geW91ciBlLW1haWwgYnkgY2xpY2tpbmcgdGhlIGxpbmsgYmVsb3c6PC9wPgoKPHA+PGEgaHJlZj0iWy8vYWN0aXZhdGlvbnVybF0iPkNvbmZpcm0gbXkgc3Vic2NyaXB0aW9uPC9hPjwvcD4KCjxwPklmIHlvdSBkaWQgbm90IHNpZ24gdXAsIHlvdSBjYW4gc2FmZWx5IGlnbm9yZSB0aGlzIG1haWwsIHlvdXIgbWFpbCBhZGRyZXNzJm5ic3A7d2lsbCBub3QgYmUgcmVnaXN0ZXJlZC48L3A+Cgo8cD5Mb29raW5nIGZvcndhcmQgdG8gc3RheWluZyBpbiB0b3VjaDwvcD4KCjxwPkV1cm8gTkNBUCB0ZWFtPC9wPgo=" />
+                        <input type="hidden" name="ThanksPage" value="https://www.euroncap.com/en/thank-you/">
+                        <input type="hidden" name="CheckThanksPageAvailability" value="0">
+                        <span id="SubscriberForm_email_error_required" style="display:none;color:red;">Required</span>
+                        <span id="SubscriberForm_email_error_0" style="display:none;color:red;">Invalid e-mail address</span>
+                        <span id="SubscriberForm_email_error_1" style="display:none;color:red;">Max 400 characters</span>
+
+                        <input type="text" name="email" id="SubscriberForm_email" placeholder="Your email" />
+
+                        <button id="newsletterValidateEmail" class="more more-trigger" modalTitle="Thank you for subscribing.">OK</button>
+
+                        <div class="about-modal" style="display: none;">
+
+                            <div style="position: absolute; left: -9999px;">
+                                <input type="text" name="donotfill" autocomplete="new-password" tabindex="-1" />
+                            </div>
+                            <br><span>
+                                <br />
+                                <br>Euro NCAP needs your consent to process your personal data.<br />
+                                <br>Please tick the following box
+                            </span>
+                            <br />
+                            <label class="newsletter-check standard-safety-label"><input onclick="CheckNewsletterCheckbox()" name="haschecked" id="newsletterHaschecked" type="checkbox"><span class="checkbox"></span><i id="newsletterAgreementText">I agree to the use of my personal data by Euro NCAP</i><br /><br></label>
+                            <p>As a final step, you will receive an automatically generated e-mail from Paloma, our e-mail automation platform to confirm your registration.</p>
+                            <br><a href="/en/contact/cookie-policy/" target="_blank">Find our Privacy Statement here</a>
+                            <br />
+
+                            <br><br />
+
+                            <input class="newsletter-submit" type="submit" onclick="ValidateForm()" value='OK' />
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- end: SUBSCRIBE NEWSLETTER -->
+ 
+
+
+
+
+<!-- start: FOOTER -->
+
+<footer id="footer" class="black-background">
+
+
+    <!-- start: FOOTER NAVIGATION -->
+
+    <div id="footer-navigation">
+
+        <div class="main-container">
+
+            <div class="box smartphone-hidden">
+                <ul>
+                        <li><a href="/en/about-euro-ncap/">About Euro NCAP</a></li>
+                        <li><a href="/en/car-safety/">Car Safety</a></li>
+                        <li><a href="/en/truck-van-safety/">Truck &amp; Van Safety</a></li>
+                        <li><a href="/en/press-media/">Press &amp; Media</a></li>
+                        <li><a href="/en/for-engineers/">For Engineers</a></li>
+                        <li><a href="/en/contact/">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="box smartphone-hidden">
+                <ul>
+                        <li><a href="/en/contact/conditions-of-use/">Conditions of Use</a></li>
+                </ul>
+            </div>
+
+            <div class="box smartphone-hidden">
+                <p>Search in Euro NCAP.com</p>
+                <form class="search-form" action="/en/search-results/" method="GET">
+                    <input type="text" placeholder="Search" name="query"/>
+                    <input type="image" src="/gfx/search-form-button1.png" alt="Search" />
+                </form>
+            </div>
+
+            <div class="box">
+
+                            <p>Follow us on</p>
+                            <div class="socialmedia">
+
+
+
+<ul>
+        <li><a href="https://www.linkedin.com/company/euro-ncap" class="linkedin follow" target="_blank"></a></li>
+        <li><a href="https://www.facebook.com/Forsafercars?fref=ts" class="facebook follow" target="_blank"></a></li>
+        <li><a href="https://twitter.com/EuroNCAP" class="twitter follow" target="_blank"></a></li>
+        <li><a href="https://www.youtube.com/user/euroncapcom" class="youtube follow" target="_blank"></a></li>
+
+  
+</ul>
+                            </div>
+                            <div class="subBox">
+                                <ul>
+
+                                </ul>
+                            </div>
+
+                
+                
+            </div>
+
+            <div class="box">
+                <a href="/en/contact/" class="button">CONTACT US</a>
+            </div>
+            <div class="box box-rescue-app">
+
+    <div class="box-rescue-app-items">
+            <div class="box-rescue-app-item">
+                <a href="/en/car-safety/the-ratings-explained/adult-occupant-protection/rescue-and-extrication/" target="_blank">
+                    <img alt="Euro Rescue" src="https://cdn.euroncap.com/media/58349/euro-rescue-icon-1.png" height="50" class="img-with-text-right">
+                    <span>Euro Rescue</span>
+                </a>
+            </div>
+            <div class="box-rescue-app-item">
+                <a href="https://apps.apple.com/us/app/euro-rescue/id1516807765?ls=1" target="_blank">
+                    <img alt="Apple" src="https://cdn.euroncap.com/media/58304/logo_store_apple_black_background.png" height="50" class="">
+                    <span></span>
+                </a>
+            </div>
+            <div class="box-rescue-app-item">
+                <a href="https://play.google.com/store/apps/details?id=com.euroncap.rescue" target="_blank">
+                    <img alt="Android" src="https://cdn.euroncap.com/media/58305/logo_store_android_black_background.png" height="50" class="">
+                    <span></span>
+                </a>
+            </div>
+    </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- end: FOOTER NAVIGATION -->
+    <!-- start: FOOTER NAVIGATION -->
+
+    <div id="footer-copyrights">
+
+        <div class="main-container">
+
+            <p>Copyright © 2025 Euro NCAP</p>
+            <a href="#" class="scroll-up"><img src="/gfx/scroll-up.png" alt="Scroll Up" /></a>
+
+        </div>
+
+    </div>
+
+    <!-- end: FOOTER NAVIGATION -->
+
+
+</footer>
+
+<!-- end: FOOTER -->
+        </div>
+    </div>
+
+
+
+
+
+
+
+<!-- start: TOP LAYER -->
+
+<div class="toplayer-overlay">
+
+    <div class="toplayer-container">
+
+        <div class="toplayer">
+            <h2 id="topplayer-title"></h2>
+            <div id="topplayer-content">
+
+            </div>
+        </div><!--toplayer-->
+
+        <span class="toplayer-close"></span>
+
+    </div><!--toplayer-container-->
+
+</div>
+
+<!-- end: TOP LAYER -->
+
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        let jqBody = $("body");
+        jqBody.on("click", ".video-trigger", function ()
+        {
+            let video = $(this).children().clone();
+            let jqVideo = $(video);
+
+            jqVideo.attr("width", "750");
+            jqVideo.attr("height", "500");
+
+            $("#topplayer-content").html(video);
+        });
+
+        jqBody.on("click", ".video-image-trigger", function ()
+        {
+            let content = $("#topplayer-content");
+            content.html("");
+
+            let videoChild = $(this).children();
+            let videoUrl = videoChild.attr("data");
+            if (videoUrl == undefined)
+            {
+                videoUrl = videoChild.find("img").attr("data");
+            }
+
+            let iframe = document.createElement('iframe');
+            iframe.width = '750';
+            iframe.height = '422';
+            iframe.src = videoUrl;
+            iframe.frameborder = '0';
+            iframe.setAttribute('allowFullScreen', '');
+            iframe.setAttribute('allow', 'autoplay');
+
+            content.html(iframe);
+        });
+
+        jqBody.on("click", ".more-trigger", function ()
+        {
+            let jqThis = $(this);
+            let content = jqThis.next().clone();
+
+            $(content).show();
+
+            let modalTitle = jqThis.attr('modalTitle');
+            $("#topplayer-title").html(modalTitle ? modalTitle : jqThis.text());
+            $("#topplayer-content").html(content);
+        });
+
+        jqBody.on("click", ".info-trigger", function ()
+        {
+            let contentId = $(this).attr("rel");
+            let container = $("#" + contentId);
+
+            let title = container.find(".title").html();
+            let content = container.find(".content").html();
+
+            $("#topplayer-title").html(title);
+            $("#topplayer-content").html(content);
+        });
+
+        jqBody.on("click", ".info-close", function ()
+        {
+            $("#topplayer-title").html("");
+            $("#topplayer-content").html("");
+        });
+
+        if ($('#cookie-popup-info').length !== 0)
+        {
+            let container = $('#cookie-popup-info');
+            let cookieKey = container.find(".cookie-key").html();
+
+            if ($.cookie('euroncap_cookie_key') != cookieKey)
+            {
+                jQuery.cookie('euroncap_cookie_key', cookieKey, { expires: 365 });
+
+                let title = container.find(".title").html();
+                let content = container.find(".content").html();
+
+                $("#topplayer-title").html(title);
+                $("#topplayer-content").html(content);
+
+                $('.toplayer-overlay').fadeIn('fast');
+                $('.toplayer-container').fadeIn('fast');
+            }
+        }
+
+        if ($('#timed-popup-info').length !== 0){
+            let container = $('#timed-popup-info');
+            let title = container.find(".title").html();
+            let content = container.find(".content").html();
+            let firstCountdown = container.find(".first-countdown").html();  // in seconds
+            let subsequentCountdowns = container.find(".subsequent-countdowns").html();  // in minutes
+            let startTimeStorageKey = 'startTime';
+            let dialogTimeShownStorageKey = 'dialogTimeShown';
+
+            if (!localStorage.getItem(startTimeStorageKey)) {
+                localStorage.setItem(startTimeStorageKey, Date.now());
+            }
+
+            // Function to calculate the time spent on the page
+            function logTimeSpent() {
+                const startTime = localStorage.getItem(startTimeStorageKey);
+
+                if (startTime) {
+                    const currentTime = Date.now();
+                    const timeSpent = Math.floor((currentTime - startTime) / 1000); // Time spent in seconds
+                    const dialogShown = localStorage.getItem(dialogTimeShownStorageKey);
+
+                    if (timeSpent >= firstCountdown && (!dialogShown || (currentTime - dialogShown > subsequentCountdowns * 60 * 1000))) {
+                        // Store the current timestamp in sessionStorage when the dialog is shown
+                        localStorage.setItem(dialogTimeShownStorageKey, currentTime.toString());
+
+                        $("#topplayer-title").html(title);
+                        $("#topplayer-content").html(content);
+
+                        $('.toplayer-overlay').fadeIn('fast');
+                        $('.toplayer-container').fadeIn('fast');
+
+                    }
+                }
+            }
+
+            // Log time every 5 seconds for demonstration (you can adjust this interval)
+            setInterval(logTimeSpent, 5000);
+        }
+    });
+</script>
+
+
+            <div id="cookiesDirectives"
+                 data-privacy-policy-uri="/en/contact/conditions-of-use/"
+                 data-implied-disclosure-text=" By using our website you agree to our cookie policy. Read more about the usage of cookies on the Euro NCAP websites and the possibility to deactivate them in our "
+                 data-implied-submit-text="Do not show this message again."
+                 data-message="Some features of the Euro NCAP websites are developed to improve your browsing experience. Some of those features will only work if cookies are activated."
+                 data-privacy-policy-link-text="Conditions of Use "
+                 data-single-cookie-script-beginning-label=" "
+                 data-single-cookie-script-end-label=" ">
+            </div>
+
+
+    
+
+    
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-57678488-1', 'auto');
+        ga('send', 'pageview');
+
+        //Matomo
+        var _paq = window._paq = window._paq || [];
+
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+
+        _paq.push(['trackPageView']);
+
+        _paq.push(['enableLinkTracking']);
+
+        (function () {
+
+            var u = "//euroncap.matomo.therightmove.be/";
+
+            _paq.push(['setTrackerUrl', u + 'matomo.php']);
+
+            _paq.push(['setSiteId', 3]);
+
+            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+
+            g.async = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);
+
+        })();
+    </script>
+</body>
+</html>
