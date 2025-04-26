@@ -32,6 +32,7 @@ class Auth {
             return false;
         }
         error_log("Found " . count($userData['records']) . " user records");
+        error_log("User data: " . print_r($userData['records'], true));
         
         // Ищем пользователя с указанным email
         $user = null;
