@@ -184,7 +184,7 @@ $unassignedApplications = $applications->getUnassignedApplications();
                                 <?php foreach ($unassignedApplications as $application): ?>
                                 <tr>
                                     <td>A-<?= $application['id'] ?></td>
-                                    <td><?= htmlspecialchars($application['client_first_name'] . ' ' . $application['client_last_name']) ?></td>
+                                    <td><?= htmlspecialchars($application['first_name'] . ' ' . $application['last_name']) ?></td>
                                     <td>
                                         <?php if ($application['type'] === 'real_estate' && !empty($application['real_estate_title'])): ?>
                                             <?= htmlspecialchars($application['real_estate_title']) ?> 
