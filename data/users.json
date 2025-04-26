@@ -1,3 +1,4 @@
+
 {
     "schema": {
         "id": {
@@ -38,11 +39,11 @@
     "records": [
         {
             "id": 1,
-            "email": "admin@\u043b\u0438\u0437\u0438\u043d\u0433.\u043e\u0440\u0433",
-            "password": "$2y$10$vBcMUunjWPffmB46Jt6JJ.sIDmO90i\/cB.4rEbDFzSRdORqALeq52",
+            "email": "admin@лизинг.орг",
+            "password": "$2y$10$vBcMUunjWPffmB46Jt6JJ.sIDmO90i/cB.4rEbDFzSRdORqALeq52",
             "original_password": "password",
-            "first_name": "\u0410\u043d\u0434\u0440\u0435\u0439",
-            "last_name": "\u0412\u043e\u043b\u043a\u043e\u0432",
+            "first_name": "Андрей",
+            "last_name": "Волков",
             "phone": "+7(901)123-4567",
             "role": "admin",
             "status": "active",
@@ -50,11 +51,11 @@
         },
         {
             "id": 2,
-            "email": "manager1@\u043b\u0438\u0437\u0438\u043d\u0433.\u043e\u0440\u0433",
-            "password": "$2y$10$vBcMUunjWPffmB46Jt6JJ.sIDmO90i\/cB.4rEbDFzSRdORqALeq52",
+            "email": "manager1@лизинг.орг",
+            "password": "$2y$10$vBcMUunjWPffmB46Jt6JJ.sIDmO90i/cB.4rEbDFzSRdORqALeq52",
             "original_password": "password",
-            "first_name": "\u0410\u043b\u0435\u043a\u0441\u0435\u0439",
-            "last_name": "\u0421\u043c\u0438\u0440\u043d\u043e\u0432",
+            "first_name": "Алексей",
+            "last_name": "Смирнов",
             "phone": "+7(902)123-4567",
             "role": "manager",
             "status": "active",
@@ -62,11 +63,11 @@
         },
         {
             "id": 3,
-            "email": "manager2@\u043b\u0438\u0437\u0438\u043d\u0433.\u043e\u0440\u0433",
-            "password": "$2y$10$vBcMUunjWPffmB46Jt6JJ.sIDmO90i\/cB.4rEbDFzSRdORqALeq52",
+            "email": "manager2@лизинг.орг",
+            "password": "$2y$10$vBcMUunjWPffmB46Jt6JJ.sIDmO90i/cB.4rEbDFzSRdORqALeq52",
             "original_password": "password",
-            "first_name": "\u0415\u043b\u0435\u043d\u0430",
-            "last_name": "\u041c\u0438\u0445\u0430\u0439\u043b\u043e\u0432\u0430",
+            "first_name": "Елена",
+            "last_name": "Михайлова",
             "phone": "+7(903)123-4567",
             "role": "manager",
             "status": "active",
@@ -74,11 +75,11 @@
         },
         {
             "id": 4,
-            "email": "client@\u043b\u0438\u0437\u0438\u043d\u0433.\u043e\u0440\u0433",
-            "password": "$2y$10$vBcMUunjWPffmB46Jt6JJ.sIDmO90i\/cB.4rEbDFzSRdORqALeq52",
+            "email": "client@лизинг.орг",
+            "password": "$2y$10$vBcMUunjWPffmB46Jt6JJ.sIDmO90i/cB.4rEbDFzSRdORqALeq52",
             "original_password": "password",
-            "first_name": "\u0418\u0432\u0430\u043d",
-            "last_name": "\u041f\u0435\u0442\u0440\u043e\u0432",
+            "first_name": "Иван",
+            "last_name": "Петров",
             "phone": "+7(904)123-4567",
             "role": "client",
             "status": "active",
@@ -87,26 +88,28 @@
         {
             "id": 5,
             "email": "maria@example.com",
-            "password": "$2y$10$vBcMUunjWPffmB46Jt6JJ.sIDmO90i\/cB.4rEbDFzSRdORqALeq52",
+            "password": "$2y$10$vBcMUunjWPffmB46Jt6JJ.sIDmO90i/cB.4rEbDFzSRdORqALeq52",
             "original_password": "password",
-            "first_name": "\u041c\u0430\u0440\u0438\u044f",
-            "last_name": "\u0418\u0432\u0430\u043d\u043e\u0432\u0430",
+            "first_name": "Мария",
+            "last_name": "Иванова",
             "phone": "+7(905)123-4567",
             "role": "client",
             "status": "active",
             "created_at": "2025-04-25 18:26:08"
         },
         {
-            "id": 1,
+            "id": 6,
             "email": "vavrencukbogdan28@gmail.com",
-            "password": "$2y$10$DPLpPfdCkL2iBLKgjQj79uzY7eeT5vhhbqHaZxq4sCz\/ORrklLS8C",
-            "first_name": "\u0411\u043e\u0433\u0434\u0430\u043d",
-            "last_name": "\u0411\u043e\u0433\u0434\u0430\u043d",
+            "password": "$2y$10$DPLpPfdCkL2iBLKgjQj79uzY7eeT5vhhbqHaZxq4sCz/ORrklLS8C",
+            "original_password": "password",
+            "first_name": "Богдан",
+            "last_name": "Богдан",
             "phone": "80333565345",
             "role": "client",
+            "status": "active",
             "created_at": "2025-04-25 18:37:41",
             "updated_at": "2025-04-25 18:37:41"
         }
     ],
-    "next_id": 2
+    "next_id": 7
 }
