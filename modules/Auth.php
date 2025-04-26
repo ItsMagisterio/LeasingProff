@@ -13,8 +13,12 @@ class Auth {
      * Авторизация пользователя
      */
     public function login($email, $password) {
+        // Логирование попытки входа
+        error_log("Login attempt for email: " . $email);
+        
         // Чтение из JSON-файла
         $jsonFile = __DIR__ . '/../data/users.json';
+        error_log("Reading users from: " . $jsonFile);
         
         if (!file_exists($jsonFile)) {
             return false;
@@ -24,8 +28,10 @@ class Auth {
         $userData = json_decode($jsonData, true);
         
         if (!isset($userData['records']) || !is_array($userData['records'])) {
+            error_log("Invalid users data structure");
             return false;
         }
+        error_log("Found " . count($userData['records']) . " user records");
         
         // Ищем пользователя с указанным email
         $user = null;
