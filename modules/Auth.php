@@ -44,6 +44,10 @@ class Auth {
         }
         
         // Проверяем найденного пользователя
+        error_log("Found user: " . ($user ? "yes" : "no"));
+        if ($user) {
+            error_log("Password verification result: " . (password_verify($password, $user['password']) ? "success" : "failed"));
+        }
         if ($user && password_verify($password, $user['password'])) {
             // Сохраняем пользователя в сессии
             $_SESSION['user_id'] = $user['id'];
