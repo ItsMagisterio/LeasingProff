@@ -192,143 +192,32 @@ class Database {
      * Заполнение базы данных тестовыми данными
      */
     private function seedDatabaseIfEmpty() {
-        // Проверяем, есть ли файл с пользователями
-        $usersFile = $this->dataDir . '/users.json';
-        $needToSeed = false;
+        // Проверяем, есть ли пользователи в базе
+        $result = $this->query("SELECT COUNT(*) FROM users");
         
-        if (file_exists($usersFile)) {
-            $jsonData = file_get_contents($usersFile);
-            $userData = json_decode($jsonData, true);
-            if (!isset($userData['records']) || count($userData['records']) == 0) {
-                $needToSeed = true;
-            }
-        } else {
-            $needToSeed = true;
-        }
-        
-        if ($needToSeed) {
-            // Создаем структуры таблиц в JSON
-            $usersData = [
-                'schema' => [
-                    'id' => ['type' => 'INTEGER', 'primary' => true, 'auto_increment' => true],
-                    'email' => ['type' => 'TEXT', 'unique' => true],
-                    'password' => ['type' => 'TEXT'],
-                    'original_password' => ['type' => 'TEXT'],
-                    'first_name' => ['type' => 'TEXT'],
-                    'last_name' => ['type' => 'TEXT'],
-                    'phone' => ['type' => 'TEXT'],
-                    'role' => ['type' => 'TEXT'],
-                    'status' => ['type' => 'TEXT', 'default' => 'active'],
-                    'created_at' => ['type' => 'DATETIME']
-                ],
-                'records' => []
-            ];
-            
+        if ($result[0]['count'] == 0) {
             // Добавляем тестовых пользователей
             $password = password_hash('password', PASSWORD_DEFAULT);
-            $originalPassword = 'password';
-            $timestamp = date('Y-m-d H:i:s');
             
             // Администратор
-            $usersData['records'][] = [
-                'id' => 1,
-                'email' => 'admin@лизинг.орг',
-                'password' => $password,
-                'original_password' => $originalPassword,
-                'first_name' => 'Андрей',
-                'last_name' => 'Волков',
-                'phone' => '+7(901)123-4567',
-                'role' => 'admin',
-                'status' => 'active',
-                'created_at' => $timestamp
-            ];
+            $this->query("INSERT INTO users (email, password, first_name, last_name, phone, role) 
+                VALUES ('admin@лизинг.орг', '$password', 'Андрей', 'Волков', '+7(901)123-4567', 'admin')");
             
             // Менеджеры
-            $usersData['records'][] = [
-                'id' => 2,
-                'email' => 'manager1@лизинг.орг',
-                'password' => $password,
-                'original_password' => $originalPassword,
-                'first_name' => 'Алексей',
-                'last_name' => 'Смирнов',
-                'phone' => '+7(902)123-4567',
-                'role' => 'manager',
-                'status' => 'active',
-                'created_at' => $timestamp
-            ];
-            
-            $usersData['records'][] = [
-                'id' => 3,
-                'email' => 'manager2@лизинг.орг',
-                'password' => $password,
-                'original_password' => $originalPassword,
-                'first_name' => 'Елена',
-                'last_name' => 'Михайлова',
-                'phone' => '+7(903)123-4567',
-                'role' => 'manager',
-                'status' => 'active',
-                'created_at' => $timestamp
-            ];
+            $this->query("INSERT INTO users (email, password, first_name, last_name, phone, role) 
+                VALUES ('manager1@лизинг.орг', '$password', 'Алексей', 'Смирнов', '+7(902)123-4567', 'manager')");
+            $this->query("INSERT INTO users (email, password, first_name, last_name, phone, role) 
+                VALUES ('manager2@лизинг.орг', '$password', 'Елена', 'Михайлова', '+7(903)123-4567', 'manager')");
             
             // Клиенты
-            $usersData['records'][] = [
-                'id' => 4,
-                'email' => 'client@лизинг.орг',
-                'password' => $password,
-                'original_password' => $originalPassword,
-                'first_name' => 'Иван',
-                'last_name' => 'Петров',
-                'phone' => '+7(904)123-4567',
-                'role' => 'client',
-                'status' => 'active',
-                'created_at' => $timestamp
-            ];
-            
-            $usersData['records'][] = [
-                'id' => 5,
-                'email' => 'maria@example.com',
-                'password' => $password,
-                'original_password' => $originalPassword,
-                'first_name' => 'Мария',
-                'last_name' => 'Иванова',
-                'phone' => '+7(905)123-4567',
-                'role' => 'client',
-                'status' => 'active',
-                'created_at' => $timestamp
-            ];
-            
-            // Сохраняем данные пользователей в JSON
-            if (!is_dir($this->dataDir)) {
-                mkdir($this->dataDir, 0755, true);
-            }
-            file_put_contents($this->dataDir . '/users.json', json_encode($usersData, JSON_PRETTY_PRINT));
+            $this->query("INSERT INTO users (email, password, first_name, last_name, phone, role) 
+                VALUES ('client@лизинг.орг', '$password', 'Иван', 'Петров', '+7(904)123-4567', 'client')");
+            $this->query("INSERT INTO users (email, password, first_name, last_name, phone, role) 
+                VALUES ('maria@example.com', '$password', 'Мария', 'Иванова', '+7(905)123-4567', 'client')");
 
-            // Создаем и заполняем данные автомобилей
-            $vehiclesData = [
-                'schema' => [
-                    'id' => ['type' => 'INTEGER', 'primary' => true, 'auto_increment' => true],
-                    'make' => ['type' => 'TEXT'],
-                    'model' => ['type' => 'TEXT'],
-                    'year' => ['type' => 'INTEGER'],
-                    'engine' => ['type' => 'TEXT'],
-                    'power' => ['type' => 'INTEGER'],
-                    'drive_type' => ['type' => 'TEXT'],
-                    'transmission' => ['type' => 'TEXT'],
-                    'color' => ['type' => 'TEXT'],
-                    'interior' => ['type' => 'TEXT'],
-                    'features' => ['type' => 'TEXT'],
-                    'image_url' => ['type' => 'TEXT'],
-                    'price' => ['type' => 'INTEGER'],
-                    'monthly_payment' => ['type' => 'INTEGER'],
-                    'created_at' => ['type' => 'DATETIME']
-                ],
-                'records' => []
-            ];
-            
             // Добавляем автомобили
             $vehicles = [
                 [
-                    'id' => 1,
                     'make' => 'BMW', 
                     'model' => 'X5', 
                     'year' => 2024, 
@@ -341,11 +230,9 @@ class Database {
                     'features' => 'панорамная крыша,адаптивный круиз-контроль,мультимедиа BMW Professional', 
                     'image_url' => 'https://images.unsplash.com/photo-1556189250-72ba954cfc2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80', 
                     'price' => 7650000, 
-                    'monthly_payment' => 85000,
-                    'created_at' => $timestamp
+                    'monthly_payment' => 85000
                 ],
                 [
-                    'id' => 2,
                     'make' => 'Mercedes-Benz', 
                     'model' => 'E-Class', 
                     'year' => 2024, 
@@ -358,11 +245,9 @@ class Database {
                     'features' => 'навигация,подогрев сидений,система MBUX', 
                     'image_url' => 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80', 
                     'price' => 5850000, 
-                    'monthly_payment' => 65000,
-                    'created_at' => $timestamp
+                    'monthly_payment' => 65000
                 ],
                 [
-                    'id' => 3,
                     'make' => 'Audi', 
                     'model' => 'Q7', 
                     'year' => 2023, 
@@ -375,11 +260,9 @@ class Database {
                     'features' => '7 мест,виртуальная приборная панель,панорамная крыша', 
                     'image_url' => 'https://images.unsplash.com/photo-1608329985118-887191f6dd8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80', 
                     'price' => 7100000, 
-                    'monthly_payment' => 79000,
-                    'created_at' => $timestamp
+                    'monthly_payment' => 79000
                 ],
                 [
-                    'id' => 4,
                     'make' => 'Toyota', 
                     'model' => 'Camry', 
                     'year' => 2024, 
@@ -392,11 +275,9 @@ class Database {
                     'features' => 'JBL аудиосистема,круиз-контроль,камера заднего вида', 
                     'image_url' => 'https://images.unsplash.com/photo-1621007690695-33e84c0ea918?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80', 
                     'price' => 4050000, 
-                    'monthly_payment' => 45000,
-                    'created_at' => $timestamp
+                    'monthly_payment' => 45000
                 ],
                 [
-                    'id' => 5,
                     'make' => 'Volkswagen', 
                     'model' => 'Tiguan', 
                     'year' => 2023, 
@@ -409,11 +290,9 @@ class Database {
                     'features' => 'панорамная крыша,адаптивный круиз-контроль,система помощи при парковке', 
                     'image_url' => 'https://images.unsplash.com/photo-1606664914738-f57686f9c8b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80', 
                     'price' => 4680000, 
-                    'monthly_payment' => 52000,
-                    'created_at' => $timestamp
+                    'monthly_payment' => 52000
                 ],
                 [
-                    'id' => 6,
                     'make' => 'KIA', 
                     'model' => 'Sportage', 
                     'year' => 2023, 
@@ -426,44 +305,33 @@ class Database {
                     'features' => 'система предотвращения столкновений,панорамная крыша,камера заднего вида', 
                     'image_url' => 'https://images.unsplash.com/photo-1641844180429-baab126f41b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80', 
                     'price' => 3420000, 
-                    'monthly_payment' => 38000,
-                    'created_at' => $timestamp
+                    'monthly_payment' => 38000
                 ]
             ];
 
             foreach ($vehicles as $vehicle) {
-                $vehiclesData['records'][] = $vehicle;
+                $this->query("INSERT INTO vehicles (make, model, year, engine, power, drive_type, transmission, color, interior, 
+                    features, image_url, price, monthly_payment) 
+                VALUES (
+                    '{$vehicle['make']}', 
+                    '{$vehicle['model']}', 
+                    {$vehicle['year']}, 
+                    '{$vehicle['engine']}', 
+                    {$vehicle['power']}, 
+                    '{$vehicle['drive_type']}', 
+                    '{$vehicle['transmission']}', 
+                    '{$vehicle['color']}', 
+                    '{$vehicle['interior']}', 
+                    '{$vehicle['features']}', 
+                    '{$vehicle['image_url']}', 
+                    {$vehicle['price']}, 
+                    {$vehicle['monthly_payment']}
+                )");
             }
-            
-            // Сохраняем данные автомобилей в JSON
-            file_put_contents($this->dataDir . '/vehicles.json', json_encode($vehiclesData, JSON_PRETTY_PRINT));
 
-            // Создаем и заполняем данные объектов недвижимости
-            $realEstateData = [
-                'schema' => [
-                    'id' => ['type' => 'INTEGER', 'primary' => true, 'auto_increment' => true],
-                    'title' => ['type' => 'TEXT'],
-                    'type' => ['type' => 'TEXT'],
-                    'address' => ['type' => 'TEXT'],
-                    'area' => ['type' => 'FLOAT'],
-                    'rooms' => ['type' => 'INTEGER'],
-                    'floor' => ['type' => 'INTEGER'],
-                    'total_floors' => ['type' => 'INTEGER'],
-                    'build_year' => ['type' => 'INTEGER'],
-                    'description' => ['type' => 'TEXT'],
-                    'features' => ['type' => 'TEXT'],
-                    'image_url' => ['type' => 'TEXT'],
-                    'price' => ['type' => 'INTEGER'],
-                    'monthly_payment' => ['type' => 'INTEGER'],
-                    'created_at' => ['type' => 'DATETIME']
-                ],
-                'records' => []
-            ];
-            
             // Добавляем объекты недвижимости
             $realEstateObjects = [
                 [
-                    'id' => 1,
                     'title' => 'Современная квартира в центре',
                     'type' => 'apartment',
                     'address' => 'Москва, ул. Тверская, 15',
@@ -476,11 +344,9 @@ class Database {
                     'features' => 'подземный паркинг,охрана,видеонаблюдение,лифт,консьерж',
                     'image_url' => 'https://images.unsplash.com/photo-1622015663319-fa394f0e1b81?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
                     'price' => 25000000,
-                    'monthly_payment' => 120000,
-                    'created_at' => $timestamp
+                    'monthly_payment' => 120000
                 ],
                 [
-                    'id' => 2,
                     'title' => 'Коттедж в загородном поселке',
                     'type' => 'house',
                     'address' => 'Московская область, пос. Лесной, ул. Сосновая, 8',
@@ -493,11 +359,9 @@ class Database {
                     'features' => 'участок 12 соток,гараж,баня,камин,теплые полы,газовое отопление',
                     'image_url' => 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
                     'price' => 18500000,
-                    'monthly_payment' => 95000,
-                    'created_at' => $timestamp
+                    'monthly_payment' => 95000
                 ],
                 [
-                    'id' => 3,
                     'title' => 'Офисное помещение в бизнес-центре',
                     'type' => 'commercial',
                     'address' => 'Москва, Пресненская наб., 12, Башня "Федерация"',
@@ -510,11 +374,9 @@ class Database {
                     'features' => 'отдельный вход,система контроля доступа,конференц-зал,парковка,высокоскоростной интернет',
                     'image_url' => 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
                     'price' => 42000000,
-                    'monthly_payment' => 180000,
-                    'created_at' => $timestamp
+                    'monthly_payment' => 180000
                 ],
                 [
-                    'id' => 4,
                     'title' => 'Студия в новостройке',
                     'type' => 'apartment',
                     'address' => 'Санкт-Петербург, ул. Невская, 25',
@@ -527,11 +389,9 @@ class Database {
                     'features' => 'охраняемая территория,детская площадка,фитнес-центр,парковка,видеонаблюдение',
                     'image_url' => 'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
                     'price' => 6800000,
-                    'monthly_payment' => 38000,
-                    'created_at' => $timestamp
+                    'monthly_payment' => 38000
                 ],
                 [
-                    'id' => 5,
                     'title' => 'Торговое помещение в ТЦ',
                     'type' => 'commercial',
                     'address' => 'Москва, Кутузовский пр-т, 57, ТЦ "Времена года"',
@@ -544,100 +404,38 @@ class Database {
                     'features' => 'центральное кондиционирование,круглосуточный доступ,охрана,парковка,рекламные возможности',
                     'image_url' => 'https://images.unsplash.com/photo-1581658545657-4a95507e227e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
                     'price' => 16750000,
-                    'monthly_payment' => 88000,
-                    'created_at' => $timestamp
+                    'monthly_payment' => 88000
                 ]
             ];
 
             foreach ($realEstateObjects as $realEstate) {
-                $realEstateData['records'][] = $realEstate;
+                $this->query("INSERT INTO real_estate (title, type, address, area, rooms, floor, total_floors, build_year, description, features, image_url, price, monthly_payment) 
+                VALUES (
+                    '{$realEstate['title']}', 
+                    '{$realEstate['type']}', 
+                    '{$realEstate['address']}', 
+                    {$realEstate['area']}, 
+                    {$realEstate['rooms']}, 
+                    {$realEstate['floor']}, 
+                    {$realEstate['total_floors']}, 
+                    {$realEstate['build_year']}, 
+                    '{$realEstate['description']}', 
+                    '{$realEstate['features']}', 
+                    '{$realEstate['image_url']}', 
+                    {$realEstate['price']}, 
+                    {$realEstate['monthly_payment']}
+                )");
             }
-            
-            // Сохраняем данные объектов недвижимости в JSON
-            file_put_contents($this->dataDir . '/real_estate.json', json_encode($realEstateData, JSON_PRETTY_PRINT));
-            
-            // Создаем и заполняем данные заявок
-            $applicationsData = [
-                'schema' => [
-                    'id' => ['type' => 'INTEGER', 'primary' => true, 'auto_increment' => true],
-                    'user_id' => ['type' => 'INTEGER'],
-                    'vehicle_id' => ['type' => 'INTEGER', 'nullable' => true],
-                    'real_estate_id' => ['type' => 'INTEGER', 'nullable' => true],
-                    'type' => ['type' => 'TEXT'],
-                    'manager_id' => ['type' => 'INTEGER', 'nullable' => true],
-                    'status' => ['type' => 'TEXT', 'default' => 'new'],
-                    'initial_payment' => ['type' => 'INTEGER'],
-                    'term_months' => ['type' => 'INTEGER'],
-                    'monthly_payment' => ['type' => 'INTEGER'],
-                    'comments' => ['type' => 'TEXT', 'nullable' => true],
-                    'created_at' => ['type' => 'DATETIME']
-                ],
-                'records' => []
-            ];
-            
+
             // Добавляем заявки
-            $applicationsData['records'][] = [
-                'id' => 1,
-                'user_id' => 4,
-                'vehicle_id' => 1,
-                'real_estate_id' => null,
-                'type' => 'vehicle',
-                'manager_id' => 2,
-                'status' => 'processing',
-                'initial_payment' => 1000000,
-                'term_months' => 36,
-                'monthly_payment' => 85000,
-                'comments' => 'Интересует возможность включения КАСКО в ежемесячный платеж',
-                'created_at' => $timestamp
-            ];
-            
-            $applicationsData['records'][] = [
-                'id' => 2,
-                'user_id' => 5,
-                'vehicle_id' => 3,
-                'real_estate_id' => null,
-                'type' => 'vehicle',
-                'manager_id' => 3,
-                'status' => 'approved',
-                'initial_payment' => 1500000,
-                'term_months' => 48,
-                'monthly_payment' => 79000,
-                'comments' => 'Необходимо оформить документы как можно скорее',
-                'created_at' => $timestamp
-            ];
-            
-            $applicationsData['records'][] = [
-                'id' => 3,
-                'user_id' => 5,
-                'vehicle_id' => null,
-                'real_estate_id' => 1,
-                'type' => 'real_estate',
-                'manager_id' => 2,
-                'status' => 'approved',
-                'initial_payment' => 5000000,
-                'term_months' => 120,
-                'monthly_payment' => 120000,
-                'comments' => 'Требуется юридическая проверка документов объекта',
-                'created_at' => $timestamp
-            ];
-            
-            $applicationsData['records'][] = [
-                'id' => 4,
-                'user_id' => 5,
-                'vehicle_id' => 4,
-                'real_estate_id' => null,
-                'type' => 'vehicle',
-                'manager_id' => null,
-                'status' => 'new',
-                'initial_payment' => 800000,
-                'term_months' => 36,
-                'monthly_payment' => 45000,
-                'comments' => null,
-                'created_at' => $timestamp
-            ];
-            
-            // Сохраняем данные заявок в JSON
-            file_put_contents($this->dataDir . '/applications.json', json_encode($applicationsData, JSON_PRETTY_PRINT));
+            $this->query("INSERT INTO applications (user_id, vehicle_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
+                VALUES (4, 1, 'vehicle', 2, 'processing', 1000000, 36, 85000, 'Интересует возможность включения КАСКО в ежемесячный платеж')");
+            $this->query("INSERT INTO applications (user_id, vehicle_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
+                VALUES (5, 3, 'vehicle', 3, 'approved', 1500000, 48, 79000, 'Необходимо оформить документы как можно скорее')");
+            $this->query("INSERT INTO applications (user_id, real_estate_id, type, manager_id, status, initial_payment, term_months, monthly_payment, comments) 
+                VALUES (5, 1, 'real_estate', 2, 'approved', 5000000, 120, 120000, 'Требуется юридическая проверка документов объекта')");
+            $this->query("INSERT INTO applications (user_id, vehicle_id, type, status, initial_payment, term_months, monthly_payment) 
+                VALUES (5, 4, 'vehicle', 'new', 800000, 36, 45000)");
         }
     }
     

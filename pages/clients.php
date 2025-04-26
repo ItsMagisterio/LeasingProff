@@ -19,7 +19,36 @@ if (isset($_SESSION['message'])) {
     unset($_SESSION['message']);
 }
 
-// Все действия с клиентами через кнопку "Активировать/Блокировать" были удалены по запросу пользователя
+// Обработка действий с клиентами
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    $action = $_POST['action'];
+    
+    // Блокировка/Разблокировка клиента
+    if ($action === 'toggle_client_status' && isset($_POST['client_id'])) {
+        $clientId = $_POST['client_id'];
+        $client = $users->getUserById($clientId);
+        
+        if ($client && $client['role'] === 'client') {
+            $newStatus = isset($client['is_active']) && $client['is_active'] ? 0 : 1;
+            $success = $users->updateUserStatus($clientId, $newStatus);
+            
+            if ($success) {
+                $_SESSION['message'] = [
+                    'type' => 'success',
+                    'text' => 'Статус клиента успешно изменен'
+                ];
+            } else {
+                $_SESSION['message'] = [
+                    'type' => 'danger',
+                    'text' => 'Ошибка при изменении статуса клиента'
+                ];
+            }
+        }
+        echo '<script>window.location.href = "index.php?page=clients";</script>';
+        echo '<div class="alert alert-success">Перенаправление...</div>';
+        exit;
+    }
+}
 ?>
 
 <div class="container-fluid dashboard my-4">
@@ -73,7 +102,7 @@ if (isset($_SESSION['message'])) {
                         <th>Email</th>
                         <th>Телефон</th>
                         <th>Дата регистрации</th>
-                        <th>Пароль</th>
+                        <th>Статус</th>
                         <th>Действия</th>
                     </tr>
                 </thead>
@@ -87,15 +116,22 @@ if (isset($_SESSION['message'])) {
                         <td><?= htmlspecialchars($client['phone'] ?? 'Не указан') ?></td>
                         <td><?= isset($client['created_at']) ? date('d.m.Y', strtotime($client['created_at'])) : 'Не указана' ?></td>
                         <td>
-                            <?php if (isset($client['original_password']) && !empty($client['original_password'])): ?>
-                                <span class="text-monospace"><?= htmlspecialchars($client['original_password']) ?></span>
+                            <?php if (isset($client['is_active']) && $client['is_active']): ?>
+                                <span class="badge bg-success">Активен</span>
                             <?php else: ?>
-                                <span class="text-muted">Не указан</span>
+                                <span class="badge bg-danger">Заблокирован</span>
                             <?php endif; ?>
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm">
                                 <a href="index.php?page=application-details&client_id=<?= $client['id'] ?>" class="btn btn-outline-primary">Заявки</a>
+                                <form method="post" class="d-inline" onsubmit="return confirm('Вы уверены, что хотите <?= (isset($client['is_active']) && $client['is_active']) ? 'заблокировать' : 'активировать' ?> этого клиента?');">
+                                    <input type="hidden" name="action" value="toggle_client_status">
+                                    <input type="hidden" name="client_id" value="<?= $client['id'] ?>">
+                                    <button type="submit" class="btn btn-outline-<?= (isset($client['is_active']) && $client['is_active']) ? 'danger' : 'success' ?>">
+                                        <?= (isset($client['is_active']) && $client['is_active']) ? 'Блокировать' : 'Активировать' ?>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>

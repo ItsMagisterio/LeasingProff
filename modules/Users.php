@@ -56,8 +56,12 @@ class Users {
             $users = array_slice($users, $offset, $limit);
         }
         
-        // Сохраняем пароли в результате для отображения на странице клиентов
-        // Это позволяет администратору видеть пароли
+        // Удаляем пароли из результата
+        foreach ($users as &$user) {
+            if (isset($user['password'])) {
+                unset($user['password']);
+            }
+        }
         
         return $users;
     }
@@ -185,7 +189,6 @@ class Users {
                 
                 if (isset($userData['password']) && $userData['password']) {
                     $user['password'] = password_hash($userData['password'], PASSWORD_DEFAULT);
-                    $user['original_password'] = $userData['password']; // Сохраняем оригинальный пароль
                     $userUpdated = true;
                 }
                 
@@ -455,7 +458,6 @@ class Users {
             'id' => $userId,
             'email' => $email,
             'password' => $password,
-            'original_password' => $userData['password'], // Сохраняем оригинальный пароль
             'first_name' => $userData['first_name'],
             'last_name' => $userData['last_name'],
             'phone' => $userData['phone'],
